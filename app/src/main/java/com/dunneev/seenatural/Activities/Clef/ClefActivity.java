@@ -1,10 +1,12 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Activities.Clef;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 
-public class MainActivity extends AppCompatActivity {
+import com.dunneev.seenatural.R;
+
+public class ClefActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

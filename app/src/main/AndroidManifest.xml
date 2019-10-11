@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReadingActivity"></activity>
-        <activity android:name=".DifficultyActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.ReadingActivity">
+            android:screenOrientation="sensorLandscape" <!-- TODO: Consider a portrait option -->
+        </activity>
+        <activity android:name=".Activities.DifficultyActivity" />
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

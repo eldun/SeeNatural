@@ -1,7 +1,9 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Activities.Difficulty;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.dunneev.seenatural.R;
 
 public class DifficultyActivity extends AppCompatActivity {
 

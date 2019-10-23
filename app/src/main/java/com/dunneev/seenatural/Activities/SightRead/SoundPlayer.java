@@ -3,14 +3,11 @@ package com.dunneev.seenatural.Activities.SightRead;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.SparseArray;
 
-import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,7 +84,7 @@ public class SoundPlayer {
             }
 
             @Override
-            public void run() { // TODO: fix clicking at beginning of .wav file
+            public void run() { // TODO: fix clicking at beginning of .wav file (maybe re-record piano/re-render)
                 try{
                     String path = notesFolder + "/" + SOUND_MAP.get(note) + ".wav";
                     AssetManager assetManager = context.getAssets();
@@ -104,7 +101,7 @@ public class SoundPlayer {
 
                     audioTrack.play();
                     InputStream audioStream = null;
-                    int headerOffset = 0x2C; long bytesWritten = 0; int bytesRead = 0;
+                    int headerOffset = 44; long bytesWritten = 0; int bytesRead = 0;
 
                     audioStream = assetManager.open(path);
                     audioStream.read(buffer, 0, headerOffset);

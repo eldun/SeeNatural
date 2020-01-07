@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Activities.SightRead;
+package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,11 +16,14 @@ import java.util.ArrayList;
 public class PianoView extends View {
 
     public static final int NB = 14; // TODO: Change to single octave and test
-    private Paint black, yellow, white;
+    private Paint black, yellow, white; // TODO: Change colors to facilitate correct/incorrect when sight-reading
     private ArrayList<Key> whites = new ArrayList<>();
     private ArrayList<Key> blacks = new ArrayList<>();
     private int keyWidth, height;
     private SoundPlayer soundPlayer;
+
+    private static final String LOG_TAG = PianoView.class.getSimpleName();
+
 
     public PianoView(Context context, AttributeSet attrs) {
         super(context, attrs);

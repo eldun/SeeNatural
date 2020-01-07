@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Difficulty.DifficultyActivity">
 
+    <!-- TODO: Add explanation of difficulties ("?" button), add "Custom" option-->
     <TextView
         android:id="@+id/textview_select_difficulty"
         android:layout_width="0dp"

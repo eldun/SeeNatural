@@ -15,6 +15,9 @@ public class ClefActivity extends AppCompatActivity {
     public static final String EXTRA_SELECTED_CLEF =
             "com.dunneev.seenatural.ClefActivity.extra.SELECTED_CLEF";
 
+    private static final String LOG_TAG = ClefActivity.class.getSimpleName();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // TODO: Add a setting to select light or dark mode for all screens

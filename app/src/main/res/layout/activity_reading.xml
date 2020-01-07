@@ -4,6 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.SightRead.SightReadingActivity">
+    tools:context=".Activities.SightReading.SightReadingActivity">
+
+
+    <com.dunneev.seenatural.Activities.SightReading.StaffView
+        android:id="@+id/staffView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/pianoView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></com.dunneev.seenatural.Activities.SightReading.StaffView>
+
+    <com.dunneev.seenatural.Activities.SightReading.PianoView
+        android:id="@+id/pianoView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </com.dunneev.seenatural.Activities.SightReading.PianoView>
 
 </android.support.constraint.ConstraintLayout>

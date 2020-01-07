@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Activities.SightRead;
+package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -20,7 +20,10 @@ public class SoundPlayer {
         private static final SparseArray<String> SOUND_MAP = new SparseArray<>();
         public static final int MAX_VOLUME = 100, CURRENT_VOLUME = 90;
 
-        static {
+        private static final String LOG_TAG = SoundPlayer.class.getSimpleName();
+
+
+    static {
             // white keys
             SOUND_MAP.put(1, "low_c");
             SOUND_MAP.put(2, "low_d");
@@ -84,7 +87,7 @@ public class SoundPlayer {
             }
 
             @Override
-            public void run() { // TODO: fix clicking at beginning of .wav file (maybe re-record piano/re-render)
+            public void run() { // TODO: fix clicking at beginning of .wav file (maybe re-record piano/re-render at different bitrate)
                 try{
                     String path = notesFolder + "/" + SOUND_MAP.get(note) + ".wav";
                     AssetManager assetManager = context.getAssets();

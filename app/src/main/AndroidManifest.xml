@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.SightRead.SightReadingActivity"
+        <activity android:name=".Activities.SightReading.SightReadingActivity" >
             android:screenOrientation="sensorLandscape"> <!-- TODO: Consider a portrait option -->
         </activity>
         <activity android:name=".Activities.Difficulty.DifficultyActivity" />

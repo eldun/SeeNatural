@@ -5,16 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.dunneev.seenatural.Activities.Clef.ClefActivity;
-import com.dunneev.seenatural.Activities.SightRead.SightReadingActivity;
+import com.dunneev.seenatural.Activities.SightReading.SightReadingActivity;
 import com.dunneev.seenatural.R;
 
 public class DifficultyActivity extends AppCompatActivity {
 
     public static final String EXTRA_SELECTED_DIFFICULTY =
             "com.dunneev.seenatural.ClefActivity.extra.SELECTED_DIFFICULTY";
+
+    private static final String LOG_TAG = DifficultyActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

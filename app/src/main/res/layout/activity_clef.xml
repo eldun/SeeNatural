@@ -36,6 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_select_difficulty">
 
+        <!-- TODO: add images of clefs for buttons -->
         <Button
             android:id="@+id/button_treble"
             android:layout_width="match_parent"

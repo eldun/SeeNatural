@@ -20,4 +20,22 @@ add_library( # Specifies the name of the library.
              app/src/cpp/native-lib.cpp )
 
 # Specifies a path to native header files.
-include_directories(app/src/main/cpp/include/)
+include_directories(app/src/main/cpp/include)
+
+
+
+# Set the path to the Oboe directory.
+set (OBOE_DIR app/src/cpp/oboe)
+
+# Add the Oboe library as a subdirectory in your project.
+# add_subdirectory tells CMake to look in this directory to
+# compile oboe source files using oboe's CMake file.
+# ./oboe specifies where the compiled binaries will be stored
+add_subdirectory (${OBOE_DIR} ./oboe)
+
+# Specify the path to the Oboe header files.
+# This allows targets compiled with this CMake (application code)
+# to see public Oboe headers, in order to access its API.
+include_directories (${OBOE_DIR}/include)
+
+target_link_libraries(native-lib oboe)

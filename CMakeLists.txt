@@ -17,7 +17,9 @@ add_library( # Specifies the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             app/src/cpp/native-lib.cpp )
+             app/src/cpp/native-lib.cpp
+             app/src/cpp/OboeSinePlayer.h
+             app/src/cpp/OboeSinePlayer.cpp)
 
 # Specifies a path to native header files.
 include_directories(app/src/main/cpp/include)
@@ -38,4 +40,4 @@ add_subdirectory (${OBOE_DIR} ./oboe)
 # to see public Oboe headers, in order to access its API.
 include_directories (${OBOE_DIR}/include)
 
-target_link_libraries(native-lib oboe)
+target_link_libraries(native-lib log oboe)

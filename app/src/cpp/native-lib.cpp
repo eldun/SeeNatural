@@ -6,6 +6,7 @@
 #include <string>
 
 #include "OboeSinePlayer.h"
+#include "utils/logging.h"
 
 extern "C" {
 JNIEXPORT jstring JNICALL

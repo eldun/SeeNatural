@@ -29,9 +29,11 @@ public class ClefActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clef);
 
-        // Example of a call to a native method
+        // Examples of calls to native method (in native-lib.cpp)
         // TextView tv = (TextView) findViewById(R.id.sample_text);
         // tv.setText(stringFromJNI());
+
+        // startOboeSineWave();
     }
 
     public void launchDifficultyActivity(View view) {
@@ -46,4 +48,5 @@ public class ClefActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
 //    public native String stringFromJNI();
+//    public native void startOboeSineWave();
 }

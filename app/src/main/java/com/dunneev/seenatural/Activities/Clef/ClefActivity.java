@@ -12,9 +12,9 @@ import com.dunneev.seenatural.R;
 
 public class ClefActivity extends AppCompatActivity {
 
-    static {
-        System.loadLibrary("native-lib");
-    }
+//    static {
+//        System.loadLibrary("native-lib");
+//    }
 
     public static final String EXTRA_SELECTED_CLEF =
             "com.dunneev.seenatural.ClefActivity.extra.SELECTED_CLEF";
@@ -29,11 +29,11 @@ public class ClefActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clef);
 
-        // Example of a call to a native method
+        // Examples of calls to native method (in native-lib.cpp)
         // TextView tv = (TextView) findViewById(R.id.sample_text);
         // tv.setText(stringFromJNI());
 
-        startOboeSineWave();
+        // startOboeSineWave();
     }
 
     public void launchDifficultyActivity(View view) {
@@ -48,5 +48,5 @@ public class ClefActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
 //    public native String stringFromJNI();
-    public native void startOboeSineWave();
+//    public native void startOboeSineWave();
 }

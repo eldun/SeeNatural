@@ -6,6 +6,7 @@
 #include "Callback.h"
 #include "../utils/logging.h"
 
+oboe::ManagedStream managedStream;
 Callback callback;
 
 bool StreamManager::buildStream(){

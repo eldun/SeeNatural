@@ -2,11 +2,8 @@
 // Created by Ev on 8/9/2020.
 //
 
-#include <oboe/Oboe.h>
-#include <math.h>
-
 #include "OboeSinePlayer.h"
-#include "utils/logging.h"
+#include "../utils/logging.h"
 
 OboeSinePlayer::OboeSinePlayer() {
 

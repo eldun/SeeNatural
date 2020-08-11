@@ -19,9 +19,13 @@ add_library( # Specifies the name of the library.
              # Provides a relative path to your source file(s).
              # Main files
              app/src/cpp/native-lib.cpp
-             app/src/cpp/OboeSinePlayer.cpp
 
-             # Utility functions
+            # Audio functionality
+             app/src/cpp/audio/StreamManager.cpp
+             app/src/cpp/audio/Callback.cpp
+             app/src/cpp/audio/OboeSinePlayer.cpp
+
+            # Utility functions
              app/src/cpp/utils/logging.h
 
         )

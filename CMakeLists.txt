@@ -4,6 +4,18 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
+# Pull in parselib
+set (PARSELIB_DIR ../../oboe/samples/parselib)
+#message("PARSELIB_DIR = " + ${PARSELIB_DIR})
+
+# Pull in iolib
+set (IOLIB_DIR ../../oboe/samples/iolib)
+#message("IOLIB_DIR = " + ${IOLIB_DIR})
+
+# Set the path to the Oboe library directory
+set (OBOE_DIR app/src/cpp/oboe)
+#message("OBOE_DIR = " + ${OBOE_DIR})
+
 # Specifies a library name, specifies whether the library is STATIC or
 # SHARED, and provides relative paths to the source code. You can
 # define multiple libraries by adding multiple add_library() commands,
@@ -47,6 +59,21 @@ add_subdirectory (${OBOE_DIR} ./oboe)
 # Specify the path to the Oboe header files.
 # This allows targets compiled with this CMake (application code)
 # to see public Oboe headers, in order to access its API.
-include_directories (${OBOE_DIR}/include)
+include_directories (${OBOE_DIR}/include
+                     ${CMAKE_CURRENT_LIST_DIR}
+        )
 
-target_link_libraries(native-lib log oboe)
+include(${PARSELIB_DIR}/src/main/cpp/CMakeLists.txt)
+include(${IOLIB_DIR}/src/main/cpp/CMakeLists.txt)
+
+# Include the WavLib headers and shared sample code
+include_directories(
+        ${PARSELIB_DIR}/src/cpp
+        ${IOLIB_DIR}/src/cpp)
+
+target_link_libraries(native-lib
+                      oboe
+                      iolib
+                      parselib
+                      -Wl,--no-whole-archive
+                      log)

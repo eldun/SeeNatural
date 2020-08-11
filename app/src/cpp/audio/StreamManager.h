@@ -7,6 +7,8 @@
 
 #include "oboe/Oboe.h"
 
+extern oboe::ManagedStream managedStream;
+
 class StreamManager {
 public:
     bool buildStream();

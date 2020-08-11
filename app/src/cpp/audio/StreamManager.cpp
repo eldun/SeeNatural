@@ -7,8 +7,6 @@
 #include "../utils/logging.h"
 
 Callback callback;
-oboe::ManagedStream managedStream;
-
 
 bool StreamManager::buildStream(){
     oboe::AudioStreamBuilder builder;

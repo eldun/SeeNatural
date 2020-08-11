@@ -2,12 +2,11 @@
 // Created by Ev on 8/9/2020.
 //
 
-#include <oboe/Oboe.h>
-#include <math.h>
-
 #include "OboeSinePlayer.h"
+#include "../utils/logging.h"
 
 OboeSinePlayer::OboeSinePlayer() {
+
     oboe::AudioStreamBuilder builder;
     // The builder set methods can be chained for convenience.
     builder.setSharingMode(oboe::SharingMode::Exclusive)

@@ -15,26 +15,34 @@ import java.util.ArrayList;
 
 public class PianoView extends View {
 
-    public static final int NB = 14; // TODO: Change to single octave and test
-    private Paint black, yellow, white; // TODO: Change colors to facilitate correct/incorrect when sight-reading
-    private ArrayList<Key> whites = new ArrayList<>();
-    private ArrayList<Key> blacks = new ArrayList<>();
+    private static final String LOG_TAG = PianoView.class.getSimpleName();
+
+    private int startingPianoKey = 28; // Key C3
+    private int NB = 14; // TODO: Change to single octave and test
+    private Paint white, black, yellow, green, red ; // TODO: Change colors to facilitate correct/incorrect when sight-reading
+    private ArrayList<PianoKey> whiteKeys = new ArrayList<>();
+    private ArrayList<PianoKey> blackKeys = new ArrayList<>();
     private int keyWidth, height;
     private SoundPlayer soundPlayer;
 
-    private static final String LOG_TAG = PianoView.class.getSimpleName();
 
 
     public PianoView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        black = new Paint();
-        black.setColor(Color.BLACK);
         white = new Paint();
         white.setColor(Color.WHITE);
         white.setStyle(Paint.Style.FILL);
+        black = new Paint();
+        black.setColor(Color.BLACK);
         yellow = new Paint();
         yellow.setColor(Color.YELLOW);
         yellow.setStyle(Paint.Style.FILL);
+        green = new Paint();
+        green.setColor(Color.GREEN);
+        green.setStyle(Paint.Style.FILL);
+        red = new Paint();
+        red.setColor(Color.RED);
+        red.setStyle(Paint.Style.FILL);
         soundPlayer = new SoundPlayer(context);
     }
 
@@ -54,12 +62,12 @@ public class PianoView extends View {
             }
 
             RectF rect = new RectF(left, 0, right, h);
-            whites.add(new Key(rect, i + 1));
+            whiteKeys.add(new PianoKey(rect, i + 1));
 
             if (i != 0  &&   i != 3  &&  i != 7  &&  i != 10) {
                 rect = new RectF((float) (i - 1) * keyWidth + 0.5f * keyWidth + 0.25f * keyWidth, 0,
                         (float) i * keyWidth + 0.25f * keyWidth, 0.67f * height);
-                blacks.add(new Key(rect, count));
+                blackKeys.add(new PianoKey(rect, count));
                 count++;
             }
         }
@@ -67,16 +75,16 @@ public class PianoView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) { // TODO: Add setting to turn on/off "drawing" capability
-        for (Key k : whites) {
-            canvas.drawRect(k.rect, k.down ? yellow : white);
+        for (PianoKey k : whiteKeys) {
+            canvas.drawRect(k.rectangle, k.isDown ? yellow : white);
         }
 
         for (int i = 1; i < NB; i++) {
             canvas.drawLine(i * keyWidth, 0, i * keyWidth, height, black);
         }
 
-        for (Key k : blacks) {
-            canvas.drawRect(k.rect, k.down ? yellow : black);
+        for (PianoKey k : blackKeys) {
+            canvas.drawRect(k.rectangle, k.isDown ? yellow : black);
         }
     }
 
@@ -89,26 +97,26 @@ public class PianoView extends View {
             float x = event.getX(touchIndex);
             float y = event.getY(touchIndex);
 
-            Key k = keyForCoords(x,y);
+            PianoKey k = keyForCoords(x,y);
 
             if (k != null) {
-                k.down = isDownAction;
+                k.isDown = isDownAction;
             }
         }
 
-        ArrayList<Key> tmp = new ArrayList<>(whites);
-        tmp.addAll(blacks);
+        ArrayList<PianoKey> tmp = new ArrayList<>(whiteKeys);
+        tmp.addAll(blackKeys);
 
-        for (Key k : tmp) {
-            if (k.down) {
-                if (!soundPlayer.isNotePlaying(k.sound)) {
-                    soundPlayer.playNote(k.sound);
+        for (PianoKey k : tmp) {
+            if (k.isDown) {
+                if (!soundPlayer.isNotePlaying(k.pianoKeyValue)) {
+                    soundPlayer.playNote(k.pianoKeyValue);
                     invalidate();
                 } else {
                     releaseKey(k);
                 }
             } else {
-                soundPlayer.stopNote(k.sound);
+                soundPlayer.stopNote(k.pianoKeyValue);
                 releaseKey(k);
             }
         }
@@ -116,15 +124,15 @@ public class PianoView extends View {
         return true;
     }
 
-    private Key keyForCoords(float x, float y) {
-        for (Key k : blacks) {
-            if (k.rect.contains(x,y)) {
+    private PianoKey keyForCoords(float x, float y) {
+        for (PianoKey k : blackKeys) {
+            if (k.rectangle.contains(x,y)) {
                 return k;
             }
         }
 
-        for (Key k : whites) {
-            if (k.rect.contains(x,y)) {
+        for (PianoKey k : whiteKeys) {
+            if (k.rectangle.contains(x,y)) {
                 return k;
             }
         }
@@ -132,11 +140,11 @@ public class PianoView extends View {
         return null;
     }
 
-    private void releaseKey(final Key k) {
+    private void releaseKey(final PianoKey k) {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                k.down = false;
+                k.isDown = false;
                 handler.sendEmptyMessage(0);
             }
         }, 100);

@@ -16,7 +16,7 @@ public:
 private:
     // Stream params
     static int constexpr kChannelCount = 2;
-    static int constexpr kSampleRate = 48000;
+    static int constexpr kSampleRate = 44100;
 };
 
 #endif //SEENATURAL_STREAMMANAGER_H

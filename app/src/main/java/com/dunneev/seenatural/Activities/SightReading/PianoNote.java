@@ -142,13 +142,22 @@ public enum PianoNote {
     public final String label;
     public final int midiValue;
     public final int notePosition;
+    public final String keyColor;
     public final String filename;
 
     PianoNote(String label, int midi, String filename) {
         this.label = label;
         this.midiValue = midi;
         this.notePosition = midi - 21;
+        this.keyColor = getKeyColor(this.label);
         this.filename = filename;
+    }
+
+    private String getKeyColor(String label) {
+        if (label.length() !=2)
+            return "black";
+        else
+            return "white";
     }
 
     // Cache lookup values using Map that's populated when the class loads

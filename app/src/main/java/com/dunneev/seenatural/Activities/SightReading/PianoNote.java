@@ -1,6 +1,6 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
-import org.w3c.dom.Element;
+import android.graphics.Color;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -142,22 +142,29 @@ public enum PianoNote {
     public final String label;
     public final int midiValue;
     public final int notePosition;
-    public final String keyColor;
+    public final int keyColor;
+    public final int keyDownColor;
     public final String filename;
 
     PianoNote(String label, int midi, String filename) {
         this.label = label;
         this.midiValue = midi;
         this.notePosition = midi - 21;
-        this.keyColor = getKeyColor(this.label);
+        this.keyColor = setKeyColor();
+        this.keyDownColor = setKeyDownColor();
         this.filename = filename;
     }
 
-    private String getKeyColor(String label) {
-        if (label.length() !=2)
-            return "black";
-        else
-            return "white";
+    private int setKeyColor() {
+        if (label.length() != 2)
+            return Color.WHITE;
+        return Color.BLACK;
+    }
+
+    private int setKeyDownColor() {
+        if (this.keyColor == Color.WHITE)
+            return Color.LTGRAY;
+        return  Color.DKGRAY;
     }
 
     // Cache lookup values using Map that's populated when the class loads

@@ -156,7 +156,7 @@ public enum PianoNote {
     }
 
     private int setKeyColor() {
-        if (label.length() != 2)
+        if (label.length() == 2)
             return Color.WHITE;
         return Color.BLACK;
     }

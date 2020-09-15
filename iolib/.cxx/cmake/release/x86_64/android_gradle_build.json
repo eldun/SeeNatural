@@ -1,0 +1,58 @@
+{
+  "stringTable": {
+    "0": "C:/Users/Ev/source/Projects/oboe/samples/iolib/.cxx/cmake/release/x86_64",
+    "1": "--target=x86_64-none-linux-android26 --gcc-toolchain=C:/Users/Ev/AppData/Local/Android/Sdk/ndk/21.0.6113669/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/Ev/AppData/Local/Android/Sdk/ndk/21.0.6113669/toolchains/llvm/prebuilt/windows-x86_64/sysroot -IC:/Users/Ev/source/Projects/oboe/samples/iolib/src/main/cpp/../../../../parselib/src/main/cpp -IC:/Users/Ev/source/Projects/oboe/samples/iolib/src/main/cpp/../../../../../include -IC:/Users/Ev/source/Projects/oboe/samples/iolib/src/main/cpp -IC:/Users/Ev/source/Projects/oboe/samples/iolib/src/main/cpp/../../../../shared -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O2 -DNDEBUG -fPIC"
+  },
+  "buildFiles": [
+    "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\ndk\\21.0.6113669\\build\\cmake\\android.toolchain.cmake",
+    "C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\src\\main\\cpp\\CMakeLists.txt",
+    "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\ndk\\21.0.6113669\\build\\cmake\\platforms.cmake"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\.cxx\\cmake\\release\\x86_64\" clean"
+  ],
+  "buildTargetsCommand": "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\.cxx\\cmake\\release\\x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "iolib-Release-x86_64": {
+      "buildCommand": "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\.cxx\\cmake\\release\\x86_64\" iolib",
+      "buildType": "release",
+      "toolchain": "1823061376",
+      "abi": "x86_64",
+      "artifactName": "iolib",
+      "files": [
+        {
+          "src": "C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\src\\main\\cpp\\player\\SampleSource.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\src\\main\\cpp\\player\\SampleBuffer.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\src\\main\\cpp\\player\\OneShotSampleSource.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\src\\main\\cpp\\player\\SimpleMultiPlayer.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\iolib\\.cxx\\cmake\\release\\x86_64\\libiolib.a",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "1823061376": {
+      "cppCompilerExecutable": "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\ndk\\21.0.6113669\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\ndk\\21.0.6113669\\build\\cmake\\android.toolchain.cmake",
+    "C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\parselib\\src\\main\\cpp\\CMakeLists.txt",
+    "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\ndk\\21.0.6113669\\build\\cmake\\platforms.cmake"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\parselib\\.cxx\\cmake\\debug\\x86\" clean"
+  ],
+  "buildTargetsCommand": "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\parselib\\.cxx\\cmake\\debug\\x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "parselib-Debug-x86": {
+      "artifactName": "parselib",
+      "buildCommand": "C:\\Users\\Ev\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\parselib\\.cxx\\cmake\\debug\\x86\" parselib",
+      "abi": "x86",
+      "output": "C:\\Users\\Ev\\source\\Projects\\oboe\\samples\\parselib\\.cxx\\cmake\\debug\\x86\\libparselib.a",
+      "runtimeFiles": []
+    }
+  }
+}

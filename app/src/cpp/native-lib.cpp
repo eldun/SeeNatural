@@ -92,7 +92,7 @@ Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_triggerDown(JNIE
 JNIEXPORT void JNICALL
 Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_triggerUp(JNIEnv *env, jobject thiz,
                                                                           jint piano_key) {
-    simpleMultiPlayer.triggerUp(piano_key);
+//    simpleMultiPlayer.triggerUp(piano_key);
 }
 
 JNIEXPORT jboolean JNICALL

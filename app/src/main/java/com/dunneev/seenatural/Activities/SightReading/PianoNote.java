@@ -141,7 +141,10 @@ public enum PianoNote {
 
     public final String label;
     public final int midiValue;
-    public final int notePosition;
+
+    // A value from 0 to 87, spanning any piano note
+    public final int absoluteNotePositionIndex;
+
     public final int keyColor;
     public final int keyDownColor;
     public final String filename;
@@ -149,7 +152,7 @@ public enum PianoNote {
     PianoNote(String label, int midi, String filename) {
         this.label = label;
         this.midiValue = midi;
-        this.notePosition = midi - 21;
+        this.absoluteNotePositionIndex = midi - 21;
         this.keyColor = setKeyColor();
         this.keyDownColor = setKeyDownColor();
         this.filename = filename;
@@ -170,7 +173,7 @@ public enum PianoNote {
     // Cache lookup values using Map that's populated when the class loads
     private static final Map<String, PianoNote> BY_LABEL = new HashMap<>();
     private static final Map<Integer, PianoNote> BY_MIDI_VALUE = new HashMap<>();
-    private static final Map<Integer, PianoNote> BY_NOTE_POSITION = new HashMap<>();
+    private static final Map<Integer, PianoNote> BY_NOTE_POSITION_INDEX = new HashMap<>();
     private static final Map<String, PianoNote> BY_FILENAME = new HashMap<>();
 
 
@@ -178,7 +181,7 @@ public enum PianoNote {
         for (PianoNote note: values()) {
             BY_LABEL.put(note.label, note);
             BY_MIDI_VALUE.put(note.midiValue, note);
-            BY_NOTE_POSITION.put(note.notePosition, note);
+            BY_NOTE_POSITION_INDEX.put(note.absoluteNotePositionIndex, note);
             BY_FILENAME.put(note.filename, note);
         }
     }
@@ -191,8 +194,8 @@ public enum PianoNote {
         return BY_MIDI_VALUE.get(midiKey);
     }
 
-    public static PianoNote valueOfNotePosition(int notePosition) {
-        return BY_NOTE_POSITION.get(notePosition);
+    public static PianoNote valueOfNotePosition(int notePositionIndex) {
+        return BY_NOTE_POSITION_INDEX.get(notePositionIndex);
     }
 
     public static PianoNote valueOfFilename(String filename) {

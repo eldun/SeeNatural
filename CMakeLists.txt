@@ -17,15 +17,15 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 # Pull in parselib
-set (PARSELIB_DIR ../../oboe/samples/parselib)
+set (PARSELIB_DIR ./parselib)
 #message("PARSELIB_DIR = " + ${PARSELIB_DIR})
 
 # Pull in iolib
-set (IOLIB_DIR ../../oboe/samples/iolib)
+set (IOLIB_DIR ./iolib)
 #message("IOLIB_DIR = " + ${IOLIB_DIR})
 
 # Set the path to the Oboe library directory
-set (OBOE_DIR ../../oboe)
+set (OBOE_DIR ./oboe)
 #message("OBOE_DIR = " + ${OBOE_DIR})
 
 add_subdirectory(${OBOE_DIR} ./oboe-bin)

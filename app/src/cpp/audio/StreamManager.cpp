@@ -8,6 +8,7 @@
 
 oboe::ManagedStream managedStream;
 Callback callback;
+oboe::ManagedStream managedStream;
 
 bool StreamManager::buildStream(){
     oboe::AudioStreamBuilder builder;

@@ -1,52 +1,74 @@
-# Sets the minimum version of CMake required to build your native library.
-# This ensures that a certain set of CMake features is available to
-# your build.
+#
+# Copyright 2019 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
 cmake_minimum_required(VERSION 3.4.1)
 
-# Specifies a library name, specifies whether the library is STATIC or
-# SHARED, and provides relative paths to the source code. You can
-# define multiple libraries by adding multiple add_library() commands,
-# and CMake builds them for you. When you build your app, Gradle
-# automatically packages shared libraries with your APK.
+# Pull in parselib
+set (PARSELIB_DIR ./parselib)
+#message("PARSELIB_DIR = " + ${PARSELIB_DIR})
 
-add_library( # Specifies the name of the library.
-             native-lib
+# Pull in iolib
+set (IOLIB_DIR ./iolib)
+#message("IOLIB_DIR = " + ${IOLIB_DIR})
 
-             # Sets the library as a shared library.
-             SHARED
+# Set the path to the Oboe library directory
+set (OBOE_DIR ./oboe)
+#message("OBOE_DIR = " + ${OBOE_DIR})
 
-             # Provides a relative path to your source file(s).
-             # Main files
-             app/src/cpp/native-lib.cpp
+add_subdirectory(${OBOE_DIR} ./oboe-bin)
 
-            # Audio functionality
-             app/src/cpp/audio/StreamManager.cpp
-             app/src/cpp/audio/Callback.cpp
-             app/src/cpp/audio/OboeSinePlayer.cpp
+# include folders
+include_directories(
+        ${OBOE_DIR}/include
+        ${CMAKE_CURRENT_LIST_DIR}
+)
 
-            # Utility functions
-             app/src/cpp/utils/logging.h
+include(${PARSELIB_DIR}/src/main/cpp/CMakeLists.txt)
+include(${IOLIB_DIR}/src/main/cpp/CMakeLists.txt)
 
+# Include the WavLib headers and shared sample code
+include_directories(
+        ${PARSELIB_DIR}/src/main/cpp
+        ${IOLIB_DIR}/src/main/cpp)
+
+# App specific sources
+set (APP_SOURCES
+        app/src/cpp/native-lib.cpp
         )
 
-# Specifies a path to native header files.
-include_directories(app/src/main/cpp)
+# Build the native-lib (native) library
+add_library(
+        native-lib SHARED
+        ${APP_SOURCES}
+        )
 
+# Enable optimization flags: if having problems with source level debugging,
+# disable -Ofast ( and debug ), re-enable after done debugging.
+target_compile_options(native-lib PRIVATE -Wall -Werror "$<$<CONFIG:RELEASE>:-Ofast>")
 
+target_link_libraries( # Specifies the target library.
+        native-lib
 
-# Set the path to the Oboe directory.
-set (OBOE_DIR app/src/cpp/oboe)
+        -Wl,--whole-archive
+        iolib
+        parselib
+        -Wl,--no-whole-archive
 
-# Add the Oboe library as a subdirectory in your project.
-# add_subdirectory tells CMake to look in this directory to
-# compile oboe source files using oboe's CMake file.
-# ./oboe specifies where the compiled binaries will be stored
-add_subdirectory (${OBOE_DIR} ./oboe)
+        oboe
 
-# Specify the path to the Oboe header files.
-# This allows targets compiled with this CMake (application code)
-# to see public Oboe headers, in order to access its API.
-include_directories (${OBOE_DIR}/include)
-
-target_link_libraries(native-lib log oboe)
+        # Links the target library to the log library
+        # included in the NDK.
+        log)

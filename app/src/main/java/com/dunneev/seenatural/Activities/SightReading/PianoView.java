@@ -1,38 +1,123 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
 import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PianoView extends ViewGroup {
 
     private static final String LOG_TAG = PianoView.class.getSimpleName();
 
-    private int startingPianoKey = PianoNote.C4.midiValue;
-    private int numberOfKeys = 1;
+    // in inches (for reference)
+    private static final double whiteToBlackWidthRatio = (7.0/8.0)/(15.0/32.0);
+    private static final double whiteToBlackHeightRatio = (6.0)/(63.0/16.0);
+
+    private int absoluteStartingPianoKeyIndex;
+    private int numberOfKeys;
+
+    private double whiteKeyWidth;
+    private double whiteKeyHeight;
+    private double blackKeyWidth;
+    private double blackKeyHeight;
     private Paint white, black, yellow, green, red ; // TODO: Change colors to facilitate correct/incorrect when sight-reading
 
     private ArrayList<PianoKey> pianoKeys = new ArrayList<>();
+    private ArrayList<PianoKey> whitePianoKeys = new ArrayList<>();
+    private ArrayList<PianoKey> blackPianoKeys = new ArrayList<>();
 
-    public ArrayList<PianoKey> getPianoKeys() {
+
+
+
+    // Getters & Setters
+    public int getAbsoluteStartingPianoKeyIndex () {
+        return absoluteStartingPianoKeyIndex;
+    }
+
+    public void setAbsoluteStartingPianoKeyIndex ( int absoluteStartingPianoKeyIndex){
+        this.absoluteStartingPianoKeyIndex = absoluteStartingPianoKeyIndex;
+    }
+
+    public int getNumberOfKeys () {
+        return numberOfKeys;
+    }
+
+    public void setNumberOfKeys ( int numberOfKeys){
+        this.numberOfKeys = numberOfKeys;
+    }
+
+    public double getWhiteKeyWidth() {
+        return whiteKeyWidth;
+    }
+
+    public void setWhiteKeyWidth(double whiteKeyWidth) {
+        this.whiteKeyWidth = whiteKeyWidth;
+    }
+
+    public double getWhiteKeyHeight() {
+        return whiteKeyHeight;
+    }
+
+    public void setWhiteKeyHeight(double whiteKeyHeight) {
+        this.whiteKeyHeight = whiteKeyHeight;
+    }
+
+    public double getBlackKeyWidth() {
+        return blackKeyWidth;
+    }
+
+    public void setBlackKeyWidth(double blackKeyWidth) {
+        this.blackKeyWidth = blackKeyWidth;
+    }
+
+    public double getBlackKeyHeight() {
+        return blackKeyHeight;
+    }
+
+    public void setBlackKeyHeight(double blackKeyHeight) {
+        this.blackKeyHeight = blackKeyHeight;
+    }
+
+    public ArrayList<PianoKey> getPianoKeys () {
         return pianoKeys;
     }
 
-    public PianoView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public ArrayList<PianoKey> getWhitePianoKeys() {
+        return whitePianoKeys;
+    }
+
+    public void setWhitePianoKeys(ArrayList<PianoKey> whitePianoKeys) {
+        this.whitePianoKeys = whitePianoKeys;
+    }
+
+    public ArrayList<PianoKey> getBlackPianoKeys() {
+        return blackPianoKeys;
+    }
+
+    public void setBlackPianoKeys(ArrayList<PianoKey> blackPianoKeys) {
+        this.blackPianoKeys = blackPianoKeys;
+    }
+
+
+
+
+
+    public PianoView(Context context) {
+        super(context);
+
         white = new Paint();
         white.setColor(Color.WHITE);
         white.setStyle(Paint.Style.FILL);
@@ -47,96 +132,100 @@ public class PianoView extends ViewGroup {
         red = new Paint();
         red.setColor(Color.RED);
         red.setStyle(Paint.Style.FILL);
-
-        for (int i=0;i<numberOfKeys;i++) {
-            pianoKeys.add(new PianoKey(context, PianoNote.valueOfMidi(startingPianoKey + i)));
-        }
-
-        PianoView myView  = findViewById(R.id.pianoView);
-        for (PianoKey key : pianoKeys) {
-            myView.addView(key);
-        }
     }
+
+    public PianoView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public PianoView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        final View child = getChildAt(0);
-        child.layout(0, 0, this.getWidth(), this.getHeight());
+
+        PianoKey childView;
+
+        // White keys first
+        int whiteKeyCounter = 0;
+        for (PianoKey key : whitePianoKeys) {
+            childView = (PianoKey) getChildAt(whiteKeyCounter);
+
+            int whiteLeftCoord = (int) (whiteKeyCounter * whiteKeyWidth);
+            int whiteRightCoord = (int) ((whiteKeyCounter + 1) * whiteKeyWidth);
+            childView.layout(whiteLeftCoord, 0, whiteRightCoord, (int) whiteKeyHeight);
+
+            whiteKeyCounter++;
+        }
+
+        // Black keys
+
+        // blackKeyCounter is set to whitePianoKeys.size() because the black key child views come
+        // after the white keys. As such, they will be drawn on top of the white keys.
+        int blackKeyCounter = whitePianoKeys.size();
+
+        // Using just the index of the black keys would create too much space between them.
+        int blackKeyOffsetAdjust = 0;
+
+        for (int i=0; i<pianoKeys.size(); i++) {
+            if (pianoKeys.get(i).getColor() == Color.BLACK) {
+                childView = (PianoKey) getChildAt(blackKeyCounter);
+
+                int blackLeftCoord = (int) ((whiteKeyWidth * (i - blackKeyOffsetAdjust)) - (0.5 * blackKeyWidth));
+                int blackRightCoord = (int) ((whiteKeyWidth * (i - blackKeyOffsetAdjust)) + (0.5 * blackKeyWidth));
+                childView.layout(blackLeftCoord, 0, blackRightCoord, (int) blackKeyHeight);
+
+                blackKeyCounter++;
+                blackKeyOffsetAdjust++;
+            }
+        }
     }
 
-//    @Override
-//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-//        super.onSizeChanged(w, h, oldw, oldh);
-//        keyWidth = w / numberOfKeys;
-//        height = h;
-//
-//        for (int i = 0; i < numberOfKeys; i++) {
-//            int left = i * keyWidth;
-//            int right = left + keyWidth;
-//
-//            if (i == numberOfKeys - 1) {
-//                right = w;
-//            }
-//
-//            RectF rect = new RectF(left, 0, right, h);
-//            whiteKeys.add(new PianoKey(rect, PianoNote.C4));
-//
-//            if (i != 0  &&   i != 3  &&  i != 7  &&  i != 10) {
-//                rect = new RectF((float) (i - 1) * keyWidth + 0.5f * keyWidth + 0.25f * keyWidth, 0,
-//                        (float) i * keyWidth + 0.25f * keyWidth, 0.67f * height);
-//                blackKeys.add(new PianoKey(rect, PianoNote.C_SHARP_5));
-//            }
-//        }
-//    }
+    protected void populatePianoKeyArrays() {
+        for (int i=0;i<numberOfKeys;i++) {
+
+            PianoKey key = new PianoKey(getContext(), PianoNote.valueOfNotePosition(absoluteStartingPianoKeyIndex + i));
+            pianoKeys.add(key);
+
+            if (key.getColor() == Color.WHITE)
+                whitePianoKeys.add(key);
+            else
+                blackPianoKeys.add(key);
+        }
+    }
+
+    // Add child views of PianoKey to PianoView
+    // White first, then black - for when the piano is actually drawn.
+    protected void addKeysToView() {
+
+        for (PianoKey key : whitePianoKeys) {
+            addView(key);
+        }
+
+        for (PianoKey key : blackPianoKeys) {
+            addView(key);
+        }
+
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        whiteKeyWidth = (double) w / whitePianoKeys.size();
+        blackKeyWidth = whiteKeyWidth / whiteToBlackWidthRatio;
+        whiteKeyHeight = h;
+        blackKeyHeight = whiteKeyHeight / whiteToBlackHeightRatio;
+
+    }
 
 
-
-
-//    @Override
-//    protected void onDraw(Canvas canvas) { // TODO: Add setting to turn on/off "drawing" capability
-//        Log.i(LOG_TAG, "onDraw(canvas)");
-//
-//        for (PianoKey key : pianoKeys) {
-//            key.draw(canvas);
-//        }
-//
-//
-//
-//
-//
-//    }
-
-
-    //
-    // Input Routines
-    //
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent motionEvent) {
-//        Log.i(LOG_TAG, "onTouchEvent(motionEvent)");
-//        int x = (int) motionEvent.getX();
-//        int y = (int) motionEvent.getY();
-//
-//        switch (motionEvent.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                Log.i(LOG_TAG, "action down");
-////                setIsDown(true);
-////                keyDown();
-//                invalidate();
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                Log.i(LOG_TAG, "moving: (" + x + ", " + y + ")");
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                Log.i(LOG_TAG, "action up");
-////                setIsDown(false);
-////                keyDown();
-//                invalidate();
-//                break;
-//        }
-//        return true;
-//    }
-
+    @Override
+    protected void onDraw(Canvas canvas) { // TODO: Add setting to turn on/off "drawing" capability
+        Log.i(LOG_TAG, "onDraw(canvas)");
+    }
 }
 
 

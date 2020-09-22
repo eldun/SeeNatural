@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,13 +17,15 @@ class PianoKey extends View {
 
     private PianoNote note;
 
-    private RectF whiteKeySize;
-    private RectF blackKeySize;
-
+    RectF keyRectangle = new RectF();
+    private int color;
     private Paint upColor;
     private Paint downColor;
+    private Paint strokePaint;
 
     private boolean isDown;
+
+
 
     public interface PianoKeyListener {
         void keyDown(PianoKey key);
@@ -38,6 +41,10 @@ class PianoKey extends View {
     }
     public void setNote(PianoNote note) {
         this.note = note;
+    }
+
+    public int getColor() {
+        return color;
     }
 
     public Paint getUpColor() {
@@ -58,8 +65,7 @@ class PianoKey extends View {
         return isDown;
     }
     public void setIsDown(boolean isDown) {
-        if (isDown) this.isDown = true;
-        else this.isDown = false;
+        this.isDown = isDown;
     }
 
     // Assign the listener implementing events interface that will receive the events
@@ -77,23 +83,38 @@ class PianoKey extends View {
 
     public PianoKey(Context context, PianoNote note) {
         super(context);
+
         setId(note.absoluteNotePositionIndex); // This is done to be able to reference individual notes in the sight-reading activity
         this.note = note;
+        this.color = note.keyColor;
         upColor = new Paint();
         upColor.setColor(note.keyColor);
         downColor = new Paint();
         downColor.setColor(note.keyDownColor);
+        strokePaint = new Paint();
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setColor(Color.BLACK);
         isDown = false;
         this.pianoKeyListener = null;
     }
 
     @Override
-    public void draw(Canvas canvas) {
-        Log.i(LOG_TAG, "draw()");
+    public void onDraw(Canvas canvas) {
+        Log.i(LOG_TAG, "onDraw()");
+        int cornerRadius = 10;
+        keyRectangle.set(0, 0, getWidth(), getHeight());
+        strokePaint.setStrokeWidth((float) (getWidth()/24.0));
+        canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, this.upColor);
+        canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, strokePaint);
 
-        super.draw(canvas);
-        RectF rectF = new RectF(0,0, 200, 200);
-        canvas.drawRect(rectF, new Paint(upColor));
+        Log.d(LOG_TAG, String.format("Draw key: (0, 0, %d, %d), %s", getWidth(), getHeight(), this.upColor));
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.i(LOG_TAG, "onMeasure()");
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -134,7 +155,7 @@ class PianoKey extends View {
         return super.performClick();
     }
 
-    @Override
+    @NonNull
     public String toString() {
         return this.note.label;
     }

@@ -90,9 +90,8 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     private void setUpPianoView() {
-        constraintLayout = findViewById(R.id.pianoViewConstraintLayout);
 
-        PianoView pianoView = new PianoView(this);
+        PianoView pianoView = findViewById(R.id.pianoView);
         pianoView.setAbsoluteStartingPianoKeyIndex(absoluteStartingPianoKeyIndex);
         pianoView.setNumberOfKeys(numberOfKeys);
         pianoView.populatePianoKeyArrays();
@@ -100,7 +99,6 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         setPianoKeyListeners();
 
         pianoView.addKeysToView();
-        constraintLayout.addView(pianoView);
     }
 
     private void setPianoKeyListeners() {

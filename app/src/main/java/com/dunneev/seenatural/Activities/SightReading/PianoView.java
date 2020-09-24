@@ -26,8 +26,8 @@ public class PianoView extends ViewGroup {
     private static final double whiteToBlackWidthRatio = (7.0/8.0)/(15.0/32.0);
     private static final double whiteToBlackHeightRatio = (6.0)/(63.0/16.0);
 
-    private int absoluteStartingPianoKeyIndex;
-    private int numberOfKeys;
+    private int absoluteStartingPianoKeyIndex = 39;
+    private int numberOfKeys = 12;
 
     private double whiteKeyWidth;
     private double whiteKeyHeight;
@@ -117,7 +117,22 @@ public class PianoView extends ViewGroup {
 
     public PianoView(Context context) {
         super(context);
+        init();
+    }
 
+    public PianoView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+        populatePianoKeyArrays();
+        addKeysToView();
+    }
+
+    public PianoView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
         white = new Paint();
         white.setColor(Color.WHITE);
         white.setStyle(Paint.Style.FILL);
@@ -132,14 +147,6 @@ public class PianoView extends ViewGroup {
         red = new Paint();
         red.setColor(Color.RED);
         red.setStyle(Paint.Style.FILL);
-    }
-
-    public PianoView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public PianoView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
     }
 
 

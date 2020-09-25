@@ -1,10 +1,14 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Intent;
+import android.service.autofill.FieldClassification;
+import android.support.constraint.ConstraintHelper;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.dunneev.seenatural.Activities.Clef.ClefActivity;
 import com.dunneev.seenatural.Activities.Difficulty.DifficultyActivity;
@@ -20,13 +24,11 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         System.loadLibrary("native-lib");
     }
 
-    private ConstraintLayout constraintLayout;
-
     private String selectedClef;
     private String selectedDifficulty;
 
     private int absoluteStartingPianoKeyIndex = 39;
-    private int numberOfKeys = 12;
+    private int numberOfKeys = 24;
     private ArrayList<PianoKey> pianoKeys = null;
 
     private SoundPlayer soundPlayer = new SoundPlayer(absoluteStartingPianoKeyIndex, numberOfKeys);
@@ -91,14 +93,15 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     private void setUpPianoView() {
 
+        // Replace default XML-generated PianoView with custom PianoView
         PianoView pianoView = findViewById(R.id.pianoView);
         pianoView.setAbsoluteStartingPianoKeyIndex(absoluteStartingPianoKeyIndex);
         pianoView.setNumberOfKeys(numberOfKeys);
-        pianoView.populatePianoKeyArrays();
+        pianoView.invalidate();
+
+
         pianoKeys = pianoView.getPianoKeys();
         setPianoKeyListeners();
-
-        pianoView.addKeysToView();
     }
 
     private void setPianoKeyListeners() {

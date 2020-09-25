@@ -26,8 +26,8 @@ public class PianoView extends ViewGroup {
     private static final double whiteToBlackWidthRatio = (7.0/8.0)/(15.0/32.0);
     private static final double whiteToBlackHeightRatio = (6.0)/(63.0/16.0);
 
-    private int absoluteStartingPianoKeyIndex;
-    private int numberOfKeys;
+    private int absoluteStartingPianoKeyIndex = 39;
+    private int numberOfKeys = 12;
 
     private double whiteKeyWidth;
     private double whiteKeyHeight;
@@ -115,9 +115,24 @@ public class PianoView extends ViewGroup {
 
 
 
-    public PianoView(Context context) {
+    public PianoView(Context context, int startingKeyIndex, int numberOfKeys) {
         super(context);
+        setAbsoluteStartingPianoKeyIndex(startingKeyIndex);
+        setNumberOfKeys(numberOfKeys);
+        init();
+    }
 
+    public PianoView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public PianoView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
         white = new Paint();
         white.setColor(Color.WHITE);
         white.setStyle(Paint.Style.FILL);
@@ -132,14 +147,9 @@ public class PianoView extends ViewGroup {
         red = new Paint();
         red.setColor(Color.RED);
         red.setStyle(Paint.Style.FILL);
-    }
 
-    public PianoView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public PianoView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        populatePianoKeyArrays();
+        addKeysToView();
     }
 
 
@@ -184,6 +194,10 @@ public class PianoView extends ViewGroup {
     }
 
     protected void populatePianoKeyArrays() {
+        pianoKeys.clear();
+        whitePianoKeys.clear();
+        blackPianoKeys.clear();
+
         for (int i=0;i<numberOfKeys;i++) {
 
             PianoKey key = new PianoKey(getContext(), PianoNote.valueOfNotePosition(absoluteStartingPianoKeyIndex + i));
@@ -199,6 +213,7 @@ public class PianoView extends ViewGroup {
     // Add child views of PianoKey to PianoView
     // White first, then black - for when the piano is actually drawn.
     protected void addKeysToView() {
+        removeAllViews();
 
         for (PianoKey key : whitePianoKeys) {
             addView(key);
@@ -225,6 +240,12 @@ public class PianoView extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) { // TODO: Add setting to turn on/off "drawing" capability
         Log.i(LOG_TAG, "onDraw(canvas)");
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        init();
     }
 }
 

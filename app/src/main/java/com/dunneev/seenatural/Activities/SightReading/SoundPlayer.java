@@ -1,12 +1,9 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
-import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import java.io.DataInputStream;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -64,7 +61,7 @@ public class SoundPlayer {
     protected void loadWavAssets(AssetManager assetManager) {
         int startingKey = getStartingPianoKey();
         for (int i=startingKey; i<startingKey+getNumberOfKeys(); i++) {
-            loadWavAsset(assetManager, notesFolder + "/" + PianoNote.valueOfNotePosition(i).filename + ".wav");
+            loadWavAsset(assetManager, notesFolder + "/" + PianoNote.valueOfAbsoluteKeyIndex(i).filename + ".wav");
         }
     }
 

@@ -84,7 +84,7 @@ class PianoKey extends View {
     public PianoKey(Context context, PianoNote note) {
         super(context);
 
-        setId(note.absoluteNotePositionIndex); // This is done to be able to reference individual notes in the sight-reading activity
+        setId(note.absoluteKeyIndex); // This is done to be able to reference individual notes in the sight-reading activity
         this.note = note;
         this.color = note.keyColor;
         upColor = new Paint();

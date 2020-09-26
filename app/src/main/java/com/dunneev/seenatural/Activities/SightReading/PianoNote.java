@@ -1,6 +1,7 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -152,7 +153,7 @@ public enum PianoNote {
     PianoNote(String label, int midi, String filename) {
         this.label = label;
         this.midiValue = midi;
-        this.absoluteNotePositionIndex = midi - 21;
+        this.absoluteKeyIndex = midi - 21;
         this.keyColor = setKeyColor();
         this.keyDownColor = setKeyDownColor();
         this.filename = filename;
@@ -173,7 +174,7 @@ public enum PianoNote {
     // Cache lookup values using Map that's populated when the class loads
     private static final Map<String, PianoNote> BY_LABEL = new HashMap<>();
     private static final Map<Integer, PianoNote> BY_MIDI_VALUE = new HashMap<>();
-    private static final Map<Integer, PianoNote> BY_NOTE_POSITION_INDEX = new HashMap<>();
+    private static final Map<Integer, PianoNote> BY_ABSOLUTE_KEY_INDEX = new HashMap<>();
     private static final Map<String, PianoNote> BY_FILENAME = new HashMap<>();
 
 
@@ -181,7 +182,7 @@ public enum PianoNote {
         for (PianoNote note: values()) {
             BY_LABEL.put(note.label, note);
             BY_MIDI_VALUE.put(note.midiValue, note);
-            BY_NOTE_POSITION_INDEX.put(note.absoluteNotePositionIndex, note);
+            BY_ABSOLUTE_KEY_INDEX.put(note.absoluteKeyIndex, note);
             BY_FILENAME.put(note.filename, note);
         }
     }
@@ -194,8 +195,8 @@ public enum PianoNote {
         return BY_MIDI_VALUE.get(midiKey);
     }
 
-    public static PianoNote valueOfNotePosition(int notePositionIndex) {
-        return BY_NOTE_POSITION_INDEX.get(notePositionIndex);
+    public static PianoNote valueOfAbsoluteKeyIndex(int absoluteKeyIndex) {
+        return BY_ABSOLUTE_KEY_INDEX.get(absoluteKeyIndex);
     }
 
     public static PianoNote valueOfFilename(String filename) {

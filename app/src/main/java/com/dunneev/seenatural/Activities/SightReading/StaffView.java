@@ -1,157 +1,144 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.Pair;
-import android.view.View;
+import android.view.ViewGroup;
 
-import com.dunneev.seenatural.Activities.Clef.ClefActivity;
-import com.dunneev.seenatural.Activities.Difficulty.DifficultyActivity;
 import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Collections;
 
 
-public class StaffView extends View {
+public class StaffView extends ViewGroup {
+
     private static final String LOG_TAG = StaffView.class.getSimpleName();
 
+    boolean trebleClef;
+    boolean bassClef;
+    int viewHeight;
+    int viewWidth;
+    protected Paint staffLinePaint;
+    PianoNote lowPracticeNote;
+    PianoNote highPracticeNote;
+    int numberOfPracticeNotes;
+    ArrayList<PianoNote> practiceNotesAscending;
+    ArrayList<PianoNote> practiceNotesDescending;
+    ArrayList<StaffLine> staffLines;
 
-    //    Create staff depending on clef selected. Add another view if both clefs are chosen
-    private Paint linePaint;
-    String selectedClef;
-    int numberOfNotesToPractice = 35;
-    PianoNote lowestNote = PianoNote.C4;
-    float staffHorizontalStart;
-    float staffHorizontalEnd;
-    float staffVerticalStart;
-    float staffViewHeight;
-    int totalStaffLines;
-    float lineSpacing;
-    int noteScale;
+    public boolean isTrebleClef() {
+        return trebleClef;
+    }
 
-    /**
-     * Y coordinates of staff lines from
-     */
-    ArrayList<Pair<PianoNote, Object>> staffLineYCoords = new ArrayList<>();
+    public void setTrebleClef(boolean trebleClef) {
+        this.trebleClef = trebleClef;
+    }
 
-    Resources res;
+    public boolean isBassClef() {
+        return bassClef;
+    }
+
+    public void setBassClef(boolean bassClef) {
+        this.bassClef = bassClef;
+    }
 
 
 
-    // TODO: determine clef in constructor
-    public StaffView(Context context, AttributeSet attrs) {
+    public StaffView(Context context) {
+        super(context);
+        init();
+    }
+
+    public StaffView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        linePaint = new Paint();
-        linePaint.setStrokeWidth(5);
-        linePaint.setColor(Color.RED);
+        init();
+    }
 
-        res = getContext().getResources();
+    private void init() {
+        staffLinePaint = new Paint();
+        staffLinePaint.setColor(Color.RED);
+
+        lowPracticeNote = PianoNote.C4;
+        highPracticeNote = PianoNote.C6;
+        numberOfPracticeNotes = (highPracticeNote.absoluteKeyIndex -
+                lowPracticeNote.absoluteKeyIndex)
+                + 1;
+        practiceNotesAscending = new ArrayList<>();
+        practiceNotesDescending = new ArrayList<>();
+
+        staffLines = new ArrayList<>();
+        populatePracticeNotes();
+        populateStaffLines();
+        addStaffLinesToView();
+    }
+
+    private void populatePracticeNotes() {
+
+        for (int i=0; i<numberOfPracticeNotes; i++) {
+            PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + i);
+            practiceNotesAscending.add(note);
+            practiceNotesDescending.add(note);
+        }
+        Collections.reverse(practiceNotesDescending);
+    }
+
+    private void populateStaffLines() {
+        StaffLine line;
+
+        for (PianoNote note: practiceNotesDescending) {
+
+            // Staff lines are only ever "natural" (white).
+            // Whether they are sharp or flat is signified by
+            // either the key signature or a ♯/♮/♭ symbol if the note is an accidental.
+            if (note.keyColor == Color.WHITE) {
+                line = new StaffLine(this.getContext(), note);
+                staffLines.add(line);
+            }
+        }
+
+
+    }
+
+    private void addStaffLinesToView() {
+        for (StaffLine line : staffLines) {
+            addView(line);
+        }
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.d(LOG_TAG, "onSizeChanged");
-        Log.d(LOG_TAG, String.format("w: %s\nh: %h\noldw: %s\noldh: %h\n", w, h, oldw, oldh));
-        super.onSizeChanged(w, h, oldw, oldh);
-
-        staffHorizontalStart = 0;
-        staffHorizontalEnd = w;
-        staffVerticalStart = 0;
-        staffViewHeight = h;
-        lineSpacing = (float) h / numberOfNotesToPractice * 2;
-        noteScale = h/numberOfNotesToPractice * 2;
-
-        generateStaffCoordinates();
-    }
-
-    private void generateStaffCoordinates() {
-        // todo: add support for bass clef
-        // Generate the Y coordinates for the staff lines (both visible and invisible)
-        // from C4 to... something (for now) starting from middle C at index 0.
-        int spacingIterator = 0;
-        float Ycoord;
-        for(int i=0; i<numberOfNotesToPractice; i++){
-
-            PianoNote note = PianoNote.valueOfNotePosition(lowestNote.absoluteNotePositionIndex + i);
-            if (note.keyColor == Color.WHITE) {
-
-                Ycoord = staffViewHeight - (lineSpacing * spacingIterator);
-
-                staffLineYCoords.add(Pair.create(note, Ycoord));
-                spacingIterator++;
-            }
-        }
+        viewHeight = this.getHeight();
+        viewWidth = this.getWidth();
     }
 
     @Override
-    protected void onDraw(Canvas canvas){
-        Log.d(LOG_TAG, "onDraw");
-        Log.d(LOG_TAG, String.format("Paint Color: %s", linePaint.getColor()));
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        StaffLine childView;
+        int childCount = getChildCount();
 
-        drawStaff(canvas);
+        int noteSpacing = viewHeight / (staffLines.size());
+//        int noteSpacing = viewHeight / (numberOfPracticeNotes);
+        int yCoordinate = 0;
 
-        // Draw a note
-        Resources res = getContext().getResources();
-        Drawable noteImage = res.getDrawable(R.drawable.quarter_note_white);
-        noteImage.setBounds(0, 0, noteImage.getIntrinsicWidth()/6, noteImage.getIntrinsicHeight()/6);
-        noteImage.draw(canvas);
-
-    }
-
-    private void drawStaff(Canvas canvas) {
-        float staffLine0 = getStaffLineYCoordinate(PianoNote.E4);
-        float staffLine1 = getStaffLineYCoordinate(PianoNote.G4);
-        float staffLine2 = getStaffLineYCoordinate(PianoNote.B4);
-        float staffLine3 = getStaffLineYCoordinate(PianoNote.D5);
-        float staffLine4 = getStaffLineYCoordinate(PianoNote.F5);
+        staffLinePaint.setStrokeWidth((int)viewHeight/(numberOfPracticeNotes * 4));
 
 
-        // Draw the staff. TODO: Make the staff movable/flexible/dynamic
-        canvas.drawLine(staffHorizontalStart, staffLine0, staffHorizontalEnd, staffLine0, linePaint);
-        canvas.drawLine(staffHorizontalStart, staffLine1, staffHorizontalEnd, staffLine1, linePaint);
-        canvas.drawLine(staffHorizontalStart, staffLine2, staffHorizontalEnd, staffLine2, linePaint);
-        canvas.drawLine(staffHorizontalStart, staffLine3, staffHorizontalEnd, staffLine3, linePaint);
-        canvas.drawLine(staffHorizontalStart, staffLine4, staffHorizontalEnd, staffLine4, linePaint);
+        for (int i = 0; i < childCount; i++) {
+            childView = (StaffLine) getChildAt(i);
 
-//        for (Pair pair:staffLineYCoords) {
-//            if (pair.first == PianoNote.C4)
-//                linePaint.setColor(Color.YELLOW);
-//            else if(pair.first == PianoNote.E4 ||
-//                    pair.first == PianoNote.G4 ||
-//                    pair.first == PianoNote.B4 ||
-//                    pair.first == PianoNote.D5 ||
-//                    pair.first == PianoNote.F5) {
-//                linePaint.setColor(Color.GREEN);
-//            }
-//            else {
-//                linePaint.setColor(Color.RED);
-//            }
-//            canvas.drawLine(staffHorizontalStart, (float)pair.second, staffHorizontalEnd, (float)pair.second, linePaint);
-//        }
-    }
+            childView.setStaffLinePaint(staffLinePaint);
 
-    private float getStaffLineYCoordinate(PianoNote note) {
-        for (Pair<PianoNote, Object> noteCoordPair : staffLineYCoords) {
-            if (noteCoordPair.first == note) {
-                return (float) noteCoordPair.second;
-            }
+            Log.i(LOG_TAG, childView.note.toString() + " Y coordinates: " + yCoordinate + " to " + (yCoordinate + noteSpacing));
+
+            childView.layout(0, yCoordinate, viewWidth, yCoordinate+noteSpacing);
+            yCoordinate += noteSpacing;
+
         }
-        Log.e(LOG_TAG, "note " + note + " not found in staffLineYCoords");
-        return -1;
     }
 }
 

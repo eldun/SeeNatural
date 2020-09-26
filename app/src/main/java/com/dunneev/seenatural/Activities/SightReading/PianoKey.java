@@ -100,28 +100,28 @@ class PianoKey extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        Log.i(LOG_TAG, "onDraw()");
+
         int cornerRadius = 10;
         keyRectangle.set(0, 0, getWidth(), getHeight());
         strokePaint.setStrokeWidth((float) (getWidth()/24.0));
         canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, this.upColor);
         canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, strokePaint);
 
-        Log.d(LOG_TAG, String.format("Draw key: (0, 0, %d, %d), %s", getWidth(), getHeight(), this.upColor));
+//        Log.d(LOG_TAG, String.format("Draw key: (0, 0, %d, %d), %s", getWidth(), getHeight(), this.upColor));
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i(LOG_TAG, "onMeasure()");
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        Log.i(LOG_TAG, "onMeasure()");
+//
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//    }
 
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        Log.i(LOG_TAG, "onSizeChanged(w: " + w + " h: " + h + " oldw: " + oldw + " oldh: " + oldh);
-        super.onSizeChanged(w, h, oldw, oldh);
-    }
+//    @Override
+//    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+//        Log.i(LOG_TAG, "onSizeChanged(w: " + w + " h: " + h + " oldw: " + oldw + " oldh: " + oldh);
+//        super.onSizeChanged(w, h, oldw, oldh);
+//    }
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {

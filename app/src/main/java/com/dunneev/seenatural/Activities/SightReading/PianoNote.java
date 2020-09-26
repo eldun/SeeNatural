@@ -202,4 +202,8 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
+    @Override
+    public String toString() {
+        return label;
+    }
 }

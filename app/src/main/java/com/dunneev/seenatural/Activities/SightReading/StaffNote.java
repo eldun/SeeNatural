@@ -18,23 +18,17 @@ public class StaffNote extends View {
 
     public PianoNote note;
     Rect boundsRect = new Rect();
-    TextDrawable textDrawable;
 
     public StaffNote(Context context, PianoNote note) {
         super(context);
         this.note = note;
-        init();
     }
 
     public StaffNote(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
-    private void init() {
-//        setText(R.string.char_treble_clef);
-//        setVisibility(VISIBLE);
-    }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -43,7 +37,7 @@ public class StaffNote extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        TextDrawable textDrawable = new TextDrawable(getResources(), getResources().getString(R.string.char_quarter_note));
+        TextDrawable textDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note));
         boundsRect.set(0,0, getMeasuredWidth(), getMeasuredHeight());
         textDrawable.setBounds(boundsRect);
         //        super.onDraw(canvas);

@@ -17,15 +17,14 @@ public class StaffLine extends View {
 
     protected PianoNote note;
 
-    protected Paint staffLinePaint;
-
+    protected static Paint staffLinePaint;
 
     public Paint getStaffLinePaint() {
         return staffLinePaint;
     }
 
     public void setStaffLinePaint(Paint staffLinePaint) {
-        this.staffLinePaint = staffLinePaint;
+        StaffLine.staffLinePaint = staffLinePaint;
     }
 
 
@@ -73,8 +72,7 @@ public class StaffLine extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawLine(0,getHeight()/2,getWidth(),getHeight()/2, staffLinePaint);
+        canvas.drawLine(0, 0,getWidth(),0, staffLinePaint);
     }
 
     @Override

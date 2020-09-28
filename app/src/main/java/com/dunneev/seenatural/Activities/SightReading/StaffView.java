@@ -7,12 +7,17 @@ import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.dunneev.seenatural.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class StaffView extends ViewGroup {
@@ -21,8 +26,8 @@ public class StaffView extends ViewGroup {
 
     boolean trebleClef;
     boolean bassClef;
-    int viewHeight;
-    int viewWidth;
+    int staffLineSpacing;
+    int visibleStaffHeight;
     protected Paint staffLinePaint;
     PianoNote lowPracticeNote;
     PianoNote highPracticeNote;
@@ -30,6 +35,10 @@ public class StaffView extends ViewGroup {
     ArrayList<PianoNote> practiceNotesAscending;
     ArrayList<PianoNote> practiceNotesDescending;
     ArrayList<StaffLine> staffLines;
+    int staffLineThickness;
+
+    private static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
+
 
     public boolean isTrebleClef() {
         return trebleClef;
@@ -110,35 +119,63 @@ public class StaffView extends ViewGroup {
         }
     }
 
+    private void drawStaffLines() {
+        StaffLine childStaffLineView;
+        int childCount = getChildCount();
+
+        staffLineSpacing = getHeight() / (staffLines.size());
+        staffLineThickness = getHeight()/(numberOfPracticeNotes * 4);
+//        int staffLineSpacing = viewHeight / (numberOfPracticeNotes);
+        int yCoordinate = 0;
+
+        staffLinePaint.setStrokeWidth(staffLineThickness);
+
+
+        for (int i = 0; i < childCount; i++) {
+            childStaffLineView = (StaffLine) getChildAt(i);
+            childStaffLineView.setStaffLinePaint(staffLinePaint);
+
+//            Log.i(LOG_TAG, childStaffLineView.note.toString() + " Y coordinates: " + yCoordinate + " to " + (yCoordinate + staffLineSpacing));
+
+            childStaffLineView.layout(0, yCoordinate, getWidth(), yCoordinate+staffLineSpacing);
+
+            // Map notes to Y coordinates on the staff
+            noteStaffCoordinateMap.put(childStaffLineView.note, yCoordinate + staffLineSpacing + (staffLineThickness / 2));
+
+            yCoordinate += staffLineSpacing;
+
+        }
+
+        visibleStaffHeight = staffLineSpacing * 8;
+    }
+
+    protected void addNoteToView(PianoNote note) {
+        addView(new StaffNote(getContext(), note));
+    }
+
+    private void drawNote(PianoNote note) {
+        View childNoteView = getChildAt(staffLines.size());
+
+        // Quarter notes are never going to be super wide.
+        // More importantly: they're as tall as the staff. This is used to set the font size in TextDrawable
+        childNoteView.measure((int) (visibleStaffHeight / 2.5), visibleStaffHeight);
+
+        childNoteView.layout(0, noteStaffCoordinateMap.get(note) - visibleStaffHeight, childNoteView.getMeasuredWidth(),noteStaffCoordinateMap.get(note));
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        viewHeight = this.getHeight();
-        viewWidth = this.getWidth();
+        super.onSizeChanged(w,h,oldw,oldh);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        StaffLine childView;
-        int childCount = getChildCount();
-
-        int noteSpacing = viewHeight / (staffLines.size());
-//        int noteSpacing = viewHeight / (numberOfPracticeNotes);
-        int yCoordinate = 0;
-
-        staffLinePaint.setStrokeWidth((int)viewHeight/(numberOfPracticeNotes * 4));
-
-
-        for (int i = 0; i < childCount; i++) {
-            childView = (StaffLine) getChildAt(i);
-
-            childView.setStaffLinePaint(staffLinePaint);
-
-            Log.i(LOG_TAG, childView.note.toString() + " Y coordinates: " + yCoordinate + " to " + (yCoordinate + noteSpacing));
-
-            childView.layout(0, yCoordinate, viewWidth, yCoordinate+noteSpacing);
-            yCoordinate += noteSpacing;
-
-        }
+        
+        drawStaffLines();
+        addNoteToView(PianoNote.F4);
+        drawNote(PianoNote.F4);
     }
+
+
 }
 

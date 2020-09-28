@@ -41,7 +41,6 @@ public class TextDrawable extends Drawable {
         textPaint.setTextSize(bounds.height());
         canvas.drawText(text, 0, text.length(),
                 bounds.left, bounds.bottom, textPaint);
-//        200, 200, textPaint);
 
     }
     @Override

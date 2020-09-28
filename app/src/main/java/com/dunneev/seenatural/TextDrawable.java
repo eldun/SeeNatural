@@ -19,7 +19,7 @@ public class TextDrawable extends Drawable {
     private int intrinsicWidth;
     private int intrinsicHeight;
 
-    public TextDrawable(Resources res, CharSequence text) {
+    public TextDrawable(CharSequence text) {
         this.text = text;
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setColor(color);
@@ -33,7 +33,7 @@ public class TextDrawable extends Drawable {
 
         // Just testing to see the bounds are correct
         Paint boundsPaint = new Paint();
-        boundsPaint.setColor(Color.GREEN);
+        boundsPaint.setColor(Color.YELLOW);
         boundsPaint.setAlpha(30);
         canvas.drawRect(bounds, boundsPaint);
 

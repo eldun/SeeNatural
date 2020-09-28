@@ -16,9 +16,9 @@
     <string name="char_bass_clef">𝄢</string>
     <string name="char_staff">𝄚</string>
     <string name="char_staff_bracket">𝄔</string>
-    <string name="char_whole_note">𝄢</string>
-    <string name="char_half_note">𝄚</string>
-    <string name="char_quarter_note">𝄔</string>
+    <string name="char_whole_note">𝅝</string>
+    <string name="char_half_note">𝅗𝅥</string>
+    <string name="char_quarter_note">𝅘𝅥</string>
 
 
 </resources>

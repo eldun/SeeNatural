@@ -24,7 +24,7 @@ public class StaffView extends ViewGroup {
 
     private static final String LOG_TAG = StaffView.class.getSimpleName();
 
-    boolean trebleClef;
+    boolean trebleClef = true;
     boolean bassClef;
     int staffLineSpacing;
     int visibleStaffHeight;
@@ -152,12 +152,35 @@ public class StaffView extends ViewGroup {
 
     }
 
+    private void addClefToView() {
+
+        if (trebleClef) {
+            addView(new StaffClef(getContext(), getResources().getString(R.string.char_treble_clef)));
+        }
+
+        else if (bassClef) {
+            addView(new StaffClef(getContext(), getResources().getString(R.string.char_bass_clef)));
+        }
+    }
+
+    private void drawClef() {
+        View childClefView = getChildAt(staffLines.size());
+
+        childClefView.measure((int) (noteWidth * 1.75), visibleStaffHeight);
+
+        // The treble clef is taller than the staff, but these parts should still be visible.
+        // The bounding box (which sets the font size) is only as tall as the staff.
+        setClipChildren(false);
+
+        childClefView.layout(0, noteStaffCoordinateMap.get(PianoNote.G5), getMeasuredWidth(), noteStaffCoordinateMap.get(PianoNote.G5) + visibleStaffHeight);
+    }
+
     protected void addNoteToView(PianoNote note) {
         addView(new StaffNote(getContext(), note));
     }
 
     private void drawNote(PianoNote note) {
-        View childNoteView = getChildAt(staffLines.size());
+        View childNoteView = getChildAt(staffLines.size() + 1);
 
         // Notes are as tall as the staff.
         // These values are used to set the bounding box of a StaffNote, and as such,
@@ -177,6 +200,8 @@ public class StaffView extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         
         drawStaffLines();
+        addClefToView();
+        drawClef();
         addNoteToView(PianoNote.F4);
         drawNote(PianoNote.F4);
     }

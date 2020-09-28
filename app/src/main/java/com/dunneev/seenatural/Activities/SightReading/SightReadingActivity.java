@@ -28,7 +28,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     private String selectedDifficulty;
 
     private int absoluteStartingPianoKeyIndex = 39;
-    private int numberOfKeys = 24;
+    private int numberOfKeys = 12;
     private ArrayList<PianoKey> pianoKeys = null;
 
     private SoundPlayer soundPlayer = new SoundPlayer(absoluteStartingPianoKeyIndex, numberOfKeys);
@@ -42,6 +42,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
 
+        setUpStaffView();
         setUpPianoView();
 
         Intent intent = getIntent();
@@ -55,8 +56,6 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         soundPlayer.loadWavAssets(this.getAssets());
 
     }
-
-
 
 
     @Override
@@ -91,6 +90,20 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onDestroy();
     }
 
+    private void setUpStaffView() {
+        // Replace default XML-generated StaffView with custom StaffView
+//        StaffView staffView = findViewById(R.id.staffView);
+//        staffView.setAbsoluteStartingPianoKeyIndex(absoluteStartingPianoKeyIndex);
+//        staffView.setNumberOfKeys(numberOfKeys);
+//        staffView.invalidate();
+
+
+//        pianoKeys = pianoView.getPianoKeys();
+//        setPianoKeyListeners();
+
+    }
+
+
     private void setUpPianoView() {
 
         // Replace default XML-generated PianoView with custom PianoView
@@ -115,7 +128,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     @Override
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
-        int relativePianoKeyIndex = key.getNote().absoluteNotePositionIndex - absoluteStartingPianoKeyIndex;
+        int relativePianoKeyIndex = key.getNote().absoluteKeyIndex - absoluteStartingPianoKeyIndex;
 
         soundPlayer.triggerDown(relativePianoKeyIndex);
     }
@@ -123,7 +136,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     @Override
     public void keyUp(PianoKey key) {
         Log.i(LOG_TAG, "keyUp(" + key.toString() + ")");
-        int relativePianoKeyIndex = key.getNote().absoluteNotePositionIndex - absoluteStartingPianoKeyIndex;
+        int relativePianoKeyIndex = key.getNote().absoluteKeyIndex - absoluteStartingPianoKeyIndex;
 
         soundPlayer.triggerUp(relativePianoKeyIndex);
     }

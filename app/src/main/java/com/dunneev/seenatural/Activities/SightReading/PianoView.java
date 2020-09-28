@@ -1,22 +1,14 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-
-import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class PianoView extends ViewGroup {
 
@@ -200,7 +192,7 @@ public class PianoView extends ViewGroup {
 
         for (int i=0;i<numberOfKeys;i++) {
 
-            PianoKey key = new PianoKey(getContext(), PianoNote.valueOfNotePosition(absoluteStartingPianoKeyIndex + i));
+            PianoKey key = new PianoKey(getContext(), PianoNote.valueOfAbsoluteKeyIndex(absoluteStartingPianoKeyIndex + i));
             pianoKeys.add(key);
 
             if (key.getColor() == Color.WHITE)

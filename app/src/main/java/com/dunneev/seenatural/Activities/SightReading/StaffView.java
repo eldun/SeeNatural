@@ -26,13 +26,15 @@ public class StaffView extends ViewGroup {
 
     boolean trebleClef = true;
     boolean bassClef;
+    int clefWidth;
     int staffLineSpacing;
-    int visibleStaffHeight;
+    int visibleStaffHeight = 0;
     int noteWidth;
     protected Paint staffLinePaint;
     PianoNote lowPracticeNote;
     PianoNote highPracticeNote;
     int numberOfPracticeNotes;
+    int visibleNotesOnStaff;
     ArrayList<PianoNote> practiceNotesAscending;
     ArrayList<PianoNote> practiceNotesDescending;
     ArrayList<StaffLine> staffLines;
@@ -149,6 +151,7 @@ public class StaffView extends ViewGroup {
 
         visibleStaffHeight = staffLineSpacing * 8;
         noteWidth = (int) (visibleStaffHeight / 2.5);
+        clefWidth = (int) (noteWidth * 1.75);
 
     }
 
@@ -175,20 +178,22 @@ public class StaffView extends ViewGroup {
         childClefView.layout(0, noteStaffCoordinateMap.get(PianoNote.G5), getMeasuredWidth(), noteStaffCoordinateMap.get(PianoNote.G5) + visibleStaffHeight);
     }
 
-    protected void addNoteToView(PianoNote note) {
-        addView(new StaffNote(getContext(), note));
-    }
-
     private void drawNote(PianoNote note) {
-        View childNoteView = getChildAt(staffLines.size() + 1);
+        addView(new StaffNote(getContext(), note));
 
-        // Notes are as tall as the staff.
-        // These values are used to set the bounding box of a StaffNote, and as such,
-        // the font size in TextDrawable.
+        // The child note to be drawn comes after the staff lines(staffLines.size()) and the clef(1) children.
+        View childNoteView = getChildAt(staffLines.size() + 1 + visibleNotesOnStaff);
+
+
         childNoteView.measure(noteWidth, visibleStaffHeight);
-
+//        int l = (clefWidth * 2) + (noteWidth) * visibleNotesOnStaff;
+        int l = (clefWidth * 2) + (noteWidth * 2) * visibleNotesOnStaff;
+        int t = noteStaffCoordinateMap.get(note) - visibleStaffHeight;
+        int r = l + noteWidth;
+        int b = noteStaffCoordinateMap.get(note);
         // Temporary layout arguments. Eventually, there will be multiple notes on the staff.
-        childNoteView.layout(noteWidth*4, noteStaffCoordinateMap.get(note) - visibleStaffHeight, noteWidth*5, noteStaffCoordinateMap.get(note));
+        childNoteView.layout(l, t, r, b);
+        visibleNotesOnStaff++;
     }
 
     @Override
@@ -202,8 +207,10 @@ public class StaffView extends ViewGroup {
         drawStaffLines();
         addClefToView();
         drawClef();
-        addNoteToView(PianoNote.F4);
         drawNote(PianoNote.F4);
+        drawNote(PianoNote.C5);
+        drawNote(PianoNote.C5);
+
     }
 
 

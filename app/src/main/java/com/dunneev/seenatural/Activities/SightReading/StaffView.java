@@ -28,6 +28,7 @@ public class StaffView extends ViewGroup {
     boolean bassClef;
     int staffLineSpacing;
     int visibleStaffHeight;
+    int noteWidth;
     protected Paint staffLinePaint;
     PianoNote lowPracticeNote;
     PianoNote highPracticeNote;
@@ -147,6 +148,8 @@ public class StaffView extends ViewGroup {
         }
 
         visibleStaffHeight = staffLineSpacing * 8;
+        noteWidth = (int) (visibleStaffHeight / 2.5);
+
     }
 
     protected void addNoteToView(PianoNote note) {
@@ -156,11 +159,13 @@ public class StaffView extends ViewGroup {
     private void drawNote(PianoNote note) {
         View childNoteView = getChildAt(staffLines.size());
 
-        // Quarter notes are never going to be super wide.
-        // More importantly: they're as tall as the staff. This is used to set the font size in TextDrawable
-        childNoteView.measure((int) (visibleStaffHeight / 2.5), visibleStaffHeight);
+        // Notes are as tall as the staff.
+        // These values are used to set the bounding box of a StaffNote, and as such,
+        // the font size in TextDrawable.
+        childNoteView.measure(noteWidth, visibleStaffHeight);
 
-        childNoteView.layout(0, noteStaffCoordinateMap.get(note) - visibleStaffHeight, childNoteView.getMeasuredWidth(),noteStaffCoordinateMap.get(note));
+        // Temporary layout arguments. Eventually, there will be multiple notes on the staff.
+        childNoteView.layout(noteWidth*4, noteStaffCoordinateMap.get(note) - visibleStaffHeight, noteWidth*5, noteStaffCoordinateMap.get(note));
     }
 
     @Override

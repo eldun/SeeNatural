@@ -1,7 +1,6 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -141,6 +140,7 @@ public enum PianoNote {
     C8("C8", 108, "[C8]");
 
     public final String label;
+    public final String pitch;
     public final int midiValue;
 
     // A value from 0 to 87, spanning any piano note
@@ -152,11 +152,19 @@ public enum PianoNote {
 
     PianoNote(String label, int midi, String filename) {
         this.label = label;
+        this.pitch = setPitch();
         this.midiValue = midi;
         this.absoluteKeyIndex = midi - 21;
         this.keyColor = setKeyColor();
         this.keyDownColor = setKeyDownColor();
         this.filename = filename;
+    }
+
+    private String setPitch() {
+        if (label.length() == 2)
+            return label.substring(0,2);
+        else
+            return label.substring(0,3);
     }
 
     private int setKeyColor() {

@@ -2,6 +2,8 @@ package com.dunneev.seenatural.Activities.SightReading;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum KeySignature {
 
@@ -44,7 +46,7 @@ public enum KeySignature {
     public final String label;
     public final Boolean isMajor;
     public final Boolean isMinor;
-    private final String[] scaleNotes;
+    public final String[] scaleNotes;
     public final Boolean hasSharps;
     public final Boolean hasFlats;
 
@@ -109,8 +111,10 @@ public enum KeySignature {
     }
 
 
+
+
     public boolean containsNote(PianoNote note) {
-        return Arrays.asList(scaleNotes).contains(note.label);
+        return Arrays.asList(scaleNotes).contains(note.pitch);
     }
 
     @Override

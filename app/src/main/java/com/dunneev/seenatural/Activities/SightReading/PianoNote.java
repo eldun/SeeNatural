@@ -162,9 +162,9 @@ public enum PianoNote {
 
     private String setPitch() {
         if (label.length() == 2)
-            return label.substring(0,2);
+            return label.substring(0,1);
         else
-            return label.substring(0,3);
+            return label.substring(0,2);
     }
 
     private int setKeyColor() {

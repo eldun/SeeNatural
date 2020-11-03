@@ -13,11 +13,16 @@ import com.dunneev.seenatural.TextDrawable;
 public class StaffClef extends View {
 
     private String clef;
+    TextDrawable clefDrawable;
+    private KeySignature keySignature;
+
     Rect boundsRect = new Rect();
 
-    public StaffClef(Context context, String clef) {
+    public StaffClef(Context context, String clef, KeySignature keySignature) {
         super(context);
         this.clef = clef;
+        this.clefDrawable = new TextDrawable(clef);
+        this.keySignature = keySignature;
     }
 
     public StaffClef(Context context, @Nullable AttributeSet attrs) {
@@ -31,14 +36,13 @@ public class StaffClef extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        TextDrawable textDrawable = new TextDrawable(clef);
         boundsRect.set(0,0, getMeasuredWidth(), getMeasuredHeight());
-        textDrawable.setBounds(boundsRect);
+        clefDrawable.setBounds(boundsRect);
         //        super.onDraw(canvas);
 //        Paint greenPaint = new Paint();
 //        greenPaint.setColor(Color.GREEN);
 //        canvas.drawCircle(100,100,50, greenPaint);
-        textDrawable.draw(canvas);
+        clefDrawable.draw(canvas);
 
     }
 }

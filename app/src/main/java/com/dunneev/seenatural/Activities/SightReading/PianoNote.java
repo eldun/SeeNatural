@@ -141,6 +141,8 @@ public enum PianoNote {
 
     public final String label;
     public final String pitch;
+    public final int octave;
+    public final String naturalNoteLabel;
     public final int midiValue;
 
     // A value from 0 to 87, spanning any piano note
@@ -153,8 +155,11 @@ public enum PianoNote {
     PianoNote(String label, int midi, String filename) {
         this.label = label;
         this.pitch = setPitch();
+        this.octave = Integer.parseInt(String.valueOf(this.label.charAt(this.label.length()-1)));
+        this.naturalNoteLabel = String.valueOf(this.label.charAt(0)) + this.octave;
         this.midiValue = midi;
         this.absoluteKeyIndex = midi - 21;
+
         this.keyColor = setKeyColor();
         this.keyDownColor = setKeyDownColor();
         this.filename = filename;

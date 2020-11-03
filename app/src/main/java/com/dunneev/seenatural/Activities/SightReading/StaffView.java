@@ -1,7 +1,6 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
@@ -11,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dunneev.seenatural.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +23,7 @@ public class StaffView extends ViewGroup {
 
     boolean trebleClef = true;
     boolean bassClef;
+    private KeySignature keySignature = KeySignature.A_MINOR;
     int clefWidth;
     int staffLineSpacing;
     int visibleStaffHeight = 0;
@@ -59,7 +57,13 @@ public class StaffView extends ViewGroup {
         this.bassClef = bassClef;
     }
 
+    public KeySignature getKeySignature() {
+        return keySignature;
+    }
 
+    public void setKeySignature(KeySignature keySignature) {
+        this.keySignature = keySignature;
+    }
 
     public StaffView(Context context) {
         super(context);
@@ -89,6 +93,10 @@ public class StaffView extends ViewGroup {
         addStaffLinesToView();
     }
 
+    protected void placeNote(PianoNote note) {
+        drawNote(note);
+    }
+
     private void populatePracticeNotes() {
 
         for (int i=0; i<numberOfPracticeNotes; i++) {
@@ -106,7 +114,7 @@ public class StaffView extends ViewGroup {
 
             // Staff lines are only ever "natural" (white).
             // Whether they are sharp or flat is signified by
-            // either the key signature or a ♯/♮/♭ symbol if the note is an accidental.
+            // either the key signature or a ♯/♮/♭ symbol if the note in question is an accidental.
             if (note.keyColor == Color.WHITE) {
                 line = new StaffLine(this.getContext(), note);
                 staffLines.add(line);
@@ -124,7 +132,6 @@ public class StaffView extends ViewGroup {
 
     private void drawStaffLines() {
         StaffLine childStaffLineView;
-        int childCount = getChildCount();
 
         staffLineSpacing = getHeight() / (staffLines.size());
         staffLineThickness = getHeight()/(numberOfPracticeNotes * 4);
@@ -134,7 +141,7 @@ public class StaffView extends ViewGroup {
         staffLinePaint.setStrokeWidth(staffLineThickness);
 
 
-        for (int i = 0; i < childCount; i++) {
+        for (int i = 0; i < staffLines.size(); i++) {
             childStaffLineView = (StaffLine) getChildAt(i);
             childStaffLineView.setStaffLinePaint(staffLinePaint);
 
@@ -158,11 +165,11 @@ public class StaffView extends ViewGroup {
     private void addClefToView() {
 
         if (trebleClef) {
-            addView(new StaffClef(getContext(), getResources().getString(R.string.char_treble_clef)));
+            addView(new StaffClef(getContext(), getResources().getString(R.string.char_treble_clef), keySignature));
         }
 
         else if (bassClef) {
-            addView(new StaffClef(getContext(), getResources().getString(R.string.char_bass_clef)));
+            addView(new StaffClef(getContext(), getResources().getString(R.string.char_bass_clef), keySignature));
         }
     }
 
@@ -179,21 +186,34 @@ public class StaffView extends ViewGroup {
     }
 
     private void drawNote(PianoNote note) {
-        addView(new StaffNote(getContext(), note));
+        try {
+            Log.i(LOG_TAG, "Drawing " + note);
 
-        // The child note to be drawn comes after the staff lines(staffLines.size()) and the clef(1) children.
-        View childNoteView = getChildAt(staffLines.size() + 1 + visibleNotesOnStaff);
+            addView(new StaffNote(getContext(), keySignature, note));
+
+            // The child note to be drawn comes after the staff lines(staffLines.size()) and the clef(1) children.
+            View childNoteView = getChildAt(staffLines.size() + 1 + visibleNotesOnStaff);
 
 
-        childNoteView.measure(noteWidth, visibleStaffHeight);
+            // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
+            // which is why we use the natural note field to determine the position.
+            childNoteView.measure(noteWidth, visibleStaffHeight);
 //        int l = (clefWidth * 2) + (noteWidth) * visibleNotesOnStaff;
-        int l = (clefWidth * 2) + (noteWidth * 2) * visibleNotesOnStaff;
-        int t = noteStaffCoordinateMap.get(note) - visibleStaffHeight;
-        int r = l + noteWidth;
-        int b = noteStaffCoordinateMap.get(note);
-        // Temporary layout arguments. Eventually, there will be multiple notes on the staff.
-        childNoteView.layout(l, t, r, b);
-        visibleNotesOnStaff++;
+            int l = (clefWidth * 2) + (noteWidth * 2) * visibleNotesOnStaff;
+            int t = noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight;
+            int r = l + noteWidth;
+            int b = noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel));
+
+            // Temporary layout arguments. Eventually, there will be multiple notes on the staff.
+            childNoteView.layout(l, t, r, b);
+            visibleNotesOnStaff++;
+        }
+        catch (NullPointerException e) {
+            Log.e(LOG_TAG, "NullPointerException trying to draw " + note.toString() +
+                    "\nat line " + e.getStackTrace()[0].getLineNumber() +
+                    "\nusing natural note " + note.naturalNoteLabel);
+            Log.e(LOG_TAG, e.toString());
+        }
     }
 
     @Override
@@ -207,12 +227,10 @@ public class StaffView extends ViewGroup {
         drawStaffLines();
         addClefToView();
         drawClef();
-        drawNote(PianoNote.F4);
-        drawNote(PianoNote.C5);
-        drawNote(PianoNote.C5);
+//        drawNote(PianoNote.F4);
+        drawNote(PianoNote.A_FLAT_4);
+//        drawNote(PianoNote.C5);
 
     }
-
-
 }
 

@@ -1,20 +1,19 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Intent;
-import android.service.autofill.FieldClassification;
-import android.support.constraint.ConstraintHelper;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.dunneev.seenatural.Activities.Clef.ClefActivity;
 import com.dunneev.seenatural.Activities.Difficulty.DifficultyActivity;
 import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SightReadingActivity extends AppCompatActivity implements PianoKey.PianoKeyListener {
 
@@ -31,7 +30,11 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     private int numberOfKeys = 12;
     private ArrayList<PianoKey> pianoKeys = null;
 
+    private ArrayList sightReadingNotes = new ArrayList();
+
     private SoundPlayer soundPlayer = new SoundPlayer(absoluteStartingPianoKeyIndex, numberOfKeys);
+
+    Random random = new Random();
 
 
 
@@ -72,6 +75,17 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         Log.i(LOG_TAG, "onResume()");
 
         super.onResume();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (hasFocus) {
+            // todo: randomize notes BASED ON SELECTED DIFFICULTY
+            PianoNote randomNote = generatePracticablePianoNote();
+            addSightReadingNote(randomNote);
+        }
     }
 
     @Override
@@ -123,21 +137,70 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         }
     }
 
+    private PianoNote generatePracticablePianoNote() {
+        int randomInt = random.nextInt(numberOfKeys);
+        return pianoKeys.get(randomInt).getNote();
+    }
 
+
+    private void addSightReadingNote(PianoNote note) {
+
+        StaffView staffView = findViewById(R.id.staffView);
+
+        Log.i(LOG_TAG, "Adding note: " + note.toString());
+        sightReadingNotes.add(note);
+        staffView.placeNote(note);
+    }
+
+    private void removeSightReadingNote(PianoNote note) {
+        StaffView staffView = findViewById(R.id.staffView);
+
+        sightReadingNotes.remove(0);
+
+        staffView.removeNote(note);
+    }
+
+    private boolean isCorrectNote(PianoNote note) {
+        Toast toast = new Toast(this);
+        toast.setGravity(Gravity.CENTER,0,0);
+
+        if (note == sightReadingNotes.get(0)) {
+
+            toast = Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT);
+            toast.show();
+            return true;
+        }
+        else {
+            toast = Toast.makeText(this, "ain't it chief", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+    }
 
     @Override
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
-        int relativePianoKeyIndex = key.getNote().absoluteKeyIndex - absoluteStartingPianoKeyIndex;
+        PianoNote note = key.getNote();
+        int relativePianoKeyIndex = note.absoluteKeyIndex - absoluteStartingPianoKeyIndex;
 
         soundPlayer.triggerDown(relativePianoKeyIndex);
+
+        if(isCorrectNote(note)) {
+            removeSightReadingNote(note);
+
+            addSightReadingNote(generatePracticablePianoNote());
+        }
+
+
     }
+
+
 
     @Override
     public void keyUp(PianoKey key) {
-        Log.i(LOG_TAG, "keyUp(" + key.toString() + ")");
-        int relativePianoKeyIndex = key.getNote().absoluteKeyIndex - absoluteStartingPianoKeyIndex;
-
-        soundPlayer.triggerUp(relativePianoKeyIndex);
+//        Log.i(LOG_TAG, "keyUp(" + key.toString() + ")");
+//        int relativePianoKeyIndex = key.getNote().absoluteKeyIndex - absoluteStartingPianoKeyIndex;
+//
+//        soundPlayer.triggerUp(relativePianoKeyIndex);
     }
 }

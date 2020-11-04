@@ -2,26 +2,64 @@ package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.TextDrawable;
 
+import org.w3c.dom.Text;
+
 public class StaffNote extends View {
 
-    public PianoNote note;
-    Rect boundsRect = new Rect();
+    private static final String LOG_TAG = StaffNote.class.getSimpleName();
 
-    public StaffNote(Context context, PianoNote note) {
+    private KeySignature keySignature;
+    public PianoNote note;
+
+    private boolean isAccidental;
+    private String accidentalSymbol;
+    private TextDrawable accidentalDrawable;
+
+    private TextDrawable noteDrawable;
+
+    private Rect noteBoundsRect = new Rect();
+
+    // todo: draw a ledger line when necessary
+    public StaffNote(Context context, KeySignature keySignature, PianoNote note) {
         super(context);
         this.note = note;
+        this.keySignature = keySignature;
+        isAccidental = checkIfAccidental(note);
+
+        if (isAccidental) {
+            accidentalDrawable = new TextDrawable(accidentalSymbol);
+        }
+
+        noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note));
+
+    }
+
+    protected boolean checkIfAccidental(PianoNote note) {
+        if (keySignature.containsNote(note))
+            return false;
+
+        else {
+            if (note.label.contains(getResources().getString(R.string.char_sharp_sign))) {
+                accidentalSymbol = getResources().getString(R.string.char_sharp_sign);
+            }
+
+            else if (note.label.contains(getResources().getString(R.string.char_flat_sign)))
+                accidentalSymbol = getResources().getString(R.string.char_flat_sign);
+
+            else
+                accidentalSymbol = getResources().getString(R.string.char_natural_sign);
+        }
+
+        return true;
     }
 
     public StaffNote(Context context, @Nullable AttributeSet attrs) {
@@ -37,14 +75,24 @@ public class StaffNote extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        TextDrawable textDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note));
-        boundsRect.set(0,0, getMeasuredWidth(), getMeasuredHeight());
-        textDrawable.setBounds(boundsRect);
+        noteBoundsRect.set(0,0, getMeasuredWidth(), getMeasuredHeight());
+
+        if (isAccidental) {
+            accidentalDrawable.setBounds(noteBoundsRect.left - noteBoundsRect.width(), noteBoundsRect.top, noteBoundsRect.left, noteBoundsRect.bottom);
+
+            accidentalDrawable.draw(canvas);
+        }
+
+
+        noteDrawable.setBounds(noteBoundsRect);
+
         //        super.onDraw(canvas);
-//        Paint greenPaint = new Paint();
-//        greenPaint.setColor(Color.GREEN);
-//        canvas.drawCircle(100,100,50, greenPaint);
-        textDrawable.draw(canvas);
+        //        Paint greenPaint = new Paint();
+        //        greenPaint.setColor(Color.GREEN);
+        //        canvas.drawCircle(100,100,50, greenPaint);
+
+        Log.i(LOG_TAG, "isAccidental: " + isAccidental);
+        noteDrawable.draw(canvas);
 
     }
 }

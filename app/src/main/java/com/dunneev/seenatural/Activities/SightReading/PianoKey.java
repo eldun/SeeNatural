@@ -131,16 +131,16 @@ class PianoKey extends View {
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Log.i(LOG_TAG, "action down");
+//                Log.i(LOG_TAG, "action down");
                 setIsDown(true);
                 pianoKeyListener.keyDown(this);
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.i(LOG_TAG, "moving: (" + x + ", " + y + ")");
+//                Log.i(LOG_TAG, "moving: (" + x + ", " + y + ")");
                 break;
             case MotionEvent.ACTION_UP:
-                Log.i(LOG_TAG, "action up");
+//                Log.i(LOG_TAG, "action up");
                 setIsDown(false);
                 pianoKeyListener.keyUp(this);
                 invalidate();

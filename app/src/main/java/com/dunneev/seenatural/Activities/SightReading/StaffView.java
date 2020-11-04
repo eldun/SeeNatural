@@ -32,7 +32,7 @@ public class StaffView extends ViewGroup {
     PianoNote lowPracticeNote;
     PianoNote highPracticeNote;
     int numberOfPracticeNotes;
-    int visibleNotesOnStaff;
+    int visibleNotesOnStaff = 0;
     ArrayList<PianoNote> practiceNotesAscending;
     ArrayList<PianoNote> practiceNotesDescending;
     ArrayList<StaffLine> staffLines;
@@ -95,6 +95,16 @@ public class StaffView extends ViewGroup {
 
     protected void placeNote(PianoNote note) {
         drawNote(note);
+    }
+
+    protected void removeNote(PianoNote note) {
+        Log.i(LOG_TAG, "Removing " + note);
+
+        View childNoteView = getChildAt(staffLines.size() + visibleNotesOnStaff);
+
+        removeView(childNoteView);
+        visibleNotesOnStaff--;
+
     }
 
     private void populatePracticeNotes() {
@@ -189,10 +199,9 @@ public class StaffView extends ViewGroup {
         try {
             Log.i(LOG_TAG, "Drawing " + note);
 
-            addView(new StaffNote(getContext(), keySignature, note));
-
-            // The child note to be drawn comes after the staff lines(staffLines.size()) and the clef(1) children.
+            addView(new StaffNote(getContext(), keySignature, note), staffLines.size() + 1 + visibleNotesOnStaff);
             View childNoteView = getChildAt(staffLines.size() + 1 + visibleNotesOnStaff);
+//            View childNoteView = getChildAt(staffLines.size() + 1 + visibleNotesOnStaff);
 
 
             // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
@@ -227,8 +236,8 @@ public class StaffView extends ViewGroup {
         drawStaffLines();
         addClefToView();
         drawClef();
-//        drawNote(PianoNote.F4);
-        drawNote(PianoNote.A_FLAT_4);
+//        drawNote(PianoNote.G4);
+//        drawNote(PianoNote.G_FLAT_4);
 //        drawNote(PianoNote.C5);
 
     }

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.dunneev.seenatural.R;
@@ -13,6 +14,8 @@ import com.dunneev.seenatural.TextDrawable;
 import org.w3c.dom.Text;
 
 public class StaffNote extends View {
+
+    private static final String LOG_TAG = StaffNote.class.getSimpleName();
 
     private KeySignature keySignature;
     public PianoNote note;
@@ -25,20 +28,22 @@ public class StaffNote extends View {
 
     private Rect noteBoundsRect = new Rect();
 
+    // todo: draw a ledger line when necessary
     public StaffNote(Context context, KeySignature keySignature, PianoNote note) {
         super(context);
         this.note = note;
         this.keySignature = keySignature;
         isAccidental = checkIfAccidental(note);
 
-        if (isAccidental)
+        if (isAccidental) {
             accidentalDrawable = new TextDrawable(accidentalSymbol);
+        }
 
         noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note));
 
     }
 
-    private boolean checkIfAccidental(PianoNote note) {
+    protected boolean checkIfAccidental(PianoNote note) {
         if (keySignature.containsNote(note))
             return false;
 
@@ -86,6 +91,7 @@ public class StaffNote extends View {
         //        greenPaint.setColor(Color.GREEN);
         //        canvas.drawCircle(100,100,50, greenPaint);
 
+        Log.i(LOG_TAG, "isAccidental: " + isAccidental);
         noteDrawable.draw(canvas);
 
     }

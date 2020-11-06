@@ -38,6 +38,8 @@ public class StaffView extends ViewGroup {
     ArrayList<StaffLine> staffLines;
     int staffLineThickness;
 
+    LayoutParams wrapParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
     private static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
 
 
@@ -90,29 +92,6 @@ public class StaffView extends ViewGroup {
         staffLines = new ArrayList<>();
         populatePracticeNotes();
         populateStaffLines();
-        addStaffLinesToView();
-    }
-
-    protected void placeNote(PianoNote note) {
-        addNoteToView(note);
-        drawNote(note);
-    }
-
-    private void addNoteToView(PianoNote note) {
-        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
-        addView(staffNote, staffLines.size() + 1 + notesOnStaff);
-        notesOnStaff++;
-
-    }
-
-    protected void removeNote(PianoNote note) {
-        Log.i(LOG_TAG, "Removing " + note);
-
-        View childNoteView = getChildAt(staffLines.size() + notesOnStaff);
-
-        removeView(childNoteView);
-        notesOnStaff--;
-
     }
 
     private void populatePracticeNotes() {
@@ -138,17 +117,21 @@ public class StaffView extends ViewGroup {
                 staffLines.add(line);
             }
         }
-
-
     }
 
     private void addStaffLinesToView() {
+        // Staff lines should always be the lowest view
+//        int i = 0;
         for (StaffLine line : staffLines) {
-            addView(line);
+//            addView(line);
+            addViewInLayout(line, -1, wrapParams,true);
+//            i++;
         }
     }
 
     private void drawStaffLines() {
+        addStaffLinesToView();
+
         StaffLine childStaffLineView;
 
         staffLineSpacing = getHeight() / (staffLines.size());
@@ -176,25 +159,30 @@ public class StaffView extends ViewGroup {
 
         visibleStaffHeight = staffLineSpacing * 8;
         noteWidth = staffLineSpacing * 3;
-        clefWidth = (int) (noteWidth * 1.75);
+        clefWidth = noteWidth * 2;
 
     }
 
     private void addClefToView() {
 
         if (trebleClef) {
-            addView(new StaffClef(getContext(), getResources().getString(R.string.char_treble_clef), keySignature));
+//            addView(new StaffClef(getContext(), getResources().getString(R.string.char_treble_clef), keySignature));
+            addViewInLayout(new StaffClef(getContext(), getResources().getString(R.string.char_treble_clef), keySignature), -1, wrapParams, true);
         }
 
         else if (bassClef) {
-            addView(new StaffClef(getContext(), getResources().getString(R.string.char_bass_clef), keySignature));
+//            addView(new StaffClef(getContext(), getResources().getString(R.string.char_bass_clef), keySignature));
+            addViewInLayout(new StaffClef(getContext(), getResources().getString(R.string.char_bass_clef), keySignature), staffLines.size(), wrapParams, true);
+
         }
     }
 
     private void drawClef() {
+        addClefToView();
+
         View childClefView = getChildAt(staffLines.size());
 
-        childClefView.measure((int) (noteWidth * 1.75), visibleStaffHeight);
+        childClefView.measure((int) (clefWidth), visibleStaffHeight);
 
         // The treble clef is taller than the staff, but these parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
@@ -203,8 +191,22 @@ public class StaffView extends ViewGroup {
         childClefView.layout(0, noteStaffCoordinateMap.get(PianoNote.G5), getMeasuredWidth(), noteStaffCoordinateMap.get(PianoNote.G5) + visibleStaffHeight);
     }
 
+    private void addNoteToView(PianoNote note) {
+        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
+//        addView(staffNote, staffLines.size() + 1 + notesOnStaff);
+        addViewInLayout(staffNote, staffLines.size() + 1 + notesOnStaff, wrapParams, true);
+        notesOnStaff++;
+
+    }
+
+    protected void placeNote(PianoNote note) {
+        drawNote(note);
+    }
+
     private void drawNote(PianoNote note) {
         try {
+            addNoteToView(note);
+
             Log.i(LOG_TAG, "Drawing " + note);
 
             View childNoteView = getChildAt(staffLines.size() + notesOnStaff);
@@ -231,21 +233,22 @@ public class StaffView extends ViewGroup {
         }
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w,h,oldw,oldh);
+    protected void removeNote(PianoNote note) {
+        Log.i(LOG_TAG, "Removing " + note);
+
+        View childNoteView = getChildAt(staffLines.size() + notesOnStaff);
+
+        removeView(childNoteView);
+        notesOnStaff--;
+
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        
-        drawStaffLines();
-        addClefToView();
-        drawClef();
-//        drawNote(PianoNote.G4);
-//        drawNote(PianoNote.G_FLAT_4);
-//        drawNote(PianoNote.C5);
-
+        if (changed) {
+            drawStaffLines();
+            drawClef();
+        }
     }
 }
 

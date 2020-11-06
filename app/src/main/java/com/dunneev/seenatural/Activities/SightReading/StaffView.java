@@ -32,7 +32,7 @@ public class StaffView extends ViewGroup {
     PianoNote lowPracticeNote;
     PianoNote highPracticeNote;
     int numberOfPracticeNotes;
-    int visibleNotesOnStaff = 0;
+    int notesOnStaff = 0;
     ArrayList<PianoNote> practiceNotesAscending;
     ArrayList<PianoNote> practiceNotesDescending;
     ArrayList<StaffLine> staffLines;
@@ -94,16 +94,24 @@ public class StaffView extends ViewGroup {
     }
 
     protected void placeNote(PianoNote note) {
+        addNoteToView(note);
         drawNote(note);
+    }
+
+    private void addNoteToView(PianoNote note) {
+        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
+        addView(staffNote, staffLines.size() + 1 + notesOnStaff);
+        notesOnStaff++;
+
     }
 
     protected void removeNote(PianoNote note) {
         Log.i(LOG_TAG, "Removing " + note);
 
-        View childNoteView = getChildAt(staffLines.size() + visibleNotesOnStaff);
+        View childNoteView = getChildAt(staffLines.size() + notesOnStaff);
 
         removeView(childNoteView);
-        visibleNotesOnStaff--;
+        notesOnStaff--;
 
     }
 
@@ -167,7 +175,7 @@ public class StaffView extends ViewGroup {
         }
 
         visibleStaffHeight = staffLineSpacing * 8;
-        noteWidth = (int) (visibleStaffHeight / 2.5);
+        noteWidth = staffLineSpacing * 3;
         clefWidth = (int) (noteWidth * 1.75);
 
     }
@@ -199,8 +207,7 @@ public class StaffView extends ViewGroup {
         try {
             Log.i(LOG_TAG, "Drawing " + note);
 
-            addView(new StaffNote(getContext(), keySignature, note), staffLines.size() + 1 + visibleNotesOnStaff);
-            View childNoteView = getChildAt(staffLines.size() + 1 + visibleNotesOnStaff);
+            View childNoteView = getChildAt(staffLines.size() + notesOnStaff);
 //            View childNoteView = getChildAt(staffLines.size() + 1 + visibleNotesOnStaff);
 
 
@@ -208,14 +215,13 @@ public class StaffView extends ViewGroup {
             // which is why we use the natural note field to determine the position.
             childNoteView.measure(noteWidth, visibleStaffHeight);
 //        int l = (clefWidth * 2) + (noteWidth) * visibleNotesOnStaff;
-            int l = (clefWidth * 2) + (noteWidth * 2) * visibleNotesOnStaff;
+            int l = clefWidth + (noteWidth * 2);
             int t = noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight;
             int r = l + noteWidth;
             int b = noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel));
 
             // Temporary layout arguments. Eventually, there will be multiple notes on the staff.
             childNoteView.layout(l, t, r, b);
-            visibleNotesOnStaff++;
         }
         catch (NullPointerException e) {
             Log.e(LOG_TAG, "NullPointerException trying to draw " + note.toString() +

@@ -27,11 +27,14 @@ public class StaffClef extends View {
 
     public StaffClef(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        this.clef = getResources().getString(R.string.char_treble_clef);
+        this.clefDrawable = new TextDrawable(clef);
+        this.keySignature = KeySignature.C_MAJOR;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
     }
 
     @Override
@@ -43,6 +46,5 @@ public class StaffClef extends View {
 //        greenPaint.setColor(Color.GREEN);
 //        canvas.drawCircle(100,100,50, greenPaint);
         clefDrawable.draw(canvas);
-
     }
 }

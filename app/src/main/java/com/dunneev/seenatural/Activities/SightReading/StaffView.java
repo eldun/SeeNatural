@@ -45,13 +45,6 @@ public class StaffView extends ViewGroup {
     HorizontalScrollView scrollView;
     LinearLayout noteLinearLayout;
 
-    LinearLayout.LayoutParams noteLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-
-
-
-    LayoutParams staffWrapParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-
 
     private static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
 
@@ -156,7 +149,7 @@ public class StaffView extends ViewGroup {
 
             yCoordinate += staffLineSpacing;
 
-            addViewInLayout(staffLine, -1, staffWrapParams,true);
+            addViewInLayout(staffLine, -1, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT),true);
         }
 
         visibleStaffHeight = staffLineSpacing * 8;
@@ -169,15 +162,17 @@ public class StaffView extends ViewGroup {
 
         StaffClef staffClef = CreateClef();
 
-        staffClef.measure((int) (clefWidth), visibleStaffHeight);
+        int measureSpecWidth = MeasureSpec.makeMeasureSpec(clefWidth, MeasureSpec.EXACTLY);
+        int measureSpecHeight = MeasureSpec.makeMeasureSpec(visibleStaffHeight, MeasureSpec.EXACTLY);
+        staffClef.measure(measureSpecWidth, measureSpecHeight);
 
-        // The treble clef is taller than the staff, but these parts should still be visible.
+        // The treble clef is taller than the staff, but the clipped parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
         setClipChildren(false);
 
-        staffClef.layout(0, noteStaffCoordinateMap.get(PianoNote.G5), getMeasuredWidth(), noteStaffCoordinateMap.get(PianoNote.G5) + visibleStaffHeight);
+        staffClef.layout(0, noteStaffCoordinateMap.get(PianoNote.G5), staffClef.getMeasuredWidth(), noteStaffCoordinateMap.get(PianoNote.G5) + staffClef.getMeasuredHeight());
 
-        addViewInLayout(staffClef, -1, staffWrapParams, true);
+        addViewInLayout(staffClef, -1, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT), true);
     }
 
     private StaffClef CreateClef() {
@@ -252,6 +247,8 @@ public class StaffView extends ViewGroup {
 
         notesOnStaff++;
 
+        updateNoteScroller();
+
     }
 
     protected void removeNote(PianoNote note) {
@@ -272,7 +269,6 @@ public class StaffView extends ViewGroup {
             addNoteScroller();
         }
 
-        updateNoteScroller();
     }
 }
 

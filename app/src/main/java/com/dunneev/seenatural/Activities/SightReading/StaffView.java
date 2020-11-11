@@ -173,7 +173,7 @@ public class StaffView extends ViewGroup {
 
         // The treble clef is taller than the staff, but these parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
-//        setClipChildren(false);
+        setClipChildren(false);
 
         staffClef.layout(0, noteStaffCoordinateMap.get(PianoNote.G5), getMeasuredWidth(), noteStaffCoordinateMap.get(PianoNote.G5) + visibleStaffHeight);
 
@@ -196,6 +196,12 @@ public class StaffView extends ViewGroup {
 
         // Create scroll view
         scrollView = new HorizontalScrollView(getContext());
+
+        // Setting StaffView.clipChildren to false to display the whole clef resulted in notes scrolling under the clef.
+        // Setting scrollView.clipChildren didn't seem to do anything. This is a workaround.
+        scrollView.setPadding(-1,0,0,0);
+        scrollView.setClipToPadding(true);
+
         LayoutParams scrollViewParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         scrollView.setLayoutParams(scrollViewParams);
 //        scrollView.setBackgroundColor(Color.WHITE);
@@ -207,8 +213,8 @@ public class StaffView extends ViewGroup {
         FrameLayout.LayoutParams noteLinearLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT);
         noteLinearLayout.setLayoutParams(noteLinearLayoutParams);
         noteLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        noteLinearLayout.setBackgroundColor(Color.GREEN);
-        noteLinearLayout.setAlpha(.3f);
+//        noteLinearLayout.setBackgroundColor(Color.GREEN);
+//        noteLinearLayout.setAlpha(.3f);
 
         scrollView.addView(noteLinearLayout);
 

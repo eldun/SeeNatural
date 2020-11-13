@@ -30,6 +30,7 @@ public class StaffView extends ViewGroup {
     private KeySignature keySignature = KeySignature.A_MINOR;
     int clefWidth;
     int staffLineSpacing;
+    int noteSpacing = 100;
     int visibleStaffHeight;
     int totalStaffHeight;
     int noteWidth;
@@ -130,6 +131,7 @@ public class StaffView extends ViewGroup {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         staffLineSpacing = MeasureSpec.getSize(heightMeasureSpec) / staffLines.size();
+        noteSpacing = staffLineSpacing * 4;
         staffLineThickness = MeasureSpec.getSize(heightMeasureSpec)/(numberOfPracticeNotes * 4);
 
         visibleStaffHeight = staffLineSpacing * 8;
@@ -311,12 +313,9 @@ public class StaffView extends ViewGroup {
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.
         LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, visibleStaffHeight);
-
-        staffNoteParams.setMargins(200, 0, 200, 0);
-
         staffNote.setLayoutParams(staffNoteParams);
 
-        staffNoteParams.setMargins(staffLineSpacing , 0, staffNote.getMeasuredWidth(), 0);
+        staffNoteParams.setMargins(0, 0, noteSpacing, 0);
 
         staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
 

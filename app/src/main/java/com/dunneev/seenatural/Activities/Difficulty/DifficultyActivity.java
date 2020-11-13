@@ -30,7 +30,7 @@ public class DifficultyActivity extends AppCompatActivity {
 
 
         intent = new Intent(this, SightReadingActivity.class);
-        String selectedDifficulty = ((Button)view).getText().toString();
+        String selectedDifficulty = ((Button)view).getText().toString().toLowerCase();
         intent.putExtra(ClefActivity.EXTRA_SELECTED_CLEF, selectedClef);
         intent.putExtra(EXTRA_SELECTED_DIFFICULTY, selectedDifficulty);
         startActivity (intent);

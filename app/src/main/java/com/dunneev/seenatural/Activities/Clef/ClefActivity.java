@@ -28,7 +28,7 @@ public class ClefActivity extends AppCompatActivity {
 
     public void launchDifficultyActivity(View view) {
         Intent intent = new Intent(this, DifficultyActivity.class);
-        String selectedClef = ((Button)view).getText().toString();
+        String selectedClef = ((Button)view).getText().toString().toLowerCase();
         intent.putExtra(EXTRA_SELECTED_CLEF, selectedClef);
         startActivity (intent);
     }

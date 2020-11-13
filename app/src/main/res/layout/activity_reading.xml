@@ -25,11 +25,12 @@
         </com.dunneev.seenatural.Activities.SightReading.StaffView>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/testButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="addTestButton"
-            android:text="add button to noteLinearLayout" />
+            android:text="add button to noteLinearLayout"
+            android:visibility="gone" />
 
         <com.dunneev.seenatural.Activities.SightReading.PianoView
             android:id="@+id/pianoView"

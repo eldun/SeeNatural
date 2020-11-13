@@ -7,6 +7,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.text.TextPaint;
 
 public class TextDrawable extends Drawable {
 
@@ -18,30 +19,37 @@ public class TextDrawable extends Drawable {
     private CharSequence text;
     private int intrinsicWidth;
     private int intrinsicHeight;
+    private float aspectRatio;
 
     public TextDrawable(CharSequence text) {
         this.text = text;
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setColor(color);
         textPaint.setTextAlign(Paint.Align.LEFT);
-        intrinsicWidth = (int) (textPaint.measureText(this.text, 0, this.text.length()) + .5);
+        intrinsicWidth = (int) (textPaint.measureText(text, 0, text.length()) + 1);
         intrinsicHeight = textPaint.getFontMetricsInt(null);
+        aspectRatio = (float)intrinsicWidth/intrinsicHeight;
     }
     @Override
     public void draw(Canvas canvas) {
         Rect bounds = getBounds();
 
-        // Just testing to see the bounds are correct
+//         Just testing to see the bounds are correct
         Paint boundsPaint = new Paint();
         boundsPaint.setColor(Color.YELLOW);
-        boundsPaint.setAlpha(30);
+        boundsPaint.setAlpha(70);
         canvas.drawRect(bounds, boundsPaint);
 
 
         textPaint.setTextSize(bounds.height());
+
         canvas.drawText(text, 0, text.length(),
                 bounds.left, bounds.bottom, textPaint);
 
+    }
+
+    public float getAspectRatio() {
+        return aspectRatio;
     }
     @Override
     public int getOpacity() {

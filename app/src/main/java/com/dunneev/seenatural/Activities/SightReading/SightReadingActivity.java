@@ -60,8 +60,13 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     }
 
+    public void addTestButton(View view) {
+        StaffView staffView = findViewById(R.id.staffView);
+        staffView.addTestButton(view);
+    }
 
-    @Override
+
+        @Override
     protected void onStart() {
         Log.i(LOG_TAG, "onStart()");
 
@@ -83,8 +88,14 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
         if (hasFocus) {
             // todo: randomize notes BASED ON SELECTED DIFFICULTY
-            PianoNote randomNote = generatePracticablePianoNote();
-            addSightReadingNote(randomNote);
+//            PianoNote randomNote = generatePracticablePianoNote();
+            addSightReadingNote(PianoNote.B4);
+            addSightReadingNote(PianoNote.F4);
+            addSightReadingNote(PianoNote.B_FLAT_4);
+            addSightReadingNote(PianoNote.C_SHARP_5);
+            addSightReadingNote(PianoNote.G5);
+
+
         }
     }
 
@@ -149,7 +160,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
         Log.i(LOG_TAG, "Adding note: " + note.toString());
         sightReadingNotes.add(note);
-        staffView.placeNote(note);
+        staffView.addNote(note);
     }
 
     private void removeSightReadingNote(PianoNote note) {

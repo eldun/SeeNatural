@@ -23,6 +23,14 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         System.loadLibrary("native-lib");
     }
 
+    public String getSelectedClef() {
+        return selectedClef;
+    }
+
+    public String getSelectedDifficulty() {
+        return selectedDifficulty;
+    }
+
     private String selectedClef;
     private String selectedDifficulty;
 
@@ -42,13 +50,14 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(LOG_TAG, "onCreate()");
-        setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reading);
 
         Intent intent = getIntent();
         selectedClef = intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF);
         selectedDifficulty = intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY);
+
+        setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_reading);
 
         setUpStaffView();
         setUpPianoView();
@@ -112,15 +121,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     private void setUpStaffView() {
-        // Replace default XML-generated StaffView with custom StaffView
         staffView = findViewById(R.id.staffView);
-//        staffView.setAbsoluteStartingPianoKeyIndex(absoluteStartingPianoKeyIndex);
-//        staffView.setNumberOfKeys(numberOfKeys);
-//        staffView.invalidate();
-
-
-//        pianoKeys = pianoView.getPianoKeys();
-//        setPianoKeyListeners();
 
     }
 

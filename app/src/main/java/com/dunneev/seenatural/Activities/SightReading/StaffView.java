@@ -1,5 +1,7 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -26,6 +28,7 @@ public class StaffView extends ViewGroup {
 
     private static final String LOG_TAG = StaffView.class.getSimpleName();
 
+    static String selectedClef;
     boolean trebleClef;
     boolean bassClef;
     private KeySignature keySignature = KeySignature.A_MINOR;
@@ -85,17 +88,33 @@ public class StaffView extends ViewGroup {
 
     public StaffView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs, 0);
-        TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.StaffView);
 
+        // This section is mostly just so that the XML preview shows the staff
+        TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.StaffView);
         String selectedClef = styledAttributes.getString(R.styleable.StaffView_selectedClef);
+        styledAttributes.recycle();
+
+        /* Not sure if casting the context is the right way to go about getting
+        the settings selected in previous activities(clef & difficulty). However, XML attrs
+        cannot be set dynamically, which is what I would have liked to have done. Another option was
+        static variables. Might have to make some changes when the time comes to implement
+         sight reading with both clefs. */
+
+        if (context instanceof SightReadingActivity) {
+            selectedClef = ((SightReadingActivity) context).getSelectedClef();
+        }
 
         setSelectedClef(selectedClef);
 
-        styledAttributes.recycle();
         init();
     }
 
-    protected void setSelectedClef(String selectedClef) {
+    public String getSelectedClef() {
+        return selectedClef;
+    }
+
+    public void setSelectedClef(String selectedClef) {
+        this.selectedClef = selectedClef;
         if (selectedClef.equals("treble")) {
             trebleClef = true;
             bassClef = false;

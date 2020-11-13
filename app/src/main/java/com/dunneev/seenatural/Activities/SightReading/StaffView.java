@@ -290,11 +290,15 @@ public class StaffView extends ViewGroup {
         noteLinearLayout.setLayoutParams(noteLinearLayoutParams);
         noteLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-//        noteLinearLayout.setBackgroundColor(Color.GREEN);
-//        noteLinearLayout.setAlpha(.4f);
 
-        // Accidental symbols were getting clipped
+        // Prevent accidental symbols from getting clipped
         noteLinearLayout.setClipChildren(false);
+        // Setting StaffView.clipChildren to false to display the whole clef resulted in notes scrolling under the clef.
+        // Setting scrollView.clipChildren didn't seem to do anything.
+        // This is a workaround for clipping notes as they approach the staff.
+        scrollView.setPadding(-1,0,0,0);
+        scrollView.setClipToPadding(true);
+
         scrollView.addView(noteLinearLayout);
 
         addView(scrollView);

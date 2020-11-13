@@ -111,6 +111,7 @@ public class StaffView extends ViewGroup {
         addStaffLinesToView();
         addClefToView();
         addNoteScrollerToView();
+        setClipChildren(false);
     }
 
     public void addTestButton(View view) {
@@ -292,6 +293,8 @@ public class StaffView extends ViewGroup {
 //        noteLinearLayout.setBackgroundColor(Color.GREEN);
 //        noteLinearLayout.setAlpha(.4f);
 
+        // Accidental symbols were getting clipped
+        noteLinearLayout.setClipChildren(false);
         scrollView.addView(noteLinearLayout);
 
         addView(scrollView);
@@ -305,7 +308,7 @@ public class StaffView extends ViewGroup {
         // which is why we use the natural note field to determine the position.
         LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, visibleStaffHeight);
 
-        staffNoteParams.setMargins(noteWidth/2, 0, noteWidth/2, 0);
+        staffNoteParams.setMargins(200, 0, 200, 0);
 
         staffNote.setLayoutParams(staffNoteParams);
         staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight);

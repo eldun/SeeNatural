@@ -81,8 +81,9 @@ public class StaffNote extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Log.i(LOG_TAG, String.format("onMeasure(%s, %s);", MeasureSpec.toString(widthMeasureSpec), MeasureSpec.toString(heightMeasureSpec)));
 
-        int desiredWidth = 50;
-        int desiredHeight = 50;
+        // Default values just in case something goes wrong
+        int desiredWidth = 100;
+        int desiredHeight = 100;
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -91,20 +92,8 @@ public class StaffNote extends View {
 
         int width;
         int height;
-//
-//
-//        //Measure Width
-        if (widthMode == MeasureSpec.EXACTLY) {
-            //Must be this size
-            width = widthSize;
-        } else if (widthMode == MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            width = Math.min(desiredWidth, widthSize);
-        } else {
-            //Be whatever you want
-            width = desiredWidth;
-        }
 
+        // Staff notes should always be passed visibleStaffHeight.EXACTLY for height.
         //Measure Height
         if (heightMode == MeasureSpec.EXACTLY) {
             //Must be this size
@@ -116,6 +105,22 @@ public class StaffNote extends View {
             //Be whatever you want
             height = desiredHeight;
         }
+
+        // Width is be dependent on the length of text, type of note, and height of text.
+        desiredWidth = (int) (height * noteDrawable.getAspectRatio());
+
+        //Measure Width
+        if (widthMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            width = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            width = Math.min(desiredWidth, widthSize);
+        } else {
+            //Be whatever you want
+            width = desiredWidth;
+        }
+
 //
         Log.i(LOG_TAG, String.format("Measured(%d, %d);", width, height));
 
@@ -126,7 +131,6 @@ public class StaffNote extends View {
     protected void onDraw(Canvas canvas) {
 
         noteBoundsRect.set(0,0, getMeasuredWidth(), getMeasuredHeight());
-
 //        Paint blackPaint = new Paint();
 //        blackPaint.setColor(Color.BLACK);
 //        canvas.drawRect(0,0, getMeasuredWidth(), getMeasuredHeight(), blackPaint);

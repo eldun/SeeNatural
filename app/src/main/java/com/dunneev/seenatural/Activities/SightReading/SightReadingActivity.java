@@ -36,6 +36,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     Random random = new Random();
 
+    StaffView staffView = findViewById(R.id.staffView);
 
 
     @Override
@@ -61,7 +62,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     public void addTestButton(View view) {
-        StaffView staffView = findViewById(R.id.staffView);
+        staffView = findViewById(R.id.staffView);
         staffView.addTestButton(view);
     }
 
@@ -155,17 +156,12 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
 
     private void addSightReadingNote(PianoNote note) {
-
-        StaffView staffView = findViewById(R.id.staffView);
-
         Log.i(LOG_TAG, "Adding note: " + note.toString());
         sightReadingNotes.add(note);
         staffView.addNote(note);
     }
 
     private void removeSightReadingNote(PianoNote note) {
-        StaffView staffView = findViewById(R.id.staffView);
-
         sightReadingNotes.remove(0);
 
         staffView.removeNote(note);

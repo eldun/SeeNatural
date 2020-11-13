@@ -2,6 +2,8 @@ package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -33,14 +35,27 @@ public class StaffNote extends View {
         super(context);
         this.note = note;
         this.keySignature = keySignature;
+        init();
+    }
+
+    public StaffNote(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        this.note = PianoNote.B_FLAT_4;
+        this.keySignature = KeySignature.C_MAJOR;
+        init();
+    }
+
+    private void init() {
+
         isAccidental = checkIfAccidental(note);
 
         if (isAccidental) {
-            accidentalDrawable = new TextDrawable(accidentalSymbol);
+            noteDrawable = new TextDrawable(accidentalSymbol + getResources().getString(R.string.char_quarter_note));
         }
 
-        noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note));
-
+        else {
+            noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note));
+        }
     }
 
     protected boolean checkIfAccidental(PianoNote note) {
@@ -62,36 +77,61 @@ public class StaffNote extends View {
         return true;
     }
 
-    public StaffNote(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+        Log.i(LOG_TAG, String.format("onMeasure(%s, %s);", MeasureSpec.toString(widthMeasureSpec), MeasureSpec.toString(heightMeasureSpec)));
+
+        int desiredWidth = 50;
+        int desiredHeight = 50;
+
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+
+        int width;
+        int height;
+//
+//
+//        //Measure Width
+        if (widthMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            width = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            width = Math.min(desiredWidth, widthSize);
+        } else {
+            //Be whatever you want
+            width = desiredWidth;
+        }
+
+        //Measure Height
+        if (heightMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            height = heightSize;
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            height = Math.min(desiredHeight, heightSize);
+        } else {
+            //Be whatever you want
+            height = desiredHeight;
+        }
+//
+        Log.i(LOG_TAG, String.format("Measured(%d, %d);", width, height));
+
+        setMeasuredDimension(width, height);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+
         noteBoundsRect.set(0,0, getMeasuredWidth(), getMeasuredHeight());
 
-        if (isAccidental) {
-            accidentalDrawable.setBounds(noteBoundsRect.left - noteBoundsRect.width(), noteBoundsRect.top, noteBoundsRect.left, noteBoundsRect.bottom);
-
-            accidentalDrawable.draw(canvas);
-        }
-
+//        Paint blackPaint = new Paint();
+//        blackPaint.setColor(Color.BLACK);
+//        canvas.drawRect(0,0, getMeasuredWidth(), getMeasuredHeight(), blackPaint);
 
         noteDrawable.setBounds(noteBoundsRect);
-
-        //        super.onDraw(canvas);
-        //        Paint greenPaint = new Paint();
-        //        greenPaint.setColor(Color.GREEN);
-        //        canvas.drawCircle(100,100,50, greenPaint);
-
-        Log.i(LOG_TAG, "isAccidental: " + isAccidental);
         noteDrawable.draw(canvas);
 
     }

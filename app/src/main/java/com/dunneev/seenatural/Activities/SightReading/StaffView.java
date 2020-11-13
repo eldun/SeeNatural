@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -41,6 +42,8 @@ public class StaffView extends ViewGroup {
     ArrayList<PianoNote> practiceNotesDescending;
     ArrayList<StaffLine> staffLines;
     int staffLineThickness;
+    int yCoord = 0;
+    static int staffViewOnMeasureCount = 0;
 
     HorizontalScrollView scrollView;
     LinearLayout noteLinearLayout;
@@ -79,8 +82,12 @@ public class StaffView extends ViewGroup {
     }
 
     public StaffView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        super(context, attrs, 0);
         init();
+    }
+
+    public StaffView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
     }
 
     private void init() {
@@ -96,11 +103,119 @@ public class StaffView extends ViewGroup {
         practiceNotesDescending = new ArrayList<>();
 
         staffLines = new ArrayList<>();
-        populatePracticeNotes();
-        populateStaffLines();
+
+        setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+
+        populatePracticeNoteArrays();
+        addStaffLinesToView();
+        addClefToView();
+        addNoteScrollerToView();
     }
 
-    private void populatePracticeNotes() {
+    public void addTestButton(View view) {
+        Button button0 = new Button(getContext());
+        button0.setText("button0");
+        button0.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+        noteLinearLayout.addView(button0);
+    }
+
+    /**
+     * Calculate size of StaffView and all children
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        staffLineSpacing = MeasureSpec.getSize(heightMeasureSpec) / staffLines.size();
+        staffLineThickness = MeasureSpec.getSize(heightMeasureSpec)/(numberOfPracticeNotes * 4);
+
+        visibleStaffHeight = staffLineSpacing * 8;
+        totalStaffHeight = staffLineSpacing * numberOfPracticeNotes;
+        noteWidth = staffLineSpacing * 3;
+
+        StaffLine.setDesiredHeight(staffLineSpacing);
+        StaffClef.setDesiredHeight(visibleStaffHeight);
+
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+
+//
+//        staffLineSpacing = getHeight() / staffLines.size();
+//        int clefWidth = MeasureSpec.makeMeasureSpec(staffLineSpacing * 3, MeasureSpec.EXACTLY);
+//        int clefHeight = MeasureSpec.makeMeasureSpec(staffLineSpacing * 8, MeasureSpec.EXACTLY);
+//
+//        getChildAt(staffLines.size() + 1).measure(clefWidth, clefHeight);
+
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
+    }
+
+
+    /**
+     * Position all children within this layout.
+     */
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+
+        int childLeft = 100;
+        int childTop = 100;
+        int childRight = 300;
+        int childBottom = 300;
+
+        // Reset staff coord to zero so that if the ViewGroup is
+        // laid out more than once, the staff isn't off-screen
+        yCoord = 0;
+
+        final int childCount = getChildCount();
+
+        if (childCount == 0) {
+                return;
+        }
+
+            for (int i = 0; i < childCount; i++) {
+                final View child = getChildAt(i);
+
+                if (child.getClass() == StaffLine.class) {
+
+                    childLeft = 0;
+                    childTop = yCoord;
+                    childRight = child.getMeasuredWidth();
+                    childBottom = childTop + child.getMeasuredHeight();
+
+                    noteStaffCoordinateMap.put(((StaffLine) child).note, (childTop + childBottom) / 2);
+
+                    yCoord += staffLineSpacing;
+                }
+
+                else if (child.getClass() == StaffClef.class) {
+
+                    childLeft = 0;
+                    childTop = noteStaffCoordinateMap.get(PianoNote.F5);
+                    childRight = child.getMeasuredWidth();
+                    childBottom = childTop + child.getMeasuredHeight();
+
+                    clefWidth = childRight;
+                }
+
+                // NoteScroller
+                else if (child.getClass() == HorizontalScrollView.class) {
+                    childLeft = clefWidth;
+                    childTop = 0;
+                    childRight = getMeasuredWidth();
+                    childBottom = getMeasuredHeight();
+                }
+
+                else {
+                    Log.i(LOG_TAG, "you missed laying out " + child.getClass().toString());
+                }
+
+                child.layout(childLeft, childTop, childRight, childBottom);
+
+            }
+        }
+
+
+    private void populatePracticeNoteArrays() {
 
         for (int i=0; i<numberOfPracticeNotes; i++) {
             PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + i);
@@ -110,8 +225,9 @@ public class StaffView extends ViewGroup {
         Collections.reverse(practiceNotesDescending);
     }
 
-    private void populateStaffLines() {
+    private void addStaffLinesToView() {
         StaffLine line;
+
 
         for (PianoNote note: practiceNotesDescending) {
 
@@ -120,59 +236,29 @@ public class StaffView extends ViewGroup {
             // either the key signature or a ♯/♮/♭ symbol if the note in question is an accidental.
             if (note.keyColor == Color.WHITE) {
                 line = new StaffLine(this.getContext(), note);
+                line.setStaffLinePaint(staffLinePaint);
                 staffLines.add(line);
+                LayoutParams staffLineParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                addView(line, staffLineParams);
             }
         }
     }
 
 
-    private void drawStaffLines() {
-
-        StaffLine staffLine;
-
-        staffLineSpacing = getHeight() / (staffLines.size());
-        staffLineThickness = getHeight()/(numberOfPracticeNotes * 4);
-//        int staffLineSpacing = viewHeight / (numberOfPracticeNotes);
-        int yCoordinate = 0;
-
-        staffLinePaint.setStrokeWidth(staffLineThickness);
 
 
-        for (int i = 0; i < staffLines.size(); i++) {
-            staffLine = staffLines.get(i);
-            staffLine.setStaffLinePaint(staffLinePaint);
-
-            staffLine.layout(0, yCoordinate, getWidth(), yCoordinate+staffLineSpacing);
-
-            // Map notes to Y coordinates on the staff
-            noteStaffCoordinateMap.put(staffLine.note, yCoordinate + staffLineSpacing + (staffLineThickness / 2));
-
-            yCoordinate += staffLineSpacing;
-
-            addViewInLayout(staffLine, -1, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT),true);
-        }
-
-        visibleStaffHeight = staffLineSpacing * 8;
-        totalStaffHeight = staffLineSpacing * numberOfPracticeNotes;
-        noteWidth = staffLineSpacing * 3;
-        clefWidth = noteWidth * 2;
-    }
-
-    private void drawClef() {
+    private void addClefToView() {
 
         StaffClef staffClef = CreateClef();
 
-        int measureSpecWidth = MeasureSpec.makeMeasureSpec(clefWidth, MeasureSpec.EXACTLY);
-        int measureSpecHeight = MeasureSpec.makeMeasureSpec(visibleStaffHeight, MeasureSpec.EXACTLY);
-        staffClef.measure(measureSpecWidth, measureSpecHeight);
-
         // The treble clef is taller than the staff, but the clipped parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
-        setClipChildren(false);
+//        setClipChildren(false);
 
-        staffClef.layout(0, noteStaffCoordinateMap.get(PianoNote.G5), staffClef.getMeasuredWidth(), noteStaffCoordinateMap.get(PianoNote.G5) + staffClef.getMeasuredHeight());
+        LayoutParams staffClefParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        staffClef.setLayoutParams(staffClefParams);
 
-        addViewInLayout(staffClef, -1, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT), true);
+        addView(staffClef);
     }
 
     private StaffClef CreateClef() {
@@ -187,56 +273,37 @@ public class StaffView extends ViewGroup {
 
 
 
-    private void addNoteScroller() {
+    private void addNoteScrollerToView() {
 
         // Create scroll view
         scrollView = new HorizontalScrollView(getContext());
-
-        // Setting StaffView.clipChildren to false to display the whole clef resulted in notes scrolling under the clef.
-        // Setting scrollView.clipChildren didn't seem to do anything. This is a workaround.
-        scrollView.setPadding(-1,0,0,0);
-        scrollView.setClipToPadding(true);
-
-        LayoutParams scrollViewParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        scrollView.setLayoutParams(scrollViewParams);
 //        scrollView.setBackgroundColor(Color.WHITE);
-//        scrollView.setAlpha(.8f);
-
+//        scrollView.setAlpha(.3f);
+        LayoutParams scrollViewParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        scrollView.setLayoutParams(scrollViewParams);
 
         // Create linear layout for scrollable elements
         noteLinearLayout = new LinearLayout(getContext());
+
         FrameLayout.LayoutParams noteLinearLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT);
         noteLinearLayout.setLayoutParams(noteLinearLayoutParams);
         noteLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
 //        noteLinearLayout.setBackgroundColor(Color.GREEN);
-//        noteLinearLayout.setAlpha(.3f);
+//        noteLinearLayout.setAlpha(.4f);
 
         scrollView.addView(noteLinearLayout);
 
-        addViewInLayout(scrollView, -1, scrollViewParams);
-    }
-
-    private void updateNoteScroller() {
-        // Configure scroll size and layout
-        int widthMeasureSpec = MeasureSpec.makeMeasureSpec(getWidth() - clefWidth, MeasureSpec.EXACTLY);
-        int heightMeasureSpec = MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY);
-        scrollView.measure(widthMeasureSpec, heightMeasureSpec);
-
-        scrollView.layout(clefWidth, 0, clefWidth + scrollView.getMeasuredWidth(), scrollView.getMeasuredHeight());
+        addView(scrollView);
     }
 
 
-    protected void placeNote(PianoNote note) {
-        drawNote(note);
-    }
-
-    private void drawNote(PianoNote note) {
+    protected void addNote(PianoNote note) {
         StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.
-//        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(noteWidth, visibleStaffHeight);
-        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(noteWidth, visibleStaffHeight);
+        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, visibleStaffHeight);
 
         staffNoteParams.setMargins(noteWidth/2, 0, noteWidth/2, 0);
 
@@ -247,28 +314,11 @@ public class StaffView extends ViewGroup {
 
         notesOnStaff++;
 
-        updateNoteScroller();
-
     }
 
     protected void removeNote(PianoNote note) {
-        Log.i(LOG_TAG, "Removing " + note);
-
-        View childNoteView = getChildAt(staffLines.size() + notesOnStaff);
-
-        removeView(childNoteView);
-        notesOnStaff--;
 
     }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (changed) {
-            drawStaffLines();
-            drawClef();
-            addNoteScroller();
-        }
-
-    }
 }
 

@@ -2,12 +2,9 @@ package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.dunneev.seenatural.R;
@@ -17,7 +14,7 @@ public class StaffClef extends View {
     private static final String LOG_TAG = StaffClef.class.getSimpleName();
 
 
-    private String clef;
+    private String clefChar;
     TextDrawable clefDrawable;
     private KeySignature keySignature;
 
@@ -27,17 +24,17 @@ public class StaffClef extends View {
 
     Rect boundsRect = new Rect();
 
-    public StaffClef(Context context, String clef, KeySignature keySignature) {
+    public StaffClef(Context context, String clefChar, KeySignature keySignature) {
         super(context);
-        this.clef = clef;
-        this.clefDrawable = new TextDrawable(clef);
+        this.clefChar = clefChar;
+        this.clefDrawable = new TextDrawable(clefChar);
         this.keySignature = keySignature;
     }
 
     public StaffClef(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        this.clef = getResources().getString(R.string.char_treble_clef);
-        this.clefDrawable = new TextDrawable(clef);
+        this.clefChar = getResources().getString(R.string.char_treble_clef);
+        this.clefDrawable = new TextDrawable(clefChar);
         this.keySignature = KeySignature.C_MAJOR;
     }
 

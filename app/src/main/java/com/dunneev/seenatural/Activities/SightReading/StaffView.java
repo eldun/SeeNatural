@@ -1,6 +1,7 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
@@ -25,7 +26,7 @@ public class StaffView extends ViewGroup {
 
     private static final String LOG_TAG = StaffView.class.getSimpleName();
 
-    boolean trebleClef = true;
+    boolean trebleClef;
     boolean bassClef;
     private KeySignature keySignature = KeySignature.A_MINOR;
     int clefWidth;
@@ -84,7 +85,25 @@ public class StaffView extends ViewGroup {
 
     public StaffView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs, 0);
+        TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.StaffView);
+
+        String selectedClef = styledAttributes.getString(R.styleable.StaffView_selectedClef);
+
+        setSelectedClef(selectedClef);
+
+        styledAttributes.recycle();
         init();
+    }
+
+    protected void setSelectedClef(String selectedClef) {
+        if (selectedClef.equals("treble")) {
+            trebleClef = true;
+            bassClef = false;
+        }
+        else if (selectedClef.equals("bass")) {
+            trebleClef = false;
+            bassClef = true;
+        }
     }
 
     public StaffView(Context context, AttributeSet attrs, int defStyle) {
@@ -251,6 +270,7 @@ public class StaffView extends ViewGroup {
 
 
     private void addClefToView() {
+
 
         StaffClef staffClef = CreateClef();
 

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="StaffView">
+        <attr name="selectedClef" format="string" />
+    </declare-styleable>
     <declare-styleable name="PianoView">
         <attr name="absoluteStartingPianoKeyIndex" format="integer" />
         <attr name="numberOfKeys" format="integer" />

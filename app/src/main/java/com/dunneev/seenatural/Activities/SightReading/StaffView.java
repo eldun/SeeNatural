@@ -315,7 +315,10 @@ public class StaffView extends ViewGroup {
         staffNoteParams.setMargins(200, 0, 200, 0);
 
         staffNote.setLayoutParams(staffNoteParams);
-        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight);
+
+        staffNoteParams.setMargins(staffLineSpacing , 0, staffNote.getMeasuredWidth(), 0);
+
+        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
 
         noteLinearLayout.addView(staffNote);
 

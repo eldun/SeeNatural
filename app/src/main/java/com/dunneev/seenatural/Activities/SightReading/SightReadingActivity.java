@@ -62,7 +62,6 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     public void addTestButton(View view) {
-        staffView = findViewById(R.id.staffView);
         staffView.addTestButton(view);
     }
 

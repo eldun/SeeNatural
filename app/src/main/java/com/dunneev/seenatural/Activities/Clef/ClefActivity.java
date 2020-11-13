@@ -42,12 +42,4 @@ public class ClefActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_SELECTED_CLEF, selectedClef);
         startActivity (intent);
     }
-
-    /*
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-//    public native String stringFromJNI();
-//    public native void startOboeSineWave();
-//    public native void startStreamManager();
 }

@@ -12,10 +12,6 @@ import com.dunneev.seenatural.R;
 
 public class ClefActivity extends AppCompatActivity {
 
-//    static {
-//        System.loadLibrary("native-lib");
-//    }
-
     public static final String EXTRA_SELECTED_CLEF =
             "com.dunneev.seenatural.ClefActivity.extra.SELECTED_CLEF";
 
@@ -28,12 +24,6 @@ public class ClefActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clef);
-
-        // Examples of calls to native method (in native-lib.cpp)
-        // TextView tv = (TextView) findViewById(R.id.sample_text);
-        // tv.setText(stringFromJNI());
-//    startOboeSineWave();
-//         startStreamManager();
     }
 
     public void launchDifficultyActivity(View view) {

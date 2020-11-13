@@ -79,7 +79,6 @@ public class StaffNote extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i(LOG_TAG, String.format("onMeasure(%s, %s);", MeasureSpec.toString(widthMeasureSpec), MeasureSpec.toString(heightMeasureSpec)));
 
         // Default values just in case something goes wrong
         int desiredWidth = 100;
@@ -120,9 +119,6 @@ public class StaffNote extends View {
             //Be whatever you want
             width = desiredWidth;
         }
-
-//
-        Log.i(LOG_TAG, String.format("Measured(%d, %d);", width, height));
 
         setMeasuredDimension(width, height);
     }

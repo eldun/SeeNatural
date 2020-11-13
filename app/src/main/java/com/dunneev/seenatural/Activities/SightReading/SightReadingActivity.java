@@ -36,7 +36,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     Random random = new Random();
 
-    StaffView staffView = findViewById(R.id.staffView);
+    StaffView staffView;
 
 
     @Override
@@ -46,16 +46,12 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
 
-        setUpStaffView();
-        setUpPianoView();
-
         Intent intent = getIntent();
         selectedClef = intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF);
         selectedDifficulty = intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY);
 
-        Log.d(LOG_TAG, "Extras:");
-        Log.d(LOG_TAG, intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF));
-        Log.d(LOG_TAG, intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY));
+        setUpStaffView();
+        setUpPianoView();
 
         soundPlayer.loadWavAssets(this.getAssets());
 
@@ -117,7 +113,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     private void setUpStaffView() {
         // Replace default XML-generated StaffView with custom StaffView
-//        StaffView staffView = findViewById(R.id.staffView);
+        staffView = findViewById(R.id.staffView);
 //        staffView.setAbsoluteStartingPianoKeyIndex(absoluteStartingPianoKeyIndex);
 //        staffView.setNumberOfKeys(numberOfKeys);
 //        staffView.invalidate();

@@ -230,10 +230,19 @@ public class StaffView extends ViewGroup {
 
                 else if (child.getClass() == StaffClef.class) {
 
-                    childLeft = 0;
-                    childTop = noteStaffCoordinateMap.get(PianoNote.F5);
-                    childRight = child.getMeasuredWidth();
-                    childBottom = childTop + child.getMeasuredHeight();
+                    if (trebleClef) {
+                        childLeft = 0;
+                        childTop = noteStaffCoordinateMap.get(PianoNote.F5);
+                        childRight = child.getMeasuredWidth();
+                        childBottom = childTop + child.getMeasuredHeight();
+                    }
+
+                    else if (bassClef) {
+                        childLeft = 0;
+                        childTop = noteStaffCoordinateMap.get(PianoNote.G5);
+                        childRight = child.getMeasuredWidth();
+                        childBottom = childTop + child.getMeasuredHeight();
+                    }
 
                     clefWidth = childRight;
                 }

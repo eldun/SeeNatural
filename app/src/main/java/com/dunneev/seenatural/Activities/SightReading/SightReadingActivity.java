@@ -79,8 +79,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
 
-        replaceStaticStaffViewWithDynamic();
-//        setUpPianoView();
+        setUpPianoView();
 
         soundPlayer.loadWavAssets(this.getAssets());
 
@@ -183,6 +182,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     private void addSightReadingNote(PianoNote note) {
         Log.i(LOG_TAG, "Adding note: " + note.toString());
+        staffView = findViewById(R.id.staffView);
         notesOnStaff.add(note);
         staffView.addNote(note);
     }

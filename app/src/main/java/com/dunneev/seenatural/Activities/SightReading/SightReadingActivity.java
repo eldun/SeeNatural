@@ -1,6 +1,7 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,51 +24,84 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         System.loadLibrary("native-lib");
     }
 
-    public String getSelectedClef() {
-        return selectedClef;
-    }
-
-    public String getSelectedDifficulty() {
-        return selectedDifficulty;
-    }
-
     private String selectedClef;
+    private boolean trebleClef;
+    private boolean bassClef;
+
     private String selectedDifficulty;
 
-    private int absoluteStartingPianoKeyIndex = 39;
     private int numberOfKeys = 12;
     private ArrayList<PianoKey> pianoKeys = null;
 
-    private ArrayList sightReadingNotes = new ArrayList();
+    private PianoNote lowPracticeNote;
+    private PianoNote highPracticeNote;
 
-    private SoundPlayer soundPlayer = new SoundPlayer(absoluteStartingPianoKeyIndex, numberOfKeys);
+    private ArrayList<PianoNote> practicableNotes = new ArrayList();
+
+    private ArrayList notesOnStaff = new ArrayList();
+
+    private SoundPlayer soundPlayer;
 
     Random random = new Random();
 
     StaffView staffView;
 
+    public String getSelectedClef() {
+        return this.selectedClef;
+    }
+
+
+    public void setSelectedClef(String selectedClef) {
+        this.selectedClef = selectedClef;
+
+        if (selectedClef.equals("treble")) {
+            trebleClef = true;
+            bassClef = false;
+        }
+        else if (selectedClef.equals("bass")) {
+            trebleClef = false;
+            bassClef = true;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(LOG_TAG, "onCreate()");
 
         Intent intent = getIntent();
-        selectedClef = intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF);
+        setSelectedClef(intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF));
         selectedDifficulty = intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY);
+
+        setPracticableNotes();
+        soundPlayer = new SoundPlayer(lowPracticeNote.absoluteKeyIndex, numberOfKeys);
 
         setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
 
-        setUpStaffView();
-        setUpPianoView();
+        replaceStaticStaffViewWithDynamic();
+//        setUpPianoView();
 
         soundPlayer.loadWavAssets(this.getAssets());
 
     }
 
+    private void setPracticableNotes() {
+        if (trebleClef) {
+            lowPracticeNote = PianoNote.C4;
+        }
+        else if (bassClef) {
+            lowPracticeNote = PianoNote.G2;
+        }
+
+        highPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + numberOfKeys);
+
+        for (int i=0;i<numberOfKeys;i++) {
+            practicableNotes.add(PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + i));
+        }
+    }
+
     public void addTestButton(View view) {
-        staffView.addTestButton(view);
     }
 
 
@@ -94,6 +128,9 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         if (hasFocus) {
             // todo: generate random notes based on piano keys as well staffview practice range
             // todo: randomize notes BASED ON SELECTED DIFFICULTY
+            for (PianoNote note : practicableNotes) {
+                addSightReadingNote(note);
+            }
         }
     }
 
@@ -123,7 +160,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
         // Replace default XML-generated PianoView with custom PianoView
         PianoView pianoView = findViewById(R.id.pianoView);
-        pianoView.setAbsoluteStartingPianoKeyIndex(absoluteStartingPianoKeyIndex);
+        pianoView.setStartingNote(lowPracticeNote);
         pianoView.setNumberOfKeys(numberOfKeys);
         pianoView.invalidate();
 
@@ -146,12 +183,12 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     private void addSightReadingNote(PianoNote note) {
         Log.i(LOG_TAG, "Adding note: " + note.toString());
-        sightReadingNotes.add(note);
+        notesOnStaff.add(note);
         staffView.addNote(note);
     }
 
     private void removeSightReadingNote(PianoNote note) {
-        sightReadingNotes.remove(0);
+        notesOnStaff.remove(0);
 
         staffView.removeNote(note);
     }
@@ -160,7 +197,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         Toast toast = new Toast(this);
         toast.setGravity(Gravity.CENTER,0,0);
 
-        if (note == sightReadingNotes.get(0)) {
+        if (note == notesOnStaff.get(0)) {
 
             toast = Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT);
             toast.show();
@@ -177,7 +214,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
         PianoNote note = key.getNote();
-        int relativePianoKeyIndex = note.absoluteKeyIndex - absoluteStartingPianoKeyIndex;
+        int relativePianoKeyIndex = note.absoluteKeyIndex - lowPracticeNote.absoluteKeyIndex;
 
         soundPlayer.triggerDown(relativePianoKeyIndex);
 

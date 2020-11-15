@@ -18,7 +18,7 @@ public class PianoView extends ViewGroup {
     private static final double whiteToBlackWidthRatio = (7.0/8.0)/(15.0/32.0);
     private static final double whiteToBlackHeightRatio = (6.0)/(63.0/16.0);
 
-    private int absoluteStartingPianoKeyIndex = 39;
+    private PianoNote startingNote = PianoNote.C4;
     private int numberOfKeys = 12;
 
     private double whiteKeyWidth;
@@ -35,12 +35,12 @@ public class PianoView extends ViewGroup {
 
 
     // Getters & Setters
-    public int getAbsoluteStartingPianoKeyIndex () {
-        return absoluteStartingPianoKeyIndex;
+    public PianoNote getStartingNote () {
+        return startingNote;
     }
 
-    public void setAbsoluteStartingPianoKeyIndex ( int absoluteStartingPianoKeyIndex){
-        this.absoluteStartingPianoKeyIndex = absoluteStartingPianoKeyIndex;
+    public void setStartingNote(PianoNote startingNote){
+        this.startingNote = startingNote;
     }
 
     public int getNumberOfKeys () {
@@ -107,9 +107,9 @@ public class PianoView extends ViewGroup {
 
 
 
-    public PianoView(Context context, int startingKeyIndex, int numberOfKeys) {
+    public PianoView(Context context, PianoNote startingNote, int numberOfKeys) {
         super(context);
-        setAbsoluteStartingPianoKeyIndex(startingKeyIndex);
+        setStartingNote(startingNote);
         setNumberOfKeys(numberOfKeys);
         init();
     }
@@ -192,7 +192,7 @@ public class PianoView extends ViewGroup {
 
         for (int i=0;i<numberOfKeys;i++) {
 
-            PianoKey key = new PianoKey(getContext(), PianoNote.valueOfAbsoluteKeyIndex(absoluteStartingPianoKeyIndex + i));
+            PianoKey key = new PianoKey(getContext(), PianoNote.valueOfAbsoluteKeyIndex(startingNote.absoluteKeyIndex + i));
             pianoKeys.add(key);
 
             if (key.getColor() == Color.WHITE)

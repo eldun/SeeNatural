@@ -1,11 +1,8 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -45,9 +42,7 @@ public class StaffView extends ViewGroup {
     ArrayList<PianoNote> practiceNotesAscending;
     ArrayList<PianoNote> practiceNotesDescending;
     ArrayList<StaffLine> staffLines;
-    int staffLineThickness;
-    int yCoord = 0;
-    static int staffViewOnMeasureCount = 0;
+    int staffLineYCoordinate = 0;
 
     HorizontalScrollView scrollView;
     LinearLayout noteLinearLayout;
@@ -55,22 +50,6 @@ public class StaffView extends ViewGroup {
 
     private static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
 
-
-    public boolean isTrebleClef() {
-        return trebleClef;
-    }
-
-    public void setTrebleClef(boolean trebleClef) {
-        this.trebleClef = trebleClef;
-    }
-
-    public boolean isBassClef() {
-        return bassClef;
-    }
-
-    public void setBassClef(boolean bassClef) {
-        this.bassClef = bassClef;
-    }
 
     public KeySignature getKeySignature() {
         return keySignature;
@@ -110,10 +89,6 @@ public class StaffView extends ViewGroup {
         init();
     }
 
-    public String getSelectedClef() {
-        return selectedClef;
-    }
-
     public void setSelectedClef(String selectedClef) {
         this.selectedClef = selectedClef;
         if (selectedClef.equals("treble")) {
@@ -136,7 +111,7 @@ public class StaffView extends ViewGroup {
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 
-        setDefaultPracticeNoteRange();
+        setPracticeNoteRange();
         populatePracticeNoteArrays();
         addStaffLinesToView();
         addClefToView();
@@ -144,7 +119,7 @@ public class StaffView extends ViewGroup {
         setClipChildren(false);
     }
 
-    private void setDefaultPracticeNoteRange() {
+    private void setPracticeNoteRange() {
         if (trebleClef) {
             lowPracticeNote = PianoNote.C4;
             highPracticeNote = PianoNote.C6;
@@ -161,14 +136,6 @@ public class StaffView extends ViewGroup {
         practiceNotesDescending = new ArrayList<>();
     }
 
-    public void addTestButton(View view) {
-        Button button0 = new Button(getContext());
-        button0.setText("button0");
-        button0.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-        noteLinearLayout.addView(button0);
-    }
-
     /**
      * Calculate size of StaffView and all children
      */
@@ -178,7 +145,6 @@ public class StaffView extends ViewGroup {
 
         staffLineSpacing = MeasureSpec.getSize(heightMeasureSpec) / staffLines.size();
         noteSpacing = staffLineSpacing * 4;
-        staffLineThickness = MeasureSpec.getSize(heightMeasureSpec)/(numberOfPracticeNotes * 4);
 
         visibleStaffHeight = staffLineSpacing * 8;
         totalStaffHeight = staffLineSpacing * numberOfPracticeNotes;
@@ -213,7 +179,7 @@ public class StaffView extends ViewGroup {
 
         // Reset staff coord to zero so that if the ViewGroup is
         // laid out more than once, the staff isn't off-screen
-        yCoord = 0;
+        staffLineYCoordinate = 0;
 
         final int childCount = getChildCount();
 
@@ -227,13 +193,13 @@ public class StaffView extends ViewGroup {
                 if (child.getClass() == StaffLine.class) {
 
                     childLeft = 0;
-                    childTop = yCoord;
+                    childTop = staffLineYCoordinate;
                     childRight = child.getMeasuredWidth();
                     childBottom = childTop + child.getMeasuredHeight();
 
                     noteStaffCoordinateMap.put(((StaffLine) child).note, (childTop + childBottom) / 2);
 
-                    yCoord += staffLineSpacing;
+                    staffLineYCoordinate += staffLineSpacing;
                 }
 
                 else if (child.getClass() == StaffClef.class) {

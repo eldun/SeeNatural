@@ -33,6 +33,10 @@ public class StaffClef extends View {
 
     public StaffClef(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        createDefaultClef();
+    }
+
+    private void createDefaultClef() {
         this.clefChar = getResources().getString(R.string.char_treble_clef);
         this.clefDrawable = new TextDrawable(clefChar);
         this.keySignature = KeySignature.C_MAJOR;

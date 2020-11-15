@@ -38,7 +38,6 @@ public class StaffView extends ViewGroup {
     int visibleStaffHeight;
     int totalStaffHeight;
     int noteWidth;
-    protected Paint staffLinePaint;
     PianoNote lowPracticeNote;
     PianoNote highPracticeNote;
     int numberOfPracticeNotes;
@@ -89,7 +88,7 @@ public class StaffView extends ViewGroup {
     public StaffView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs, 0);
 
-        // This section is mostly just so that the XML preview shows the staff
+        // These lines are mostly just so that the XML preview shows the staff
         TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.StaffView);
         String selectedClef = styledAttributes.getString(R.styleable.StaffView_selectedClef);
         styledAttributes.recycle();
@@ -98,8 +97,10 @@ public class StaffView extends ViewGroup {
         the settings selected in previous activities(clef & difficulty). However, XML attrs
         cannot be set dynamically, which is what I would have liked to have done. Another option was
         static variables. Might have to make some changes when the time comes to implement
-         sight reading with both clefs. */
+        sight reading with both clefs.
 
+        Will likely use SharedPreferences instead of extras in the future.
+         */
         if (context instanceof SightReadingActivity) {
             selectedClef = ((SightReadingActivity) context).getSelectedClef();
         }
@@ -130,27 +131,34 @@ public class StaffView extends ViewGroup {
     }
 
     private void init() {
-        staffLinePaint = new Paint();
-        staffLinePaint.setColor(Color.RED);
-
-        lowPracticeNote = PianoNote.C4;
-        highPracticeNote = PianoNote.C6;
-        numberOfPracticeNotes = (highPracticeNote.absoluteKeyIndex -
-                lowPracticeNote.absoluteKeyIndex)
-                + 1;
-        practiceNotesAscending = new ArrayList<>();
-        practiceNotesDescending = new ArrayList<>();
-
         staffLines = new ArrayList<>();
 
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 
+        setDefaultPracticeNoteRange();
         populatePracticeNoteArrays();
         addStaffLinesToView();
         addClefToView();
         addNoteScrollerToView();
         setClipChildren(false);
+    }
+
+    private void setDefaultPracticeNoteRange() {
+        if (trebleClef) {
+            lowPracticeNote = PianoNote.C4;
+            highPracticeNote = PianoNote.C6;
+        }
+        else if (bassClef) {
+            lowPracticeNote = PianoNote.C2;
+            highPracticeNote = PianoNote.C4;
+        }
+
+        numberOfPracticeNotes = (highPracticeNote.absoluteKeyIndex -
+                lowPracticeNote.absoluteKeyIndex)
+                + 1;
+        practiceNotesAscending = new ArrayList<>();
+        practiceNotesDescending = new ArrayList<>();
     }
 
     public void addTestButton(View view) {
@@ -239,7 +247,7 @@ public class StaffView extends ViewGroup {
 
                     else if (bassClef) {
                         childLeft = 0;
-                        childTop = noteStaffCoordinateMap.get(PianoNote.G5);
+                        childTop = noteStaffCoordinateMap.get(PianoNote.B3) + (staffLineSpacing/4);
                         childRight = child.getMeasuredWidth();
                         childBottom = childTop + child.getMeasuredHeight();
                     }
@@ -285,8 +293,8 @@ public class StaffView extends ViewGroup {
             // Whether they are sharp or flat is signified by
             // either the key signature or a ♯/♮/♭ symbol if the note in question is an accidental.
             if (note.keyColor == Color.WHITE) {
-                line = new StaffLine(this.getContext(), note);
-                line.setStaffLinePaint(staffLinePaint);
+                line = new StaffLine(getContext(), selectedClef, note);
+//                line.setStaffLinePaint(staffLinePaint);
                 staffLines.add(line);
                 LayoutParams staffLineParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 addView(line, staffLineParams);
@@ -298,7 +306,6 @@ public class StaffView extends ViewGroup {
 
 
     private void addClefToView() {
-
 
         StaffClef staffClef = CreateClef();
 

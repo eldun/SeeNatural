@@ -92,15 +92,8 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onWindowFocusChanged(hasFocus);
 
         if (hasFocus) {
+            // todo: generate random notes based on piano keys as well staffview practice range
             // todo: randomize notes BASED ON SELECTED DIFFICULTY
-//            PianoNote randomNote = generatePracticablePianoNote();
-            addSightReadingNote(PianoNote.B4);
-            addSightReadingNote(PianoNote.F4);
-            addSightReadingNote(PianoNote.B_FLAT_4);
-            addSightReadingNote(PianoNote.C_SHARP_5);
-            addSightReadingNote(PianoNote.G5);
-
-
         }
     }
 

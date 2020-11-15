@@ -14,15 +14,17 @@ public class StaffLine extends View {
 
     private static final String LOG_TAG = StaffLine.class.getSimpleName();
 
-    protected boolean trebleClef = true;
-    protected boolean bassClef;
+    private String selectedClef = "";
+
+    private boolean trebleClef;
+    private boolean bassClef;
 
     private static int desiredWidth = 100;
     private static int desiredHeight = 100;
 
     protected PianoNote note;
 
-    protected static Paint staffLinePaint;
+    protected static Paint staffLinePaint = new Paint();
 
     protected static int staffLineCount = 0;
 
@@ -31,14 +33,44 @@ public class StaffLine extends View {
         return staffLinePaint;
     }
 
+    public String getSelectedClef() {
+        return selectedClef;
+    }
+
+    public final void setSelectedClef(String selectedClef) {
+        this.selectedClef = selectedClef;
+
+        if (selectedClef.equals("treble")) {
+            trebleClef = true;
+            bassClef = false;
+            staffLinePaint.setColor(Color.RED);
+        }
+        else if (selectedClef.equals("bass")) {
+            trebleClef = false;
+            bassClef = true;
+            staffLinePaint.setColor(Color.GREEN);
+        }
+    }
+
+    public boolean isTrebleClef() {
+        return trebleClef;
+    }
+
+
+    public boolean isBassClef() {
+        return bassClef;
+    }
+
     public void setStaffLinePaint(Paint staffLinePaint) {
         StaffLine.staffLinePaint = staffLinePaint;
     }
 
 
-    public StaffLine(Context context, PianoNote note) {
+    public StaffLine(Context context, String selectedClef, PianoNote note) {
         super(context);
+        this.selectedClef = selectedClef;
         this.note = note;
+
 
         init();
     }
@@ -49,6 +81,7 @@ public class StaffLine extends View {
     }
 
     private void init() {
+        setSelectedClef(selectedClef);
         assignVisibility();
         staffLineCount++;
     }

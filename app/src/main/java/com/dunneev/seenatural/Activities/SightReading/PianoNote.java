@@ -216,6 +216,18 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
+    public static int numberOfWhiteKeysInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+
+        int whiteKeyCount = 0;
+
+        for (int i=lowNote.absoluteKeyIndex; i< highNote.absoluteKeyIndex; i++) {
+            if (PianoNote.valueOfAbsoluteKeyIndex(i).keyColor == Color.WHITE) {
+                whiteKeyCount++;
+            }
+        }
+        return whiteKeyCount;
+    }
+
     @Override
     public String toString() {
         return label;

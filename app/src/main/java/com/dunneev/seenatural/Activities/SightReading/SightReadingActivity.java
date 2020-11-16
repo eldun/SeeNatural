@@ -54,11 +54,11 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     public void setSelectedClef(String selectedClef) {
         this.selectedClef = selectedClef;
 
-        if (selectedClef.equals("treble")) {
+        if (selectedClef.equals(R.string.trebleClef)) {
             trebleClef = true;
             bassClef = false;
         }
-        else if (selectedClef.equals("bass")) {
+        else if (selectedClef.equals(R.string.bassClef)) {
             trebleClef = false;
             bassClef = true;
         }
@@ -72,32 +72,31 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         setSelectedClef(intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF));
         selectedDifficulty = intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY);
 
-        setPracticableNotes();
-        soundPlayer = new SoundPlayer(lowPracticeNote.absoluteKeyIndex, numberOfKeys);
-
+//        soundPlayer = new SoundPlayer(lowPracticeNote.absoluteKeyIndex, numberOfKeys);
+        soundPlayer = new SoundPlayer(0, 12);
         setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
 
-        setUpPianoView();
+//        setUpPianoView();
 
         soundPlayer.loadWavAssets(this.getAssets());
 
     }
 
     private void setPracticableNotes() {
-        if (trebleClef) {
-            lowPracticeNote = PianoNote.C4;
-        }
-        else if (bassClef) {
-            lowPracticeNote = PianoNote.G2;
-        }
-
-        highPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + numberOfKeys);
-
-        for (int i=0;i<numberOfKeys;i++) {
-            practicableNotes.add(PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + i));
-        }
+//        if (trebleClef) {
+//            lowPracticeNote = PianoNote.C4;
+//        }
+//        else if (bassClef) {
+//            lowPracticeNote = PianoNote.G2;
+//        }
+//
+//        highPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + numberOfKeys);
+//
+//        for (int i=0;i<numberOfKeys;i++) {
+//            practicableNotes.add(PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + i));
+//        }
     }
 
     public void addTestButton(View view) {

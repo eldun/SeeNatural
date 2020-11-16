@@ -29,8 +29,6 @@ public class StaffView extends ViewGroup {
     public static final PianoNote highestNote = PianoNote.C8;
 
     static String selectedClef;
-    boolean trebleClef;
-    boolean bassClef;
     private KeySignature keySignature = KeySignature.A_MINOR;
     int clefWidth;
 
@@ -100,25 +98,8 @@ public class StaffView extends ViewGroup {
 //            selectedClef = ((SightReadingActivity) context).getSelectedClef();
 //        }
 //
-        setSelectedClef(selectedClef);
 
         init();
-    }
-
-    public void setSelectedClef(String selectedClef) {
-        this.selectedClef = selectedClef;
-        if (selectedClef.equals(getResources().getString(R.string.trebleClef))) {
-            trebleClef = true;
-            bassClef = false;
-        }
-        else if (selectedClef.equals(getResources().getString(R.string.bassClef))) {
-            trebleClef = false;
-            bassClef = true;
-        }
-    }
-
-    public StaffView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
     }
 
     private void init() {
@@ -139,14 +120,6 @@ public class StaffView extends ViewGroup {
     }
 
     private void setPracticeNoteRange() {
-//        if (trebleClef) {
-//            lowPracticeNote = PianoNote.C4;
-//            highPracticeNote = PianoNote.C6;
-//        }
-//        else if (bassClef) {
-//            lowPracticeNote = PianoNote.C2;
-//            highPracticeNote = PianoNote.C4;
-//        }
 
         numberOfPracticeNotes = (highPracticeNote.absoluteKeyIndex -
                 lowPracticeNote.absoluteKeyIndex)

@@ -46,30 +46,12 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     StaffView staffView;
 
-    public String getSelectedClef() {
-        return this.selectedClef;
-    }
-
-
-    public void setSelectedClef(String selectedClef) {
-        this.selectedClef = selectedClef;
-
-        if (selectedClef.equals(R.string.trebleClef)) {
-            trebleClef = true;
-            bassClef = false;
-        }
-        else if (selectedClef.equals(R.string.bassClef)) {
-            trebleClef = false;
-            bassClef = true;
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(LOG_TAG, "onCreate()");
 
         Intent intent = getIntent();
-        setSelectedClef(intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF));
+        selectedClef = intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF);
         selectedDifficulty = intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY);
 
 //        soundPlayer = new SoundPlayer(lowPracticeNote.absoluteKeyIndex, numberOfKeys);

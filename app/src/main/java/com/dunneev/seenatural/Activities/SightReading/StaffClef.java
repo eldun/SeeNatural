@@ -13,22 +13,31 @@ import com.dunneev.seenatural.TextDrawable;
 public class StaffClef extends View {
     private static final String LOG_TAG = StaffClef.class.getSimpleName();
 
-
-    private String clefChar;
+    private String clef;
     TextDrawable clefDrawable;
     private KeySignature keySignature;
-
 
     private static int desiredWidth = 500;
     private static int desiredHeight = 500;
 
     Rect boundsRect = new Rect();
 
-    public StaffClef(Context context, String clefChar, KeySignature keySignature) {
+    public String getClef() {
+        return clef;
+    }
+
+    public StaffClef(Context context, String clef, KeySignature keySignature) {
         super(context);
-        this.clefChar = clefChar;
-        this.clefDrawable = new TextDrawable(clefChar);
+        this.clef = clef;
         this.keySignature = keySignature;
+
+        if (clef.equals(getResources().getString(R.string.trebleClef))) {
+            this.clefDrawable = new TextDrawable(context.getString(R.string.char_treble_clef));
+        }
+
+        else if (clef.equals(context.getString(R.string.bassClef))) {
+            this.clefDrawable = new TextDrawable(context.getString(R.string.char_bass_clef));
+        }
     }
 
     public StaffClef(Context context, @Nullable AttributeSet attrs) {
@@ -37,8 +46,8 @@ public class StaffClef extends View {
     }
 
     private void createDefaultClef() {
-        this.clefChar = getResources().getString(R.string.char_treble_clef);
-        this.clefDrawable = new TextDrawable(clefChar);
+        this.clef = getResources().getString(R.string.trebleClef);
+        this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef));
         this.keySignature = KeySignature.C_MAJOR;
     }
 

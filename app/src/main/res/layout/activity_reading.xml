@@ -21,7 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".6"
-            app:selectedClef="treble">
+            app:highPracticeNote="C8"
+            app:lowPracticeNote="A0"
+            app:selectedClef="trebleClef">
 
         </com.dunneev.seenatural.Activities.SightReading.StaffView>
 

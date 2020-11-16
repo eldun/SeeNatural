@@ -10,6 +10,9 @@
     <string name="label_beginner">Beginner</string>
     <string name="label_intermediate">Intermediate</string>
     <string name="label_complete">Complete</string>
+
+    <string name="trebleClef">trebleClef</string>
+    <string name="bassClef">bassClef</string>
     
     <string name="char_treble_clef">𝄞</string>
     <string name="char_alto_clef">𝄡</string>

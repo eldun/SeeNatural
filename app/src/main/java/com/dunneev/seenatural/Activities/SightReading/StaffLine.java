@@ -14,17 +14,12 @@ public class StaffLine extends View {
 
     private static final String LOG_TAG = StaffLine.class.getSimpleName();
 
-    private String selectedClef = "";
-
-    private boolean trebleClef;
-    private boolean bassClef;
-
     private static int desiredWidth = 100;
     private static int desiredHeight = 100;
 
     protected PianoNote note;
 
-    protected static Paint staffLinePaint = new Paint();
+    protected Paint staffLinePaint = new Paint();
 
     protected static int staffLineCount = 0;
 
@@ -33,42 +28,13 @@ public class StaffLine extends View {
         return staffLinePaint;
     }
 
-    public String getSelectedClef() {
-        return selectedClef;
-    }
-
-    public final void setSelectedClef(String selectedClef) {
-        this.selectedClef = selectedClef;
-
-        if (selectedClef.equals("treble")) {
-            trebleClef = true;
-            bassClef = false;
-            staffLinePaint.setColor(Color.RED);
-        }
-        else if (selectedClef.equals("bass")) {
-            trebleClef = false;
-            bassClef = true;
-            staffLinePaint.setColor(Color.GREEN);
-        }
-    }
-
-    public boolean isTrebleClef() {
-        return trebleClef;
-    }
-
-
-    public boolean isBassClef() {
-        return bassClef;
-    }
-
     public void setStaffLinePaint(Paint staffLinePaint) {
-        StaffLine.staffLinePaint = staffLinePaint;
+        this.staffLinePaint = staffLinePaint;
     }
 
 
-    public StaffLine(Context context, String selectedClef, PianoNote note) {
+    public StaffLine(Context context, PianoNote note) {
         super(context);
-        this.selectedClef = selectedClef;
         this.note = note;
 
 
@@ -81,7 +47,6 @@ public class StaffLine extends View {
     }
 
     private void init() {
-        setSelectedClef(selectedClef);
         assignVisibility();
         staffLineCount++;
     }
@@ -103,27 +68,25 @@ public class StaffLine extends View {
     }
 
     private void assignVisibility() {
-        if (trebleClef) {
-            if (note == PianoNote.E4 ||
-                    note == PianoNote.G4 ||
-                    note == PianoNote.B4 ||
-                    note == PianoNote.D5 ||
-                    note == PianoNote.F5) {
-                setVisibility(VISIBLE);
-                return;
-            }
-        }
 
-        else if (bassClef) {
             if (note == PianoNote.G2 ||
                     note == PianoNote.B2 ||
                     note == PianoNote.D3 ||
                     note == PianoNote.F3 ||
                     note == PianoNote.A3) {
+                staffLinePaint.setColor(Color.GREEN);
                 setVisibility(VISIBLE);
                 return;
             }
-        }
+            else if (note == PianoNote.E4 ||
+                    note == PianoNote.G4 ||
+                    note == PianoNote.B4 ||
+                    note == PianoNote.D5 ||
+                    note == PianoNote.F5) {
+                staffLinePaint.setColor(Color.RED);
+                setVisibility(VISIBLE);
+                return;
+            }
 
         setVisibility(INVISIBLE);
     }

@@ -1,10 +1,294 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="StaffView">
-        <attr name="selectedClef" format="string" />
+        <attr name="selectedClef" format="enum">
+            <enum name="trebleClef" value="0" />
+            <enum name="bassClef" value="1" />
+        </attr>
+
+        <attr name="lowPracticeNote" format="enum">
+            <enum name="A0" value="0"/>
+            <enum name="A_SHARP_0" value="1"/>
+            <enum name="B_FLAT_0" value="1"/>
+            <enum name="B0" value="2"/>
+
+            <enum name="C1" value="3"/>
+            <enum name="C_SHARP_1" value="4"/>
+            <enum name="D_FLAT_1" value="4"/>
+            <enum name="D1" value="5"/>
+            <enum name="D_SHARP_1" value="6"/>
+            <enum name="E_FLAT_1" value="6"/>
+            <enum name="E1" value="7"/>
+            <enum name="F1" value="8"/>
+            <enum name="F_SHARP_1" value="9"/>
+            <enum name="G_FLAT_1" value="9"/>
+            <enum name="G1" value="10"/>
+            <enum name="G_SHARP_1" value="11"/>
+            <enum name="A_FLAT_1" value="11"/>
+            <enum name="A1" value="12"/>
+            <enum name="A_SHARP_1" value="13"/>
+            <enum name="B_FLAT_1" value="13"/>
+            <enum name="B1" value="14"/>
+
+
+            <enum name="C2" value="15"/>
+            <enum name="C_SHARP_2" value="16"/>
+            <enum name="D_FLAT_2" value="15"/>
+            <enum name="D2" value="17"/>
+            <enum name="D_SHARP_2" value="18"/>
+            <enum name="E_FLAT_2" value="18"/>
+            <enum name="E2" value="19"/>
+            <enum name="F2" value="20"/>
+            <enum name="F_SHARP_2" value="21"/>
+            <enum name="G_FLAT_2" value="21"/>
+            <enum name="G2" value="22"/>
+            <enum name="G_SHARP_2" value="23"/>
+            <enum name="A_FLAT_2" value="23"/>
+            <enum name="A2" value="24"/>
+            <enum name="A_SHARP_2" value="25"/>
+            <enum name="B_FLAT_2" value="25"/>
+            <enum name="B2" value="26"/>
+
+
+            <enum name="C3" value="27"/>
+            <enum name="C_SHARP_3" value="28"/>
+            <enum name="D_FLAT_3" value="28"/>
+            <enum name="D3" value="29"/>
+            <enum name="D_SHARP_3" value="30"/>
+            <enum name="E_FLAT_3" value="30"/>
+            <enum name="E3" value="31"/>
+            <enum name="F3" value="32"/>
+            <enum name="F_SHARP_3" value="33"/>
+            <enum name="G_FLAT_3" value="33"/>
+            <enum name="G3" value="34"/>
+            <enum name="G_SHARP_3" value="35"/>
+            <enum name="A_FLAT_3" value="35"/>
+            <enum name="A3" value="36"/>
+            <enum name="A_SHARP_3" value="37"/>
+            <enum name="B_FLAT_3" value="37"/>
+            <enum name="B3" value="38"/>
+
+
+            <enum name="C4" value="39"/>
+            <enum name="C_SHARP_4" value="40"/>
+            <enum name="D_FLAT_4" value="40"/>
+            <enum name="D4" value="41"/>
+            <enum name="D_SHARP_4" value="42"/>
+            <enum name="E_FLAT_4" value="42"/>
+            <enum name="E4" value="43"/>
+            <enum name="F4" value="44"/>
+            <enum name="F_SHARP_4" value="45"/>
+            <enum name="G_FLAT_4" value="45"/>
+            <enum name="G4" value="46"/>
+            <enum name="G_SHARP_4" value="47"/>
+            <enum name="A_FLAT_4" value="47"/>
+            <enum name="A4" value="48"/>
+            <enum name="A_SHARP_4" value="49"/>
+            <enum name="B_FLAT_4" value="49"/>
+            <enum name="B4" value="50"/>
+
+
+            <enum name="C5" value="51"/>
+            <enum name="C_SHARP_5" value="52"/>
+            <enum name="D_FLAT_5" value="52"/>
+            <enum name="D5" value="53"/>
+            <enum name="D_SHARP_5" value="54"/>
+            <enum name="E_FLAT_5" value="54"/>
+            <enum name="E5" value="55"/>
+            <enum name="F5" value="56"/>
+            <enum name="F_SHARP_5" value="57"/>
+            <enum name="G_FLAT_5" value="57"/>
+            <enum name="G5" value="58"/>
+            <enum name="G_SHARP_5" value="59"/>
+            <enum name="A_FLAT_5" value="59"/>
+            <enum name="A5" value="60"/>
+            <enum name="A_SHARP_5" value="61"/>
+            <enum name="B_FLAT_5" value="61"/>
+            <enum name="B5" value="62"/>
+
+            <enum name="C6" value="63"/>
+            <enum name="C_SHARP_6" value="64"/>
+            <enum name="D_FLAT_6" value="64"/>
+            <enum name="D6" value="65"/>
+            <enum name="D_SHARP_6" value="66"/>
+            <enum name="E_FLAT_6" value="66"/>
+            <enum name="E6" value="67"/>
+            <enum name="F6" value="68"/>
+            <enum name="F_SHARP_6" value="69"/>
+            <enum name="G_FLAT_6" value="69"/>
+            <enum name="G6" value="70"/>
+            <enum name="G_SHARP_6" value="71"/>
+            <enum name="A_FLAT_6" value="71"/>
+            <enum name="A6" value="72"/>
+            <enum name="A_SHARP_6" value="73"/>
+            <enum name="B_FLAT_6" value="73"/>
+            <enum name="B6" value="74"/>
+
+
+            <enum name="C7" value="75"/>
+            <enum name="C_SHARP_7" value="76"/>
+            <enum name="D_FLAT_7" value="76"/>
+            <enum name="D7" value="77"/>
+            <enum name="D_SHARP_7" value="78"/>
+            <enum name="E_FLAT_7" value="78"/>
+            <enum name="E7" value="79"/>
+            <enum name="F7" value="80"/>
+            <enum name="F_SHARP_7" value="81"/>
+            <enum name="G_FLAT_7" value="81"/>
+            <enum name="G7" value="82"/>
+            <enum name="G_SHARP_7" value="83"/>
+            <enum name="A_FLAT_7" value="83"/>
+            <enum name="A7" value="84"/>
+            <enum name="A_SHARP_7" value="85"/>
+            <enum name="B_FLAT_7" value="85"/>
+            <enum name="B7" value="86"/>
+
+
+            <enum name="C8" value="87"/>
+        </attr>
+        <attr name="highPracticeNote" format="enum">
+            <enum name="A0" value="0"/>
+            <enum name="A_SHARP_0" value="1"/>
+            <enum name="B_FLAT_0" value="1"/>
+            <enum name="B0" value="2"/>
+
+            <enum name="C1" value="3"/>
+            <enum name="C_SHARP_1" value="4"/>
+            <enum name="D_FLAT_1" value="4"/>
+            <enum name="D1" value="5"/>
+            <enum name="D_SHARP_1" value="6"/>
+            <enum name="E_FLAT_1" value="6"/>
+            <enum name="E1" value="7"/>
+            <enum name="F1" value="8"/>
+            <enum name="F_SHARP_1" value="9"/>
+            <enum name="G_FLAT_1" value="9"/>
+            <enum name="G1" value="10"/>
+            <enum name="G_SHARP_1" value="11"/>
+            <enum name="A_FLAT_1" value="11"/>
+            <enum name="A1" value="12"/>
+            <enum name="A_SHARP_1" value="13"/>
+            <enum name="B_FLAT_1" value="13"/>
+            <enum name="B1" value="14"/>
+
+
+            <enum name="C2" value="15"/>
+            <enum name="C_SHARP_2" value="16"/>
+            <enum name="D_FLAT_2" value="15"/>
+            <enum name="D2" value="17"/>
+            <enum name="D_SHARP_2" value="18"/>
+            <enum name="E_FLAT_2" value="18"/>
+            <enum name="E2" value="19"/>
+            <enum name="F2" value="20"/>
+            <enum name="F_SHARP_2" value="21"/>
+            <enum name="G_FLAT_2" value="21"/>
+            <enum name="G2" value="22"/>
+            <enum name="G_SHARP_2" value="23"/>
+            <enum name="A_FLAT_2" value="23"/>
+            <enum name="A2" value="24"/>
+            <enum name="A_SHARP_2" value="25"/>
+            <enum name="B_FLAT_2" value="25"/>
+            <enum name="B2" value="26"/>
+
+
+            <enum name="C3" value="27"/>
+            <enum name="C_SHARP_3" value="28"/>
+            <enum name="D_FLAT_3" value="28"/>
+            <enum name="D3" value="29"/>
+            <enum name="D_SHARP_3" value="30"/>
+            <enum name="E_FLAT_3" value="30"/>
+            <enum name="E3" value="31"/>
+            <enum name="F3" value="32"/>
+            <enum name="F_SHARP_3" value="33"/>
+            <enum name="G_FLAT_3" value="33"/>
+            <enum name="G3" value="34"/>
+            <enum name="G_SHARP_3" value="35"/>
+            <enum name="A_FLAT_3" value="35"/>
+            <enum name="A3" value="36"/>
+            <enum name="A_SHARP_3" value="37"/>
+            <enum name="B_FLAT_3" value="37"/>
+            <enum name="B3" value="38"/>
+
+
+            <enum name="C4" value="39"/>
+            <enum name="C_SHARP_4" value="40"/>
+            <enum name="D_FLAT_4" value="40"/>
+            <enum name="D4" value="41"/>
+            <enum name="D_SHARP_4" value="42"/>
+            <enum name="E_FLAT_4" value="42"/>
+            <enum name="E4" value="43"/>
+            <enum name="F4" value="44"/>
+            <enum name="F_SHARP_4" value="45"/>
+            <enum name="G_FLAT_4" value="45"/>
+            <enum name="G4" value="46"/>
+            <enum name="G_SHARP_4" value="47"/>
+            <enum name="A_FLAT_4" value="47"/>
+            <enum name="A4" value="48"/>
+            <enum name="A_SHARP_4" value="49"/>
+            <enum name="B_FLAT_4" value="49"/>
+            <enum name="B4" value="50"/>
+
+
+            <enum name="C5" value="51"/>
+            <enum name="C_SHARP_5" value="52"/>
+            <enum name="D_FLAT_5" value="52"/>
+            <enum name="D5" value="53"/>
+            <enum name="D_SHARP_5" value="54"/>
+            <enum name="E_FLAT_5" value="54"/>
+            <enum name="E5" value="55"/>
+            <enum name="F5" value="56"/>
+            <enum name="F_SHARP_5" value="57"/>
+            <enum name="G_FLAT_5" value="57"/>
+            <enum name="G5" value="58"/>
+            <enum name="G_SHARP_5" value="59"/>
+            <enum name="A_FLAT_5" value="59"/>
+            <enum name="A5" value="60"/>
+            <enum name="A_SHARP_5" value="61"/>
+            <enum name="B_FLAT_5" value="61"/>
+            <enum name="B5" value="62"/>
+
+            <enum name="C6" value="63"/>
+            <enum name="C_SHARP_6" value="64"/>
+            <enum name="D_FLAT_6" value="64"/>
+            <enum name="D6" value="65"/>
+            <enum name="D_SHARP_6" value="66"/>
+            <enum name="E_FLAT_6" value="66"/>
+            <enum name="E6" value="67"/>
+            <enum name="F6" value="68"/>
+            <enum name="F_SHARP_6" value="69"/>
+            <enum name="G_FLAT_6" value="69"/>
+            <enum name="G6" value="70"/>
+            <enum name="G_SHARP_6" value="71"/>
+            <enum name="A_FLAT_6" value="71"/>
+            <enum name="A6" value="72"/>
+            <enum name="A_SHARP_6" value="73"/>
+            <enum name="B_FLAT_6" value="73"/>
+            <enum name="B6" value="74"/>
+
+
+            <enum name="C7" value="75"/>
+            <enum name="C_SHARP_7" value="76"/>
+            <enum name="D_FLAT_7" value="76"/>
+            <enum name="D7" value="77"/>
+            <enum name="D_SHARP_7" value="78"/>
+            <enum name="E_FLAT_7" value="78"/>
+            <enum name="E7" value="79"/>
+            <enum name="F7" value="80"/>
+            <enum name="F_SHARP_7" value="81"/>
+            <enum name="G_FLAT_7" value="81"/>
+            <enum name="G7" value="82"/>
+            <enum name="G_SHARP_7" value="83"/>
+            <enum name="A_FLAT_7" value="83"/>
+            <enum name="A7" value="84"/>
+            <enum name="A_SHARP_7" value="85"/>
+            <enum name="B_FLAT_7" value="85"/>
+            <enum name="B7" value="86"/>
+
+
+            <enum name="C8" value="87"/>
+        </attr>
     </declare-styleable>
+
     <declare-styleable name="PianoView">
         <attr name="absoluteStartingPianoKeyIndex" format="integer" />
-        <attr name="numberOfKeys" format="integer" />
     </declare-styleable>
 </resources>

@@ -33,8 +33,8 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     private int numberOfKeys = 12;
     private ArrayList<PianoKey> pianoKeys = null;
 
-    private PianoNote lowPracticeNote;
-    private PianoNote highPracticeNote;
+    private PianoNote lowestPracticeNote;
+    private PianoNote highestPracticeNote;
 
     private ArrayList<PianoNote> practicableNotes = new ArrayList();
 
@@ -60,9 +60,15 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
 
+         replaceXmlStaff();
 //        setUpPianoView();
 
         soundPlayer.loadWavAssets(this.getAssets());
+
+    }
+
+    private void replaceXmlStaff() {
+        staffView = new StaffView(this, lowestPracticeNote, highestPracticeNote);
 
     }
 
@@ -140,7 +146,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
         // Replace default XML-generated PianoView with custom PianoView
         PianoView pianoView = findViewById(R.id.pianoView);
-        pianoView.setStartingNote(lowPracticeNote);
+        pianoView.setStartingNote(lowestPracticeNote);
         pianoView.setNumberOfKeys(numberOfKeys);
         pianoView.invalidate();
 
@@ -195,7 +201,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
         PianoNote note = key.getNote();
-        int relativePianoKeyIndex = note.absoluteKeyIndex - lowPracticeNote.absoluteKeyIndex;
+        int relativePianoKeyIndex = note.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex;
 
         soundPlayer.triggerDown(relativePianoKeyIndex);
 

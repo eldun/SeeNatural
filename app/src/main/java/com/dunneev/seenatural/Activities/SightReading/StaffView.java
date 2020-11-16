@@ -38,8 +38,8 @@ public class StaffView extends ViewGroup {
     int visibleStaffHeight;
     int totalStaffHeight;
     int noteWidth;
-    PianoNote lowPracticeNote;
-    PianoNote highPracticeNote;
+    PianoNote lowestPracticeNote;
+    PianoNote highestPracticeNote;
     int numberOfPracticeNotes;
     int notesOnStaff = 0;
     ArrayList<PianoNote> practiceNotesAscending;
@@ -81,8 +81,8 @@ public class StaffView extends ViewGroup {
         }
 
 
-        lowPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_lowPracticeNote, 39));
-        highPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_highPracticeNote, 51));
+        lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_lowPracticeNote, 39));
+        highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_highPracticeNote, 51));
 
         styledAttributes.recycle();
 
@@ -121,8 +121,8 @@ public class StaffView extends ViewGroup {
 
     private void setPracticeNoteRange() {
 
-        numberOfPracticeNotes = (highPracticeNote.absoluteKeyIndex -
-                lowPracticeNote.absoluteKeyIndex)
+        numberOfPracticeNotes = (highestPracticeNote.absoluteKeyIndex -
+                lowestPracticeNote.absoluteKeyIndex)
                 + 1;
         practiceNotesAscending = new ArrayList<>();
         practiceNotesDescending = new ArrayList<>();
@@ -165,7 +165,7 @@ public class StaffView extends ViewGroup {
         int childBottom = 300;
 
         // Only white notes take up space
-        int clippedHighStaffNoteCount= PianoNote.numberOfWhiteKeysInRangeInclusive(highPracticeNote, highestNote);
+        int clippedHighStaffNoteCount= PianoNote.numberOfWhiteKeysInRangeInclusive(highestPracticeNote, highestNote);
         staffLineYCoordinate = -(clippedHighStaffNoteCount * staffLineSpacing);
 
 
@@ -251,7 +251,7 @@ public class StaffView extends ViewGroup {
     private void populatePracticeNoteArrays() {
 
         for (int i=0; i<numberOfPracticeNotes; i++) {
-            PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + i);
+            PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.absoluteKeyIndex + i);
             practiceNotesAscending.add(note);
             practiceNotesDescending.add(note);
         }

@@ -130,8 +130,11 @@ public class StaffView extends ViewGroup {
         setPracticeNoteRange();
         populatePracticeNoteArrays();
         addStaffLinesToView();
-        addClefToView();
+        addClefsToView();
         addNoteScrollerToView();
+
+        // The treble clef is taller than the staff, but the clipped parts should still be visible.
+        // The bounding box (which sets the font size) is only as tall as the staff.
         setClipChildren(false);
     }
 
@@ -237,14 +240,14 @@ public class StaffView extends ViewGroup {
 
             else if (child.getClass() == StaffClef.class) {
 
-                if (trebleClef) {
+                if (((StaffClef) child).getClef().equals(getResources().getString(R.string.trebleClef))) {
                     childLeft = 0;
                     childTop = noteStaffCoordinateMap.get(PianoNote.F5);
                     childRight = child.getMeasuredWidth();
                     childBottom = childTop + child.getMeasuredHeight();
                 }
 
-                else if (bassClef) {
+                else if (((StaffClef) child).getClef().equals(getResources().getString(R.string.bassClef))) {
                     childLeft = 0;
                     childTop = noteStaffCoordinateMap.get(PianoNote.B3) + (staffLineSpacing/4);
                     childRight = child.getMeasuredWidth();
@@ -304,28 +307,17 @@ public class StaffView extends ViewGroup {
 
 
 
-    private void addClefToView() {
+    private void addClefsToView() {
 
-        StaffClef staffClef = CreateClef();
+        StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.trebleClef), keySignature);
 
-        // The treble clef is taller than the staff, but the clipped parts should still be visible.
-        // The bounding box (which sets the font size) is only as tall as the staff.
-//        setClipChildren(false);
+        StaffClef bassClef = new StaffClef(getContext(), getResources().getString(R.string.bassClef), keySignature);
 
-        LayoutParams staffClefParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        staffClef.setLayoutParams(staffClefParams);
+        trebleClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        bassClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-        addView(staffClef);
-    }
-
-    private StaffClef CreateClef() {
-        if (trebleClef) {
-            return new StaffClef(getContext(), getResources().getString(R.string.char_treble_clef), keySignature);
-        }
-
-        else {
-            return new StaffClef(getContext(), getResources().getString(R.string.char_bass_clef), keySignature);
-        }
+        addView(trebleClef);
+        addView(bassClef);
     }
 
 

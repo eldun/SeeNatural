@@ -3,7 +3,7 @@
 
     <string name="label_treble">Treble</string>
     <string name="label_bass">Bass</string>
-    <string name="button_label_both">Both</string>
+    <string name="label_both">Both</string>
 
     <string name="select_clef">Select the clef(s) you\'d like to practice below.</string>
     <string name="select_difficulty">Select the difficulty below.</string>
@@ -11,9 +11,10 @@
     <string name="label_intermediate">Intermediate</string>
     <string name="label_complete">Complete</string>
 
-    <string name="trebleClef">trebleClef</string>
-    <string name="bassClef">bassClef</string>
-    
+    <string name="treble">treble</string>
+    <string name="bass">bass</string>
+    <string name="both">both</string>
+
     <string name="char_treble_clef">𝄞</string>
     <string name="char_alto_clef">𝄡</string>
     <string name="char_bass_clef">𝄢</string>

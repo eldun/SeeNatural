@@ -141,30 +141,6 @@ public class StaffView extends ViewGroup {
         setClipChildren(false);
     }
 
-    /**
-     * Calculate size of StaffView and all children
-     */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-
-        staffLineSpacing = height / staffLines.size();
-        staffNoteHorizontalMargins = staffLineSpacing * 4;
-
-        visibleStaffHeight = staffLineSpacing * 8;
-        totalStaffHeight = staffLineSpacing * numberOfPracticeNotes;
-        noteWidth = staffLineSpacing * 3;
-
-        StaffLine.setDesiredHeight(staffLineSpacing);
-        StaffClef.setDesiredHeight(visibleStaffHeight);
-
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
-
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
-    }
-
 
     private void populatePracticeNoteArrays() {
 
@@ -264,6 +240,31 @@ public class StaffView extends ViewGroup {
 
     protected void removeNote(PianoNote note) {
 
+    }
+
+
+    /**
+     * Calculate size of StaffView and all children
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        staffLineSpacing = height / staffLines.size();
+        staffNoteHorizontalMargins = staffLineSpacing * 4;
+
+        visibleStaffHeight = staffLineSpacing * 8;
+        totalStaffHeight = staffLineSpacing * numberOfPracticeNotes;
+        noteWidth = staffLineSpacing * 3;
+
+        StaffLine.setDesiredHeight(staffLineSpacing);
+        StaffClef.setDesiredHeight(visibleStaffHeight);
+
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
 
     /**

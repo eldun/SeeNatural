@@ -47,6 +47,8 @@ public class StaffView extends ViewGroup {
     ArrayList<PianoNote> practiceNotesAscending = new ArrayList<>();
     ArrayList<PianoNote> practiceNotesDescending = new ArrayList<>();
     ArrayList<StaffLine> staffLines = new ArrayList<>();
+    ArrayList<Integer> staffNoteHorizontalPositions = new ArrayList<>();
+    private int noteScrollCounter = 0;
     int staffLineYCoordinate = 0;
 
     HorizontalScrollView scrollView;
@@ -304,6 +306,8 @@ public class StaffView extends ViewGroup {
             return;
         }
 
+        boolean noteScrollerLaidOut = false;
+
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
 
@@ -341,6 +345,10 @@ public class StaffView extends ViewGroup {
                 childTop = 0;
                 childRight = getMeasuredWidth();
                 childBottom = getMeasuredHeight();
+
+                // Not sure if I should be populating StaffNote positions from onLayout
+                noteScrollerLaidOut = true;
+
             }
 
             else {
@@ -348,7 +356,30 @@ public class StaffView extends ViewGroup {
             }
 
             child.layout(childLeft, childTop, childRight, childBottom);
+
+            if (noteScrollerLaidOut) {
+                populateStaffNoteHorizontalNotePositions();
+            }
         }
+    }
+
+    private void populateStaffNoteHorizontalNotePositions() {
+        int childCount = noteLinearLayout.getChildCount();
+
+        for (int i=0;i<childCount;i++) {
+            int noteLeft = noteLinearLayout.getChildAt(i).getLeft();
+            staffNoteHorizontalPositions.add(noteLeft);
+        }
+    }
+
+
+    // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 
+    public void scrollToNextNote() {
+        scrollToNote(++noteScrollCounter);
+    }
+
+    private void scrollToNote(int index) {
+        scrollView.smoothScrollTo(staffNoteHorizontalPositions.get(index), 0);
     }
 }
 

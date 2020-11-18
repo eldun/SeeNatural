@@ -34,7 +34,7 @@ public class StaffView extends ViewGroup {
     private PianoNote highestPracticeNote = PianoNote.C6;
     private static int numberOfPracticeNotes;
 
-    private KeySignature keySignature = KeySignature.A_MINOR;
+    private KeySignature keySignature;
     int clefWidth;
 
     // The distance between natural notes e.g. A4 to B4

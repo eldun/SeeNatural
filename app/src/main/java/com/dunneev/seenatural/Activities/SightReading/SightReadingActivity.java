@@ -144,10 +144,10 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     private void setUpPianoView() {
 
         // Replace default XML-generated PianoView with custom PianoView
-        PianoView pianoView = findViewById(R.id.pianoView);
-        pianoView.setStartingNote(lowestPracticeNote);
-        pianoView.setNumberOfKeys(numberOfKeys);
-        pianoView.invalidate();
+//        PianoView pianoView = findViewById(R.id.pianoView);
+//        pianoView.setStartingNote(lowestPracticeNote);
+//        pianoView.setNumberOfKeys(numberOfKeys);
+//        pianoView.invalidate();
 
 
         pianoKeys = pianoView.getPianoKeys();

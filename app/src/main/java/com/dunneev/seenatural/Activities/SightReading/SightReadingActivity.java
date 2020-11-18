@@ -51,8 +51,6 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         selectedClef = intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF);
         selectedDifficulty = intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY);
 
-//        soundPlayer = new SoundPlayer(lowPracticeNote.absoluteKeyIndex, numberOfKeys);
-        soundPlayer = new SoundPlayer(0, 12);
         setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
@@ -61,8 +59,8 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         setStaffPracticeNotes();
         setUpPianoView();
 
+        soundPlayer = new SoundPlayer(pianoView.getLowestPracticeNote(), PianoKey.count);
         soundPlayer.loadWavAssets(this.getAssets());
-
     }
 
 

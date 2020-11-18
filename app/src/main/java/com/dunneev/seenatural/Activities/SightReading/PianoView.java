@@ -18,6 +18,24 @@ public class PianoView extends ViewGroup {
 
     private static final String LOG_TAG = PianoView.class.getSimpleName();
 
+    public PianoNote getLowestPracticeNote() {
+        return lowestPracticeNote;
+    }
+
+    public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
+        this.lowestPracticeNote = lowestPracticeNote;
+        init();
+    }
+
+    public PianoNote getHighestPracticeNote() {
+        return highestPracticeNote;
+    }
+
+    public void setHighestPracticeNote(PianoNote highestPracticeNote) {
+        this.highestPracticeNote = highestPracticeNote;
+        init();
+    }
+
     private PianoNote lowestPracticeNote;
     private PianoNote highestPracticeNote;
 
@@ -62,10 +80,10 @@ public class PianoView extends ViewGroup {
         super(context, attrs);
 
         // This section is mostly to display the XML preview
-        TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.StaffView);
+        TypedArray styledAttributes = context.obtainStyledAttributes(attrs, R.styleable.PianoView);
 
-        lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.PianoView_pianoHighPracticeNote, 39));
-        highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.PianoView_pianoLowPracticeNote, 51));
+        lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.PianoView_pianoLowPracticeNote, 39));
+        highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.PianoView_pianoHighPracticeNote, 51));
 
         styledAttributes.recycle();
 
@@ -73,6 +91,7 @@ public class PianoView extends ViewGroup {
     }
 
     private void init() {
+        removeAllViews();
 
         white.setColor(Color.WHITE);
         white.setStyle(Paint.Style.FILL);

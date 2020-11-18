@@ -204,7 +204,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
         markNoteCorrect(key.getNote());
 
-        staffView.scrollView.smoothScrollTo(staffView.scrollView.getScrollX() + 150, 0);
+        staffView.scrollToNextNote();
 
         addSightReadingNote(generatePracticablePianoNote());
     }

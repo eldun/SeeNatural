@@ -31,18 +31,18 @@ public class StaffClef extends View {
         this.clef = clef;
         this.keySignature = keySignature;
 
-        if (clef.equals(getResources().getString(R.string.treble))) {
-            this.clefDrawable = new TextDrawable(context.getString(R.string.char_treble_clef));
-        }
-
-        else if (clef.equals(context.getString(R.string.bass))) {
-            this.clefDrawable = new TextDrawable(context.getString(R.string.char_bass_clef));
-        }
+        init();
     }
 
     public StaffClef(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         createDefaultClef();
+
+        init();
+    }
+
+    private void init() {
+        setClefDrawable();
     }
 
     private void createDefaultClef() {
@@ -50,6 +50,18 @@ public class StaffClef extends View {
         this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef));
         this.keySignature = KeySignature.C_MAJOR;
     }
+
+    private void setClefDrawable() {
+        if (clef.equals(getResources().getString(R.string.treble))) {
+            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef));
+        }
+
+        else if (clef.equals(getResources().getString(R.string.bass))) {
+            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_bass_clef));
+        }
+    }
+
+
 
     public static int getDesiredWidth() {
         return desiredWidth;

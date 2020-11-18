@@ -1,12 +1,11 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dunneev.seenatural.Activities.Clef.ClefActivity;
@@ -25,18 +24,17 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     private String selectedClef;
-    private boolean trebleClef;
-    private boolean bassClef;
+    private PianoNote lowestPracticeNote;
+    private PianoNote highestPracticeNote;
 
     private String selectedDifficulty;
 
-    private int numberOfKeys = 12;
-    private ArrayList<PianoKey> pianoKeys = null;
-
-    private PianoNote lowPracticeNote;
-    private PianoNote highPracticeNote;
-
     private ArrayList<PianoNote> practicableNotes = new ArrayList();
+
+
+    private ArrayList<PianoKey> pianoKeys = null;
+    private int numberOfKeys = 12;
+
 
     private ArrayList notesOnStaff = new ArrayList();
 
@@ -44,7 +42,9 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     Random random = new Random();
 
+    LinearLayout readingLinearLayout;
     StaffView staffView;
+    PianoView pianoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,32 +60,16 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
 
-//        setUpPianoView();
+
+        setStaffPracticeNotes();
+        setUpPianoView();
 
         soundPlayer.loadWavAssets(this.getAssets());
 
     }
 
-    private void setPracticableNotes() {
-//        if (trebleClef) {
-//            lowPracticeNote = PianoNote.C4;
-//        }
-//        else if (bassClef) {
-//            lowPracticeNote = PianoNote.G2;
-//        }
-//
-//        highPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + numberOfKeys);
-//
-//        for (int i=0;i<numberOfKeys;i++) {
-//            practicableNotes.add(PianoNote.valueOfAbsoluteKeyIndex(lowPracticeNote.absoluteKeyIndex + i));
-//        }
-    }
 
-    public void addTestButton(View view) {
-    }
-
-
-        @Override
+    @Override
     protected void onStart() {
         Log.i(LOG_TAG, "onStart()");
 
@@ -130,17 +114,38 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onDestroy();
     }
 
-    private void setUpStaffView() {
+    private void setStaffPracticeNotes() {
         staffView = findViewById(R.id.staffView);
-
+        setPracticableNoteRange();
+        staffView.setHighestPracticeNote(highestPracticeNote);
+        staffView.setLowestPracticeNote(lowestPracticeNote);
     }
 
+    private void setPracticableNoteRange() {
+        if (selectedClef.equals(getResources().getString(R.string.treble))) {
+            lowestPracticeNote = PianoNote.C4;
+            highestPracticeNote = PianoNote.C6;
+        }
+        else if (selectedClef.equals(getResources().getString(R.string.bass))) {
+            lowestPracticeNote = PianoNote.G2;
+            highestPracticeNote = PianoNote.G4;
+        }
+        else if (selectedClef.equals(getResources().getString(R.string.both))) {
+            lowestPracticeNote = PianoNote.G2;
+            highestPracticeNote = PianoNote.C6;
+        }
+
+
+        for (int i=0;i<numberOfKeys;i++) {
+            practicableNotes.add(PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.absoluteKeyIndex + i));
+        }
+    }
 
     private void setUpPianoView() {
 
         // Replace default XML-generated PianoView with custom PianoView
         PianoView pianoView = findViewById(R.id.pianoView);
-        pianoView.setStartingNote(lowPracticeNote);
+        pianoView.setStartingNote(lowestPracticeNote);
         pianoView.setNumberOfKeys(numberOfKeys);
         pianoView.invalidate();
 
@@ -162,10 +167,10 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
 
     private void addSightReadingNote(PianoNote note) {
-        Log.i(LOG_TAG, "Adding note: " + note.toString());
-        staffView = findViewById(R.id.staffView);
-        notesOnStaff.add(note);
-        staffView.addNote(note);
+//        Log.i(LOG_TAG, "Adding note: " + note.toString());
+//        staffView = findViewById(R.id.staffView);
+//        notesOnStaff.add(note);
+//        staffView.addNote(note);
     }
 
     private void removeSightReadingNote(PianoNote note) {
@@ -195,7 +200,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
         PianoNote note = key.getNote();
-        int relativePianoKeyIndex = note.absoluteKeyIndex - lowPracticeNote.absoluteKeyIndex;
+        int relativePianoKeyIndex = note.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex;
 
         soundPlayer.triggerDown(relativePianoKeyIndex);
 

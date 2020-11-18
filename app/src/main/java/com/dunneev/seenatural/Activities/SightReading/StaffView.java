@@ -115,8 +115,8 @@ public class StaffView extends ViewGroup {
 //            this.highestPracticeNote = PianoNote.C6;
 //        }
 
-        lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_lowPracticeNote, 0));
-        highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_highPracticeNote, 87));
+        lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffLowPracticeNote, 0));
+        highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffHighPracticeNote, 87));
 
 
         styledAttributes.recycle();
@@ -139,30 +139,6 @@ public class StaffView extends ViewGroup {
         // The treble clef is taller than the staff, but the clipped parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
         setClipChildren(false);
-    }
-
-    /**
-     * Calculate size of StaffView and all children
-     */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-
-        staffLineSpacing = height / staffLines.size();
-        staffNoteHorizontalMargins = staffLineSpacing * 4;
-
-        visibleStaffHeight = staffLineSpacing * 8;
-        totalStaffHeight = staffLineSpacing * numberOfPracticeNotes;
-        noteWidth = staffLineSpacing * 3;
-
-        StaffLine.setDesiredHeight(staffLineSpacing);
-        StaffClef.setDesiredHeight(visibleStaffHeight);
-
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
-
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
     }
 
 
@@ -264,6 +240,31 @@ public class StaffView extends ViewGroup {
 
     protected void removeNote(PianoNote note) {
 
+    }
+
+
+    /**
+     * Calculate size of StaffView and all children
+     */
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        staffLineSpacing = height / staffLines.size();
+        staffNoteHorizontalMargins = staffLineSpacing * 4;
+
+        visibleStaffHeight = staffLineSpacing * 8;
+        totalStaffHeight = staffLineSpacing * numberOfPracticeNotes;
+        noteWidth = staffLineSpacing * 3;
+
+        StaffLine.setDesiredHeight(staffLineSpacing);
+        StaffClef.setDesiredHeight(visibleStaffHeight);
+
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
 
     /**

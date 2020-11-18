@@ -32,8 +32,8 @@ public class SoundPlayer {
         return startingPianoKey;
     }
 
-    public void setStartingPianoKey(int startingPianoKey) {
-        this.startingPianoKey = startingPianoKey;
+    public void setStartingNote(PianoNote startingNote) {
+        this.startingPianoKey = startingNote.absoluteKeyIndex;
     }
 
     public int getNumberOfKeys() {
@@ -45,8 +45,8 @@ public class SoundPlayer {
         this.numberOfKeys = numberOfKeys;
     }
 
-    SoundPlayer(int startingPianoKey, int numberOfKeys) {
-        setStartingPianoKey(startingPianoKey);
+    SoundPlayer(PianoNote startingNote, int numberOfKeys) {
+        setStartingNote(startingNote);
         setNumberOfKeys(numberOfKeys);
     }
 

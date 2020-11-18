@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".6"
-            app:highPracticeNote="C6"
-            app:lowPracticeNote="C4">
+            app:staffHighPracticeNote="C8"
+            app:staffLowPracticeNote="A0">
 
         </com.dunneev.seenatural.Activities.SightReading.StaffView>
 
@@ -30,7 +30,9 @@
             android:id="@+id/pianoView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".4">
+            android:layout_weight=".4"
+            app:pianoHighPracticeNote="A1"
+            app:pianoLowPracticeNote="A0">
 
         </com.dunneev.seenatural.Activities.SightReading.PianoView>
 

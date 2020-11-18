@@ -36,7 +36,7 @@ public class TextDrawable extends Drawable {
 
 //         Just testing to see the bounds are correct
         Paint boundsPaint = new Paint();
-        boundsPaint.setColor(Color.YELLOW);
+        boundsPaint.setColor(Color.BLACK);
         boundsPaint.setAlpha(70);
         canvas.drawRect(bounds, boundsPaint);
 

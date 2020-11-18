@@ -234,7 +234,6 @@ class PianoKey extends View {
 //                Log.i(LOG_TAG, "action down");
                 setIsDown(true);
                 pianoKeyListener.keyDown(this);
-                invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
 //                Log.i(LOG_TAG, "moving: (" + x + ", " + y + ")");
@@ -243,7 +242,6 @@ class PianoKey extends View {
 //                Log.i(LOG_TAG, "action up");
                 setIsDown(false);
                 pianoKeyListener.keyUp(this);
-                invalidate();
                 break;
         }
         return true;

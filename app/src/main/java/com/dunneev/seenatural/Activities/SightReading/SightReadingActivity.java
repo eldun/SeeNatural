@@ -170,40 +170,51 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 //        staffView.removeNote(note);
     }
 
-    private boolean isCorrectNote(PianoNote note) {
-        Toast toast = new Toast(this);
-        toast.setGravity(Gravity.CENTER,0,0);
-
-        if (note == notesOnStaff.get(0)) {
-
-            toast = Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT);
-            toast.show();
-            return true;
-        }
-        else {
-            toast = Toast.makeText(this, "ain't it chief", Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }
-    }
-
     @Override
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
+
         PianoNote note = key.getNote();
-        int relativePianoKeyIndex = note.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex;
 
-        soundPlayer.triggerDown(relativePianoKeyIndex);
-
-        if(isCorrectNote(note)) {
-            removeSightReadingNote(note);
-
-            addSightReadingNote(generatePracticablePianoNote());
+        if (isCorrectNote(note)) {
+            correctKeyPressed(key);
         }
+        else
+            incorrectKeyPressed(key);
 
+        soundPlayer.triggerDown(note.absoluteKeyIndex);
 
     }
 
+    // TODO: 11/18/2020 Consider displaying a translucent wrong note for a short time on incorrect key
+    private void incorrectKeyPressed(PianoKey key) {
+        Toast toast = new Toast(this);
+        toast.setGravity(Gravity.CENTER,0,0);
+
+        toast = Toast.makeText(this, "wrongo", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    private void correctKeyPressed(PianoKey key) {
+        Toast toast = new Toast(this);
+        toast.setGravity(Gravity.CENTER,0,0);
+
+        toast = Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT);
+        toast.show();
+
+        markNoteCorrect(key.getNote());
+
+        staffView.scrollView.smoothScrollTo(staffView.scrollView.getScrollX() + 150, 0);
+
+        addSightReadingNote(generatePracticablePianoNote());
+    }
+
+    private boolean isCorrectNote(PianoNote note) {
+        if (note == practiceNotesOnStaff.get(0))
+            return true;
+        else
+            return false;
+    }
 
 
     @Override

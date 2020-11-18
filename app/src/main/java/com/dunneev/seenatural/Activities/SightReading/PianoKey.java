@@ -211,16 +211,12 @@ class PianoKey extends View {
         canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, this.upColor);
         canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, strokePaint);
 
-        TextDrawable textDrawable = new TextDrawable(note.label);
-        Rect noteBoundsRect = new Rect();
-        noteBoundsRect.set(0,getMeasuredHeight() - 50, getMeasuredWidth(), getMeasuredHeight());
-//        Paint blackPaint = new Paint();
-//        blackPaint.setColor(Color.BLACK);
-//        canvas.drawRect(0,0, getMeasuredWidth(), getMeasuredHeight(), blackPaint);
-
-        textDrawable.setBounds(noteBoundsRect);
-        textDrawable.draw(canvas);
-//        Log.d(LOG_TAG, String.format("Draw key: (0, 0, %d, %d), %s", keyRectangle.right, keyRectangle.bottom, this.upColor));
+//        TextDrawable textDrawable = new TextDrawable(note.label);
+//        Rect noteBoundsRect = new Rect();
+//        noteBoundsRect.set(0,getMeasuredHeight() - 50, getMeasuredWidth(), getMeasuredHeight());
+//
+//        textDrawable.setBounds(noteBoundsRect);
+//        textDrawable.draw(canvas);
     }
 
     @Override

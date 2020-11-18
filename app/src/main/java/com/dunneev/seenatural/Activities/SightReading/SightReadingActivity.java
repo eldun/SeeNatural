@@ -62,7 +62,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
 
         setStaffPracticeNotes();
-        setUpPianoView();
+//        setUpPianoView();
 
         soundPlayer.loadWavAssets(this.getAssets());
 

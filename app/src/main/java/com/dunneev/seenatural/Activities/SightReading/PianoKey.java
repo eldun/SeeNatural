@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -11,19 +12,64 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.TextDrawable;
+
 class PianoKey extends View {
 
     private static final String LOG_TAG = PianoKey.class.getSimpleName();
 
+    // Key measurements in inches
+    private static final double whiteToBlackWidthRatio = (7.0/8.0)/(15.0/32.0);
+    private static final double whiteToBlackHeightRatio = (6.0)/(63.0/16.0);
+
+    public static int whiteKeyWidth;
+    public static int blackKeyWidth;
+    public static int whiteKeyHeight;
+    public static int blackKeyHeight;
+    public static int whiteCount;
+    public static int blackCount;
+    public static int count;
+
     private PianoNote note;
 
     RectF keyRectangle = new RectF();
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+        if (note.keyColor == Color.WHITE) {
+            this.isWhiteKey = true;
+            this.isBlackKey = false;
+        }
+
+        else {
+            this.isWhiteKey = false;
+            this.isBlackKey = true;
+        }
+    }
+
     private int color;
     private Paint upColor;
     private Paint downColor;
     private Paint strokePaint;
 
     private boolean isDown;
+
+    private boolean isWhiteKey;
+    private boolean isBlackKey;
+
+    public boolean isWhiteKey() {
+        return isWhiteKey;
+    }
+    public boolean isBlackKey() {
+        return isBlackKey;
+    }
+
+
 
 
 
@@ -43,9 +89,6 @@ class PianoKey extends View {
         this.note = note;
     }
 
-    public int getColor() {
-        return color;
-    }
 
     public Paint getUpColor() {
         return upColor;
@@ -84,9 +127,12 @@ class PianoKey extends View {
     public PianoKey(Context context, PianoNote note) {
         super(context);
 
-        setId(note.absoluteKeyIndex); // This is done to be able to reference individual notes in the sight-reading activity
         this.note = note;
-        this.color = note.keyColor;
+
+        setColor(note.keyColor);
+
+
+        this.pianoKeyListener = null;
         upColor = new Paint();
         upColor.setColor(note.keyColor);
         downColor = new Paint();
@@ -95,7 +141,65 @@ class PianoKey extends View {
         strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setColor(Color.BLACK);
         isDown = false;
-        this.pianoKeyListener = null;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        // Default values just in case something goes wrong
+        int desiredWidth = 100;
+        int desiredHeight = 100;
+
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+
+
+        whiteKeyWidth = widthSize / PianoKey.whiteCount;
+        whiteKeyHeight = heightSize;
+        blackKeyWidth = (int) (whiteKeyWidth / whiteToBlackWidthRatio);
+        blackKeyHeight = (int) (whiteKeyHeight / whiteToBlackHeightRatio);
+
+        if (isWhiteKey) {
+            desiredWidth = whiteKeyWidth;
+            desiredHeight = whiteKeyHeight;
+        }
+        else {
+            desiredWidth = blackKeyWidth;
+            desiredHeight = blackKeyHeight;
+        }
+
+
+        int width;
+        int height;
+
+        //Measure Height
+        if (heightMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            height = heightSize;
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            height = Math.min(desiredHeight, heightSize);
+        } else {
+            //Be whatever you want
+            height = desiredHeight;
+        }
+
+        //Measure Width
+        if (widthMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            width = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            width = Math.min(desiredWidth, widthSize);
+        } else {
+            //Be whatever you want
+            width = desiredWidth;
+        }
+
+        setMeasuredDimension(width, height);
     }
 
     @Override

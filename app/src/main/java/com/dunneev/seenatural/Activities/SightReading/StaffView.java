@@ -295,8 +295,6 @@ public class StaffView extends ViewGroup {
         for (int i=87;i>=0;i--) {
             PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(i);
 
-//            Log.i(LOG_TAG, "putting " + note.toString() + " at " + staffLineYCoordinate);
-
             noteStaffCoordinateMap.put(note, staffLineYCoordinate);
 
             if (note.keyColor == Color.WHITE) {

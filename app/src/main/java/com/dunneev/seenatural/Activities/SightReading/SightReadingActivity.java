@@ -33,7 +33,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     private ArrayList<PianoKey> pianoKeys = null;
 
-    private ArrayList notesOnStaff = new ArrayList();
+    private ArrayList practiceNotesOnStaff = new ArrayList();
 
     private SoundPlayer soundPlayer;
 
@@ -160,14 +160,14 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     private void addSightReadingNote(PianoNote note) {
         Log.i(LOG_TAG, "Adding note: " + note.toString());
         staffView = findViewById(R.id.staffView);
-        notesOnStaff.add(note);
+        practiceNotesOnStaff.add(note);
         staffView.addNote(note);
     }
 
-    private void removeSightReadingNote(PianoNote note) {
-        notesOnStaff.remove(0);
+    private void markNoteCorrect(PianoNote note) {
+        practiceNotesOnStaff.remove(0);
 
-        staffView.removeNote(note);
+//        staffView.removeNote(note);
     }
 
     private boolean isCorrectNote(PianoNote note) {

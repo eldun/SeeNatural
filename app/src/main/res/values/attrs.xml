@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="StaffView">
+        <attr name="keySignature" format="enum">
+            <enum name="C_FLAT_MAJOR" value="0"/>
+            <enum name="G_FLAT_MAJOR" value="1"/>
+            <enum name="D_FLAT_MAJOR" value="2"/>
+            <enum name="A_FLAT_MAJOR" value="3"/>
+            <enum name="E_FLAT_MAJOR" value="4"/>
+            <enum name="B_FLAT_MAJOR" value="5"/>
+            <enum name="F_MAJOR" value="6"/>
+            <enum name="C_MAJOR" value="7"/>
+            <enum name="G_MAJOR" value="8"/>
+            <enum name="D_MAJOR" value="9"/>
+            <enum name="A_MAJOR" value="10"/>
+            <enum name="E_MAJOR" value="11"/>
+            <enum name="B_MAJOR" value="12"/>
+            <enum name="F_SHARP_MAJOR" value="13"/>
+            <enum name="C_SHARP_MAJOR" value="14"/>
 
-<!--        Removed the "selectedClef" attr, as it's less flexible than selecting a note range-->
-<!--        <attr name="selectedClef" format="enum">-->
-<!--            <enum name="trebleClef" value="0" />-->
-<!--            <enum name="bassClef" value="1" />-->
-<!--            <enum name="bothClef" value="2" />-->
-<!--        </attr>-->
-
+            <enum name="A_FLAT_MINOR" value="15"/>
+            <enum name="E_FLAT_MINOR" value="16"/>
+            <enum name="B_FLAT_MINOR" value="17"/>
+            <enum name="F_MINOR" value="18"/>
+            <enum name="C_MINOR" value="19"/>
+            <enum name="G_MINOR" value="20"/>
+            <enum name="D_MINOR" value="21"/>
+            <enum name="A_MINOR" value="22"/>
+            <enum name="E_MINOR" value="23"/>
+            <enum name="B_MINOR" value="24"/>
+            <enum name="F_SHARP_MINOR" value="25"/>
+            <enum name="C_SHARP_MINOR" value="26"/>
+            <enum name="G_SHARP_MINOR" value="27"/>
+            <enum name="D_SHARP_MINOR" value="28"/>
+            <enum name="A_SHARP_MINOR" value="29"/>
+        </attr>
         <attr name="staffLowPracticeNote" format="enum">
             <enum name="A0" value="0"/>
             <enum name="A_SHARP_0" value="1"/>
@@ -289,6 +314,12 @@
 
             <enum name="C8" value="87"/>
         </attr>
+        <!--        Removed the "selectedClef" attr, as it's less flexible than selecting a note range-->
+        <!--        <attr name="selectedClef" format="enum">-->
+        <!--            <enum name="trebleClef" value="0" />-->
+        <!--            <enum name="bassClef" value="1" />-->
+        <!--            <enum name="bothClef" value="2" />-->
+        <!--        </attr>-->
     </declare-styleable>
 
     <declare-styleable name="PianoView">

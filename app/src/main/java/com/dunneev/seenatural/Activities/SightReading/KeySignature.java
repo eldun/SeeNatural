@@ -1,46 +1,45 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public enum KeySignature {
 
     // Majors
-    C_FLAT_MAJOR("C♭", true,false, new String[]{"C♭","D♭","E♭","F♭","G♭","A♭","B♭"}, false, true),
-    G_FLAT_MAJOR("G♭", true,false, new String[]{"G♭","A♭","B♭","C♭","D♭","E♭","F"},false, true),
-    D_FLAT_MAJOR("D♭", true,false, new String[]{"D♭","E♭","F","G♭","A♭","B♭","C"}, false, true),
-    A_FLAT_MAJOR("A♭", true,false, new String[]{"A♭","B♭","C","D♭","E♭","F","G"}, false, true),
-    E_FLAT_MAJOR("E♭", true,false, new String[]{"E♭","F","G","A♭","B♭","C","D"}, false, true),
-    B_FLAT_MAJOR("B♭", true,false, new String[]{"B♭","C","D","E♭","F","G","A"}, false, true),
-    F_MAJOR("F", true,false, new String[]{"F", "G", "A", "B♭", "C", "D", "E"}, false, true),
-    C_MAJOR("C", true, false, new String[]{"C","D","E","F","G","A","B"}, false, false),
-    G_MAJOR("G", true,false, new String[]{"G","A","B","C","D","E","F♯"}, true, false),
-    D_MAJOR("D", true,false, new String[]{"D","E","F♯","G","A","B","C♯"}, true, false),
-    A_MAJOR("A", true,false, new String[]{"A","B","C♯","D","E","F♯","G♯"}, true, false),
-    E_MAJOR("E", true,false, new String[]{"E","F♯","G♯","A","B","C♯","D♯"}, true, false),
-    B_MAJOR("B", true,false, new String[]{"B","C♯","D♯","E","F♯","G♯","A♯"}, true, false),
-    F_SHARP_MAJOR("F♯", true,false, new String[]{"F♯","G♯","A♯","B","C♯","D♯","E♯"}, true, false),
-    C_SHARP_MAJOR("C♯", true,false, new String[]{"C♯","D♯","E♯","F♯","G♯","A♯","B♯"}, true, false),
+    C_FLAT_MAJOR("C♭", true,false, new String[]{"C♭","D♭","E♭","F♭","G♭","A♭","B♭"}, false, true, 0),
+    G_FLAT_MAJOR("G♭", true,false, new String[]{"G♭","A♭","B♭","C♭","D♭","E♭","F"},false, true, 1),
+    D_FLAT_MAJOR("D♭", true,false, new String[]{"D♭","E♭","F","G♭","A♭","B♭","C"}, false, true, 2),
+    A_FLAT_MAJOR("A♭", true,false, new String[]{"A♭","B♭","C","D♭","E♭","F","G"}, false, true, 3),
+    E_FLAT_MAJOR("E♭", true,false, new String[]{"E♭","F","G","A♭","B♭","C","D"}, false, true, 4),
+    B_FLAT_MAJOR("B♭", true,false, new String[]{"B♭","C","D","E♭","F","G","A"}, false, true, 5),
+    F_MAJOR("F", true,false, new String[]{"F", "G", "A", "B♭", "C", "D", "E"}, false, true, 6),
+    C_MAJOR("C", true, false, new String[]{"C","D","E","F","G","A","B"}, false, false, 7),
+    G_MAJOR("G", true,false, new String[]{"G","A","B","C","D","E","F♯"}, true, false, 8),
+    D_MAJOR("D", true,false, new String[]{"D","E","F♯","G","A","B","C♯"}, true, false, 9),
+    A_MAJOR("A", true,false, new String[]{"A","B","C♯","D","E","F♯","G♯"}, true, false, 10),
+    E_MAJOR("E", true,false, new String[]{"E","F♯","G♯","A","B","C♯","D♯"}, true, false, 11),
+    B_MAJOR("B", true,false, new String[]{"B","C♯","D♯","E","F♯","G♯","A♯"}, true, false, 12),
+    F_SHARP_MAJOR("F♯", true,false, new String[]{"F♯","G♯","A♯","B","C♯","D♯","E♯"}, true, false, 13),
+    C_SHARP_MAJOR("C♯", true,false, new String[]{"C♯","D♯","E♯","F♯","G♯","A♯","B♯"}, true, false, 14),
 
 
     // Minors
-    A_FLAT_MINOR("A♭", false,true, new String[]{"A♭","B♭","C♭","D♭","E♭","F♭","G♭"}, false, true),
-    E_FLAT_MINOR("E♭", false,true, new String[]{"E♭","F","G♭","A♭","B♭","C♭","D♭"}, false, true),
-    B_FLAT_MINOR("B♭", false,true, new String[]{"B♭","C","D♭","E♭","F","G♭","A♭"}, false, true),
-    F_MINOR("F", false,true, new String[]{"F","G","A♭","B♭","C","D♭","E♭"}, false, true),
-    C_MINOR("C", false,true, new String[]{"C","D","E♭","F","G","A♭","B♭"}, false, true),
-    G_MINOR("G", false,true, new String[]{"G","A","B♭","C","D","E♭","F"}, false, true),
-    D_MINOR("D", false,true, new String[]{"D","E","F","G","A","B♭","C"}, false, true),
-    A_MINOR("A", false,true, new String[]{"A","B","C","D","E","F","G"}, false, false),
-    E_MINOR("E", false,true, new String[]{"E","F♯","G","A","B","C","D"}, true, false),
-    B_MINOR("B", false,true, new String[]{"B","C♯","D","E","F♯","G","A"}, true, false),
-    F_SHARP_MINOR("F♯", false,true, new String[]{"F♯","G♯","A","B","C♯","D","E"}, true, false),
-    C_SHARP_MINOR("C♯", false,true, new String[]{"C♯","D♯","E","F♯","G♯","A","B"}, true, false),
-    G_SHARP_MINOR("G♯", false,true, new String[]{"G♯","A♯","B","C♯","D♯","E","F♯"}, true, false),
-    D_SHARP_MINOR("D♯", false,true, new String[]{"D♯","E♯","F♯","G♯","A♯","B","C♯"}, true, false),
-    A_SHARP_MINOR("A♯", false,true, new String[]{"A♯","B♯","C♯","D♯","E♯","F♯","G♯"}, true, false);
+    A_FLAT_MINOR("A♭", false,true, new String[]{"A♭","B♭","C♭","D♭","E♭","F♭","G♭"}, false, true, 15),
+    E_FLAT_MINOR("E♭", false,true, new String[]{"E♭","F","G♭","A♭","B♭","C♭","D♭"}, false, true, 16),
+    B_FLAT_MINOR("B♭", false,true, new String[]{"B♭","C","D♭","E♭","F","G♭","A♭"}, false, true, 17),
+    F_MINOR("F", false,true, new String[]{"F","G","A♭","B♭","C","D♭","E♭"}, false, true, 18),
+    C_MINOR("C", false,true, new String[]{"C","D","E♭","F","G","A♭","B♭"}, false, true, 19),
+    G_MINOR("G", false,true, new String[]{"G","A","B♭","C","D","E♭","F"}, false, true, 20),
+    D_MINOR("D", false,true, new String[]{"D","E","F","G","A","B♭","C"}, false, true, 21),
+    A_MINOR("A", false,true, new String[]{"A","B","C","D","E","F","G"}, false, false, 22),
+    E_MINOR("E", false,true, new String[]{"E","F♯","G","A","B","C","D"}, true, false, 23),
+    B_MINOR("B", false,true, new String[]{"B","C♯","D","E","F♯","G","A"}, true, false, 24),
+    F_SHARP_MINOR("F♯", false,true, new String[]{"F♯","G♯","A","B","C♯","D","E"}, true, false, 25),
+    C_SHARP_MINOR("C♯", false,true, new String[]{"C♯","D♯","E","F♯","G♯","A","B"}, true, false, 26),
+    G_SHARP_MINOR("G♯", false,true, new String[]{"G♯","A♯","B","C♯","D♯","E","F♯"}, true, false, 27),
+    D_SHARP_MINOR("D♯", false,true, new String[]{"D♯","E♯","F♯","G♯","A♯","B","C♯"}, true, false, 28),
+    A_SHARP_MINOR("A♯", false,true, new String[]{"A♯","B♯","C♯","D♯","E♯","F♯","G♯"}, true, false, 29);
 
     private KeySignature relativeKey;
     public final String label;
@@ -49,6 +48,10 @@ public enum KeySignature {
     public final String[] scaleNotes;
     public final Boolean hasSharps;
     public final Boolean hasFlats;
+    public final int storedOrdinal;
+
+    // Cache lookup values using Map that's populated when the class loads
+    private static final Map<Integer, KeySignature> BY_STORED_ORDINAL = new HashMap<Integer, KeySignature>();
 
     public static final String[] sharpsArray = {"F♯", "C♯", "G♯", "D♯", "A♯", "E♯", "B♯"};
     public static final String[] flatsArray = {"B♭", "E♭", "A♭", "D♭", "G♭", "C♭", "F♭"};
@@ -58,7 +61,8 @@ public enum KeySignature {
                  Boolean isMinor,
                  String[] scaleNotes,
                  Boolean hasSharps,
-                 Boolean hasFlats) {
+                 Boolean hasFlats,
+                 int storedOrdinal) {
 
         this.label = label;
         this.isMajor = isMajor;
@@ -66,8 +70,12 @@ public enum KeySignature {
         this.scaleNotes = scaleNotes;
         this.hasSharps = hasSharps;
         this.hasFlats = hasFlats;
+        this.storedOrdinal = storedOrdinal;
 
     }
+
+
+
 
     static {
         // Majors
@@ -104,6 +112,10 @@ public enum KeySignature {
         G_SHARP_MINOR.relativeKey = B_MAJOR;
         D_SHARP_MINOR.relativeKey = F_SHARP_MAJOR;
         A_SHARP_MINOR.relativeKey = C_SHARP_MAJOR;
+
+        for (KeySignature key: values()) {
+            BY_STORED_ORDINAL.put(key.storedOrdinal, key);
+        }
     }
 
     public KeySignature getRelativeKey() {
@@ -111,6 +123,10 @@ public enum KeySignature {
     }
 
 
+    // Is this stupid?
+    public static KeySignature valueOfStoredOrdinal(int storedOrdinal) {
+        return BY_STORED_ORDINAL.get(storedOrdinal);
+    }
 
 
     public boolean containsNote(PianoNote note) {

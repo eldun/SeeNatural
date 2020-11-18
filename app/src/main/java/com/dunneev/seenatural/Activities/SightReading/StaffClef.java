@@ -14,7 +14,7 @@ public class StaffClef extends View {
     private static final String LOG_TAG = StaffClef.class.getSimpleName();
 
     private String clef;
-    TextDrawable clefDrawable;
+    private TextDrawable clefDrawable;
     private KeySignature keySignature;
 
     private static int desiredWidth = 500;
@@ -31,11 +31,11 @@ public class StaffClef extends View {
         this.clef = clef;
         this.keySignature = keySignature;
 
-        if (clef.equals(getResources().getString(R.string.trebleClef))) {
+        if (clef.equals(getResources().getString(R.string.treble))) {
             this.clefDrawable = new TextDrawable(context.getString(R.string.char_treble_clef));
         }
 
-        else if (clef.equals(context.getString(R.string.bassClef))) {
+        else if (clef.equals(context.getString(R.string.bass))) {
             this.clefDrawable = new TextDrawable(context.getString(R.string.char_bass_clef));
         }
     }
@@ -46,7 +46,7 @@ public class StaffClef extends View {
     }
 
     private void createDefaultClef() {
-        this.clef = getResources().getString(R.string.trebleClef);
+        this.clef = getResources().getString(R.string.treble);
         this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef));
         this.keySignature = KeySignature.C_MAJOR;
     }

@@ -20,12 +20,10 @@ public class StaffNote extends View {
     private static final String LOG_TAG = StaffNote.class.getSimpleName();
 
     private KeySignature keySignature;
-    public PianoNote note;
+    private PianoNote note;
 
     private boolean isAccidental;
     private String accidentalSymbol;
-    private TextDrawable accidentalDrawable;
-
     private TextDrawable noteDrawable;
 
     private Rect noteBoundsRect = new Rect();

@@ -115,8 +115,8 @@ public class StaffView extends ViewGroup {
 //            this.highestPracticeNote = PianoNote.C6;
 //        }
 
-        lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_lowPracticeNote, 0));
-        highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_highPracticeNote, 87));
+        lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffLowPracticeNote, 0));
+        highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffHighPracticeNote, 87));
 
 
         styledAttributes.recycle();

@@ -9,7 +9,7 @@
 <!--            <enum name="bothClef" value="2" />-->
 <!--        </attr>-->
 
-        <attr name="lowPracticeNote" format="enum">
+        <attr name="staffLowPracticeNote" format="enum">
             <enum name="A0" value="0"/>
             <enum name="A_SHARP_0" value="1"/>
             <enum name="B_FLAT_0" value="1"/>
@@ -149,7 +149,7 @@
 
             <enum name="C8" value="87"/>
         </attr>
-        <attr name="highPracticeNote" format="enum">
+        <attr name="staffHighPracticeNote" format="enum">
             <enum name="A0" value="0"/>
             <enum name="A_SHARP_0" value="1"/>
             <enum name="B_FLAT_0" value="1"/>

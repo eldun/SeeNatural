@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dunneev.seenatural.Activities.Clef.ClefActivity;

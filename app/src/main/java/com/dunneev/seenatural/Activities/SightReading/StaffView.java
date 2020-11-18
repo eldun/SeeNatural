@@ -64,6 +64,7 @@ public class StaffView extends ViewGroup {
 
     public void setKeySignature(KeySignature keySignature) {
         this.keySignature = keySignature;
+        init();
     }
 
     // TODO: 11/17/2020 Create specialized method to redraw staff after setting practice notes instead of init()
@@ -116,6 +117,9 @@ public class StaffView extends ViewGroup {
 //            this.lowestPracticeNote = PianoNote.G2;
 //            this.highestPracticeNote = PianoNote.C6;
 //        }
+
+
+        keySignature = KeySignature.valueOfStoredOrdinal(styledAttributes.getInt(R.styleable.StaffView_keySignature, 7));
 
         lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffLowPracticeNote, 0));
         highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffHighPracticeNote, 87));
@@ -179,6 +183,7 @@ public class StaffView extends ViewGroup {
 
 
     private void addClefsToView() {
+        Log.i(LOG_TAG, "keySignature: " + keySignature);
 
         StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.treble), keySignature);
 

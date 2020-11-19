@@ -2,6 +2,8 @@ package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -10,12 +12,15 @@ import android.view.View;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.TextDrawable;
 
+import java.util.ArrayList;
+
 public class StaffClef extends View {
     private static final String LOG_TAG = StaffClef.class.getSimpleName();
 
     private String clef;
     private TextDrawable clefDrawable;
     private KeySignature keySignature;
+    private ArrayList<TextDrawable> symbolList;
 
     private static int desiredWidth = 500;
     private static int desiredHeight = 500;
@@ -41,14 +46,30 @@ public class StaffClef extends View {
         init();
     }
 
-    private void init() {
-        setClefDrawable();
-    }
-
     private void createDefaultClef() {
         this.clef = getResources().getString(R.string.treble);
         this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef));
-        this.keySignature = KeySignature.C_MAJOR;
+        this.keySignature = KeySignature.G_MAJOR;
+    }
+
+    private void init() {
+        setClefDrawable();
+        populateKeySignatureSymbols();
+    }
+
+    private void populateKeySignatureSymbols() {
+        symbolList = new ArrayList();
+        if (keySignature.hasSharps) {
+            for (int i=0;i<keySignature.sharpCount;i++){
+                symbolList.add(new TextDrawable(getResources().getString(R.string.char_sharp_sign)));
+            }
+        }
+        
+        else if (keySignature.hasFlats) {
+            for (int i=0;i<keySignature.flatCount;i++){
+                symbolList.add(new TextDrawable(getResources().getString(R.string.char_flat_sign)));
+            }
+        }
     }
 
     private void setClefDrawable() {
@@ -131,9 +152,14 @@ public class StaffClef extends View {
         boundsRect.set(0,0, getMeasuredWidth(), getMeasuredHeight());
         clefDrawable.setBounds(boundsRect);
 //        //        super.onDraw(canvas);
-//        Paint greenPaint = new Paint();
-//        greenPaint.setColor(Color.GREEN);
+        Paint greenPaint = new Paint();
+        greenPaint.setColor(Color.GREEN);
 //        canvas.drawCircle(0,0,50, greenPaint);
         clefDrawable.draw(canvas);
+
+//        canvas.drawLine(0,0, getMeasuredWidth(), 0,greenPaint);
+
+        symbolList.get(0).setBounds(0,0, 200, 200);
+        symbolList.get(0).draw(canvas);
     }
 }

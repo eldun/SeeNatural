@@ -72,10 +72,10 @@ public enum KeySignature {
         this.scaleNotes = scaleNotes;
         this.flatCount = flatCount;
         this.sharpCount = sharpCount;
-        if (flatCount!=0)
-            this.hasFlats = true;
-        else if (sharpCount!=0)
-            this.hasSharps = true;
+        this.hasFlats = this.flatCount > 0;
+        this.hasSharps = this.sharpCount > 0;
+
+
         this.storedOrdinal = storedOrdinal;
 
     }

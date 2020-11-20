@@ -56,7 +56,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         setContentView(R.layout.activity_reading);
 
         staffView = findViewById(R.id.staffView);
-        setStaffKeySignature();
+//        setStaffKeySignature();
         setStaffPracticeNotes();
         setUpPianoView();
 
@@ -93,7 +93,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
             // todo: generate random notes based on piano keys as well staffview practice range
             // todo: randomize notes BASED ON SELECTED DIFFICULTY
             for (PianoNote note : practicableNotes) {
-                addSightReadingNote(note);
+//                addSightReadingNote(note);
             }
         }
     }

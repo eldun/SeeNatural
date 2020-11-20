@@ -41,7 +41,7 @@ public class StaffClef extends View {
 
     public StaffClef(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        createDefaultClef();
+//        createDefaultClef();
 
         init();
     }
@@ -54,22 +54,6 @@ public class StaffClef extends View {
 
     private void init() {
         setClefDrawable();
-        populateKeySignatureSymbols();
-    }
-
-    private void populateKeySignatureSymbols() {
-        symbolList = new ArrayList();
-        if (keySignature.hasSharps) {
-            for (int i=0;i<keySignature.sharpCount;i++){
-                symbolList.add(new TextDrawable(getResources().getString(R.string.char_sharp_sign)));
-            }
-        }
-        
-        else if (keySignature.hasFlats) {
-            for (int i=0;i<keySignature.flatCount;i++){
-                symbolList.add(new TextDrawable(getResources().getString(R.string.char_flat_sign)));
-            }
-        }
     }
 
     private void setClefDrawable() {
@@ -158,8 +142,5 @@ public class StaffClef extends View {
         clefDrawable.draw(canvas);
 
 //        canvas.drawLine(0,0, getMeasuredWidth(), 0,greenPaint);
-
-        symbolList.get(0).setBounds(0,0, 200, 200);
-        symbolList.get(0).draw(canvas);
     }
 }

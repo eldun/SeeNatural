@@ -13,6 +13,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.TextDrawable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,11 +141,28 @@ public class StaffView extends ViewGroup {
         populatePracticeNoteArrays();
         addStaffLinesToView();
         addClefsToView();
+        addKeySymbolsToView();
         addNoteScrollerToView();
 
         // The treble clef is taller than the staff, but the clipped parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
         setClipChildren(false);
+    }
+
+    private void addKeySymbolsToView() {
+        StaffSymbol symbol = null;
+       if (keySignature.hasSharps) {
+            for (int i = 0; i < keySignature.sharpCount; i++) {
+                symbol = new StaffSymbol(getContext(), getResources().getString(R.string.char_sharp_sign));
+            }
+        }
+        else if (keySignature.hasFlats) {
+            for (int i = 0; i < keySignature.flatCount; i++) {
+                symbol = new StaffSymbol(getContext(), getResources().getString(R.string.char_flat_sign));
+            }
+        }
+        symbol.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        addView(symbol);
     }
 
 
@@ -268,6 +286,7 @@ public class StaffView extends ViewGroup {
 
         StaffLine.setDesiredHeight(staffLineSpacing);
         StaffClef.setDesiredHeight(visibleStaffHeight);
+        StaffSymbol.setDesiredHeight(staffLineSpacing*4);
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
@@ -342,7 +361,17 @@ public class StaffView extends ViewGroup {
                 clefWidth = childRight;
             }
 
-            // NoteScroller
+            // KeySignature symbols
+            else if (child.getClass() == StaffSymbol.class) {
+                childLeft = clefWidth;
+                childTop = noteStaffCoordinateMap.get(PianoNote.G5);
+                childRight = childLeft + child.getMeasuredWidth();
+                childBottom = childTop + child.getMeasuredHeight();
+            }
+
+
+
+                // NoteScroller
             else if (child.getClass() == HorizontalScrollView.class) {
                 childLeft = clefWidth;
                 childTop = 0;

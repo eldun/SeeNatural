@@ -21,6 +21,12 @@ public class TextDrawable extends Drawable {
     private int intrinsicHeight;
     private float aspectRatio;
 
+    public void setCenterInBounds(boolean centerInBounds) {
+        this.centerInBounds = centerInBounds;
+    }
+
+    private boolean centerInBounds = false;
+
     public TextDrawable(CharSequence text) {
         this.text = text;
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -36,12 +42,27 @@ public class TextDrawable extends Drawable {
 
 //         Just testing to see the bounds are correct
         Paint boundsPaint = new Paint();
-        boundsPaint.setColor(Color.BLACK);
+        boundsPaint.setColor(Color.YELLOW);
         boundsPaint.setAlpha(70);
         canvas.drawRect(bounds, boundsPaint);
 
-
+        ;
         textPaint.setTextSize(bounds.height());
+
+        if(centerInBounds)
+        {
+            Rect r = new Rect();
+
+            canvas.getClipBounds(r);
+            int cHeight = r.height();
+            int cWidth = r.width();
+            textPaint.getTextBounds((String) text, 0, text.length(), r);
+            float x = cWidth / 2f - r.width() / 2f - r.left;
+            float y = cHeight / 2f + r.height() / 2f - r.bottom;
+            canvas.drawText((String) text, x, y, textPaint);
+
+            return;
+        }
 
         canvas.drawText(text, 0, text.length(),
                 bounds.left, bounds.bottom, textPaint);

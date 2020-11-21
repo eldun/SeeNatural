@@ -23,9 +23,9 @@
     <string name="char_whole_note">𝅝</string>
     <string name="char_half_note">𝅗𝅥</string>
     <string name="char_quarter_note">𝅘𝅥</string>
-    <string name="char_flat_sign">♭</string>
-    <string name="char_natural_sign">♮</string>
-    <string name="char_sharp_sign">♯</string>
+    <string name="char_flat_symbol">♭</string>
+    <string name="char_natural_symbol">♮</string>
+    <string name="char_sharp_symbol">♯</string>
 
 
 

@@ -2,18 +2,13 @@ package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.TextDrawable;
-
-import org.w3c.dom.Text;
 
 public class StaffNote extends View {
 
@@ -48,11 +43,11 @@ public class StaffNote extends View {
         isAccidental = checkIfAccidental(note);
 
         if (isAccidental) {
-            noteDrawable = new TextDrawable(accidentalSymbol + getResources().getString(R.string.char_quarter_note));
+            noteDrawable = new TextDrawable(accidentalSymbol + getResources().getString(R.string.char_quarter_note), TextDrawable.positioningInBounds.DEFAULT);
         }
 
         else {
-            noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note));
+            noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note), TextDrawable.positioningInBounds.DEFAULT);
         }
     }
 
@@ -61,15 +56,15 @@ public class StaffNote extends View {
             return false;
 
         else {
-            if (note.label.contains(getResources().getString(R.string.char_sharp_sign))) {
-                accidentalSymbol = getResources().getString(R.string.char_sharp_sign);
+            if (note.label.contains(getResources().getString(R.string.char_sharp_symbol))) {
+                accidentalSymbol = getResources().getString(R.string.char_sharp_symbol);
             }
 
-            else if (note.label.contains(getResources().getString(R.string.char_flat_sign)))
-                accidentalSymbol = getResources().getString(R.string.char_flat_sign);
+            else if (note.label.contains(getResources().getString(R.string.char_flat_symbol)))
+                accidentalSymbol = getResources().getString(R.string.char_flat_symbol);
 
             else
-                accidentalSymbol = getResources().getString(R.string.char_natural_sign);
+                accidentalSymbol = getResources().getString(R.string.char_natural_symbol);
         }
 
         return true;

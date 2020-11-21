@@ -13,22 +13,29 @@ public class TextDrawable extends Drawable {
 
     private static final String LOG_TAG = TextDrawable.class.getSimpleName();
 
+    public enum positioningInBounds {
+        DEFAULT,
+        CENTERED,
+        LEFT,
+        TOP,
+        RIGHT,
+        BOTTOM
+    }
+
     private static int color = Color.WHITE;
     private static final int DEFAULT_TEXTSIZE = 100;
     private Paint textPaint;
     private CharSequence text;
+    positioningInBounds positioningInBounds;
     private int intrinsicWidth;
     private int intrinsicHeight;
     private float aspectRatio;
 
-    public void setCenterInBounds(boolean centerInBounds) {
-        this.centerInBounds = centerInBounds;
-    }
 
-    private boolean centerInBounds = false;
 
-    public TextDrawable(CharSequence text) {
+    public TextDrawable(CharSequence text, positioningInBounds positioningInBounds) {
         this.text = text;
+        this.positioningInBounds = positioningInBounds;
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setColor(color);
         textPaint.setTextAlign(Paint.Align.LEFT);
@@ -38,35 +45,47 @@ public class TextDrawable extends Drawable {
     }
     @Override
     public void draw(Canvas canvas) {
+
         Rect bounds = getBounds();
 
 //         Just testing to see the bounds are correct
         Paint boundsPaint = new Paint();
-        boundsPaint.setColor(Color.YELLOW);
-        boundsPaint.setAlpha(70);
+        boundsPaint.setColor(Color.BLACK);
+        boundsPaint.setAlpha(30);
         canvas.drawRect(bounds, boundsPaint);
 
-        ;
+
         textPaint.setTextSize(bounds.height());
 
-        if(centerInBounds)
-        {
-            Rect r = new Rect();
 
-            canvas.getClipBounds(r);
-            int cHeight = r.height();
-            int cWidth = r.width();
-            textPaint.getTextBounds((String) text, 0, text.length(), r);
-            float x = cWidth / 2f - r.width() / 2f - r.left;
-            float y = cHeight / 2f + r.height() / 2f - r.bottom;
-            canvas.drawText((String) text, x, y, textPaint);
 
-            return;
+        switch (positioningInBounds) {
+            case LEFT:
+                break;
+            case TOP:
+                break;
+            case RIGHT:
+                break;
+            case BOTTOM:
+                break;
+            case CENTERED:
+
+                Rect r = bounds;
+
+                int cHeight = r.height();
+                int cWidth = r.width();
+                textPaint.getTextBounds((String) text, 0, text.length(), r);
+                float x = cWidth / 2f - r.width() / 2f - r.left;
+                float y = cHeight / 2f + r.height() / 2f - r.bottom;
+                canvas.drawText((String) text, x, y, textPaint);
+
+                break;
+
+            case DEFAULT:
+                canvas.drawText(text, 0, text.length(),
+                        bounds.left, bounds.bottom, textPaint);
+                break;
         }
-
-        canvas.drawText(text, 0, text.length(),
-                bounds.left, bounds.bottom, textPaint);
-
     }
 
     public float getAspectRatio() {

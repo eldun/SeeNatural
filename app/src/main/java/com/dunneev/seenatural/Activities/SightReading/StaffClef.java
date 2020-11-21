@@ -41,28 +41,50 @@ public class StaffClef extends View {
 
     public StaffClef(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-//        createDefaultClef();
+        createDefaultClef();
 
         init();
     }
 
     private void createDefaultClef() {
         this.clef = getResources().getString(R.string.treble);
-        this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef));
+        this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef), TextDrawable.positioningInBounds.DEFAULT);
         this.keySignature = KeySignature.G_MAJOR;
     }
 
     private void init() {
         setClefDrawable();
+        populateSymbolList();
+    }
+
+    private void populateSymbolList() {
+        symbolList = new ArrayList<>();
+
+        if (keySignature.hasSharps) {
+            for (int i=0;i< keySignature.sharpCount;i++){
+                symbolList.add(new TextDrawable(getResources().getString(R.string.char_sharp_symbol),
+                        TextDrawable.positioningInBounds.CENTERED));
+            }
+
+        }
+        else if (keySignature.hasFlats) {
+            for (int i=0;i< keySignature.flatCount;i++){
+                symbolList.add(new TextDrawable(getResources().getString(R.string.char_flat_symbol),
+                        TextDrawable.positioningInBounds.CENTERED));
+            }
+        }
+        else {
+            return;
+        }
     }
 
     private void setClefDrawable() {
         if (clef.equals(getResources().getString(R.string.treble))) {
-            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef));
+            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef), TextDrawable.positioningInBounds.DEFAULT);
         }
 
         else if (clef.equals(getResources().getString(R.string.bass))) {
-            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_bass_clef));
+            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_bass_clef), TextDrawable.positioningInBounds.DEFAULT);
         }
     }
 
@@ -136,11 +158,14 @@ public class StaffClef extends View {
         boundsRect.set(0,0, getMeasuredWidth(), getMeasuredHeight());
         clefDrawable.setBounds(boundsRect);
 //        //        super.onDraw(canvas);
-        Paint greenPaint = new Paint();
-        greenPaint.setColor(Color.GREEN);
+//        Paint greenPaint = new Paint();
+//        greenPaint.setColor(Color.GREEN);
 //        canvas.drawCircle(0,0,50, greenPaint);
         clefDrawable.draw(canvas);
 
-//        canvas.drawLine(0,0, getMeasuredWidth(), 0,greenPaint);
+        for (TextDrawable symbol:symbolList) {
+            symbol.setBounds(100,100,300,300);
+            symbol.draw(canvas);
+        }
     }
 }

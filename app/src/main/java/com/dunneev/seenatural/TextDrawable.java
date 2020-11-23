@@ -46,16 +46,16 @@ public class TextDrawable extends Drawable {
     @Override
     public void draw(Canvas canvas) {
 
-        Rect bounds = getBounds();
+        Rect drawableBounds = getBounds();
 
-//         Just testing to see the bounds are correct
+//         Just testing to see the drawableBounds are correct
         Paint boundsPaint = new Paint();
         boundsPaint.setColor(Color.BLACK);
         boundsPaint.setAlpha(30);
-        canvas.drawRect(bounds, boundsPaint);
+        canvas.drawRect(drawableBounds, boundsPaint);
 
 
-        textPaint.setTextSize(bounds.height());
+        textPaint.setTextSize(drawableBounds.height());
 
 
 
@@ -70,20 +70,17 @@ public class TextDrawable extends Drawable {
                 break;
             case CENTERED:
 
-                Rect r = bounds;
-
-                int cHeight = r.height();
-                int cWidth = r.width();
-                textPaint.getTextBounds((String) text, 0, text.length(), r);
-                float x = cWidth / 2f - r.width() / 2f - r.left;
-                float y = cHeight / 2f + r.height() / 2f - r.bottom;
+                Rect textBounds = new Rect();
+                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+                float x = drawableBounds.left + (drawableBounds.width() / 2f)  - (textBounds.width() / 2f) - textBounds.left;
+                float y = drawableBounds.top + (drawableBounds.height() / 2f) + (textBounds.height() / 2f) - textBounds.bottom;
                 canvas.drawText((String) text, x, y, textPaint);
 
                 break;
 
             case DEFAULT:
                 canvas.drawText(text, 0, text.length(),
-                        bounds.left, bounds.bottom, textPaint);
+                        drawableBounds.left, drawableBounds.bottom, textPaint);
                 break;
         }
     }

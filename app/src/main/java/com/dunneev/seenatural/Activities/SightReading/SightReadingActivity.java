@@ -34,7 +34,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     private ArrayList<PianoKey> pianoKeys = null;
 
-    private ArrayList practiceNotesOnStaff = new ArrayList();
+    private ArrayList<PianoNote> practiceNotesOnStaff = new ArrayList();
 
     private SoundPlayer soundPlayer;
 
@@ -93,7 +93,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
             // todo: generate random notes based on piano keys as well staffview practice range
             // todo: randomize notes BASED ON SELECTED DIFFICULTY
             for (PianoNote note : practicableNotes) {
-//                addSightReadingNote(note);
+                addSightReadingNote(note);
             }
         }
     }
@@ -136,7 +136,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
 
         for (int i=0;i<PianoKey.count;i++) {
-            practicableNotes.add(PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.absoluteKeyIndex + i));
+            practicableNotes.add(PianoNote.valueOfStoredOrdinal(lowestPracticeNote.storedOrdinal + i));
         }
     }
 
@@ -181,11 +181,14 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
         PianoNote note = key.getNote();
 
+
         if (isCorrectNote(note)) {
             correctKeyPressed(key);
         }
-        else
+        else {
+            Log.i(LOG_TAG, "note is " + note);
             incorrectKeyPressed(key);
+        }
 
         soundPlayer.triggerDown(note.absoluteKeyIndex);
 
@@ -215,7 +218,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     private boolean isCorrectNote(PianoNote note) {
-        if (note == practiceNotesOnStaff.get(0))
+        if (note.equals(practiceNotesOnStaff.get(0)))
             return true;
         else
             return false;

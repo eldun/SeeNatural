@@ -74,11 +74,16 @@ public class TextDrawable extends Drawable {
             case RIGHT:
                 break;
             case BOTTOM:
+                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+                x = drawableBounds.left;
+                y = drawableBounds.bottom;
+                canvas.drawText((String) text, x, y, textPaint);
                 break;
             case CENTERED:
 
                 textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
-                x = drawableBounds.left + (drawableBounds.width() / 2f)  - (textBounds.width() / 2f) - textBounds.left;
+//                x = drawableBounds.left + (drawableBounds.width() / 2f)  - (textBounds.width() / 2f) - textBounds.left;
+                x = drawableBounds.left;
                 y = drawableBounds.top + (drawableBounds.height() / 2f) + (textBounds.height() / 2f) - textBounds.bottom;
                 canvas.drawText((String) text, x, y, textPaint);
 

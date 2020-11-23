@@ -50,19 +50,26 @@ public class TextDrawable extends Drawable {
 
 //         Just testing to see the drawableBounds are correct
         Paint boundsPaint = new Paint();
-        boundsPaint.setColor(Color.BLACK);
+        boundsPaint.setColor(Color.YELLOW);
         boundsPaint.setAlpha(30);
         canvas.drawRect(drawableBounds, boundsPaint);
 
 
         textPaint.setTextSize(drawableBounds.height());
 
-
+        Rect textBounds = new Rect();
+        float x;
+        float y;
 
         switch (positioningInBounds) {
             case LEFT:
                 break;
             case TOP:
+                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+                x = drawableBounds.left;
+                y = drawableBounds.bottom - textPaint.descent() / 2;
+                canvas.drawText((String) text, x, y, textPaint);
+
                 break;
             case RIGHT:
                 break;
@@ -70,10 +77,9 @@ public class TextDrawable extends Drawable {
                 break;
             case CENTERED:
 
-                Rect textBounds = new Rect();
                 textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
-                float x = drawableBounds.left + (drawableBounds.width() / 2f)  - (textBounds.width() / 2f) - textBounds.left;
-                float y = drawableBounds.top + (drawableBounds.height() / 2f) + (textBounds.height() / 2f) - textBounds.bottom;
+                x = drawableBounds.left + (drawableBounds.width() / 2f)  - (textBounds.width() / 2f) - textBounds.left;
+                y = drawableBounds.top + (drawableBounds.height() / 2f) + (textBounds.height() / 2f) - textBounds.bottom;
                 canvas.drawText((String) text, x, y, textPaint);
 
                 break;

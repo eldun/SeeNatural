@@ -84,7 +84,7 @@ public class StaffClef extends View {
         }
 
         else if (clef.equals(getResources().getString(R.string.bass))) {
-            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_bass_clef), TextDrawable.positioningInBounds.DEFAULT);
+            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_bass_clef), TextDrawable.positioningInBounds.TOP);
         }
     }
 

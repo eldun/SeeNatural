@@ -335,7 +335,7 @@ public class StaffView extends ViewGroup {
 
                 else if (((StaffClef) child).getClef().equals(getResources().getString(R.string.bass))) {
                     childLeft = 0;
-                    childTop = noteStaffCoordinateMap.get(PianoNote.B3) + (staffLineSpacing/4);
+                    childTop = noteStaffCoordinateMap.get(PianoNote.A3);
                     childRight = child.getMeasuredWidth();
                     childBottom = childTop + child.getMeasuredHeight();
                 }

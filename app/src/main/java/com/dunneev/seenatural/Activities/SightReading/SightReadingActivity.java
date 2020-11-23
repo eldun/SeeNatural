@@ -22,6 +22,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         System.loadLibrary("native-lib");
     }
 
+    private KeySignature selectedKeySignature;
     private String selectedClef;
     private PianoNote lowestPracticeNote;
     private PianoNote highestPracticeNote;
@@ -54,12 +55,17 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading);
 
-
+        staffView = findViewById(R.id.staffView);
+//        setStaffKeySignature();
         setStaffPracticeNotes();
         setUpPianoView();
 
         soundPlayer = new SoundPlayer(pianoView.getLowestPracticeNote(), PianoKey.count);
         soundPlayer.loadWavAssets(this.getAssets());
+    }
+
+    private void setStaffKeySignature() {
+        staffView.setKeySignature(selectedKeySignature);
     }
 
 
@@ -87,7 +93,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
             // todo: generate random notes based on piano keys as well staffview practice range
             // todo: randomize notes BASED ON SELECTED DIFFICULTY
             for (PianoNote note : practicableNotes) {
-                addSightReadingNote(note);
+//                addSightReadingNote(note);
             }
         }
     }
@@ -109,7 +115,6 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     private void setStaffPracticeNotes() {
-        staffView = findViewById(R.id.staffView);
         setPracticableNoteRange();
         staffView.setHighestPracticeNote(highestPracticeNote);
         staffView.setLowestPracticeNote(lowestPracticeNote);

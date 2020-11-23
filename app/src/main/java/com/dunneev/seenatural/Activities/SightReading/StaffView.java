@@ -13,6 +13,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.TextDrawable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +35,7 @@ public class StaffView extends ViewGroup {
     private PianoNote highestPracticeNote = PianoNote.C6;
     private static int numberOfPracticeNotes;
 
-    private KeySignature keySignature = KeySignature.A_MINOR;
+    private KeySignature keySignature;
     int clefWidth;
 
     // The distance between natural notes e.g. A4 to B4
@@ -64,6 +65,7 @@ public class StaffView extends ViewGroup {
 
     public void setKeySignature(KeySignature keySignature) {
         this.keySignature = keySignature;
+        init();
     }
 
     // TODO: 11/17/2020 Create specialized method to redraw staff after setting practice notes instead of init()
@@ -116,6 +118,9 @@ public class StaffView extends ViewGroup {
 //            this.lowestPracticeNote = PianoNote.G2;
 //            this.highestPracticeNote = PianoNote.C6;
 //        }
+
+
+        keySignature = KeySignature.valueOfStoredOrdinal(styledAttributes.getInt(R.styleable.StaffView_keySignature, 7));
 
         lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffLowPracticeNote, 0));
         highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffHighPracticeNote, 87));
@@ -179,6 +184,7 @@ public class StaffView extends ViewGroup {
 
 
     private void addClefsToView() {
+        Log.i(LOG_TAG, "keySignature: " + keySignature);
 
         StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.treble), keySignature);
 
@@ -290,8 +296,6 @@ public class StaffView extends ViewGroup {
         for (int i=87;i>=0;i--) {
             PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(i);
 
-//            Log.i(LOG_TAG, "putting " + note.toString() + " at " + staffLineYCoordinate);
-
             noteStaffCoordinateMap.put(note, staffLineYCoordinate);
 
             if (note.keyColor == Color.WHITE) {
@@ -331,7 +335,7 @@ public class StaffView extends ViewGroup {
 
                 else if (((StaffClef) child).getClef().equals(getResources().getString(R.string.bass))) {
                     childLeft = 0;
-                    childTop = noteStaffCoordinateMap.get(PianoNote.B3) + (staffLineSpacing/4);
+                    childTop = noteStaffCoordinateMap.get(PianoNote.A3);
                     childRight = child.getMeasuredWidth();
                     childBottom = childTop + child.getMeasuredHeight();
                 }
@@ -339,7 +343,9 @@ public class StaffView extends ViewGroup {
                 clefWidth = childRight;
             }
 
-            // NoteScroller
+
+
+                // NoteScroller
             else if (child.getClass() == HorizontalScrollView.class) {
                 childLeft = clefWidth;
                 childTop = 0;

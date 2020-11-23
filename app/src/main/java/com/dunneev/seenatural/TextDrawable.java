@@ -13,16 +13,29 @@ public class TextDrawable extends Drawable {
 
     private static final String LOG_TAG = TextDrawable.class.getSimpleName();
 
+    public enum positioningInBounds {
+        DEFAULT,
+        CENTERED,
+        LEFT,
+        TOP,
+        RIGHT,
+        BOTTOM
+    }
+
     private static int color = Color.WHITE;
     private static final int DEFAULT_TEXTSIZE = 100;
     private Paint textPaint;
     private CharSequence text;
+    positioningInBounds positioningInBounds;
     private int intrinsicWidth;
     private int intrinsicHeight;
     private float aspectRatio;
 
-    public TextDrawable(CharSequence text) {
+
+
+    public TextDrawable(CharSequence text, positioningInBounds positioningInBounds) {
         this.text = text;
+        this.positioningInBounds = positioningInBounds;
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setColor(color);
         textPaint.setTextAlign(Paint.Align.LEFT);
@@ -32,20 +45,55 @@ public class TextDrawable extends Drawable {
     }
     @Override
     public void draw(Canvas canvas) {
-        Rect bounds = getBounds();
 
-//         Just testing to see the bounds are correct
+        Rect drawableBounds = getBounds();
+
+//         Just testing to see the drawableBounds are correct
         Paint boundsPaint = new Paint();
-        boundsPaint.setColor(Color.BLACK);
-        boundsPaint.setAlpha(70);
-        canvas.drawRect(bounds, boundsPaint);
+        boundsPaint.setColor(Color.YELLOW);
+        boundsPaint.setAlpha(30);
+        canvas.drawRect(drawableBounds, boundsPaint);
 
 
-        textPaint.setTextSize(bounds.height());
+        textPaint.setTextSize(drawableBounds.height());
 
-        canvas.drawText(text, 0, text.length(),
-                bounds.left, bounds.bottom, textPaint);
+        Rect textBounds = new Rect();
+        float x;
+        float y;
 
+        switch (positioningInBounds) {
+            case LEFT:
+                break;
+            case TOP:
+                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+                x = drawableBounds.left;
+                y = drawableBounds.bottom - textPaint.descent() / 2;
+                canvas.drawText((String) text, x, y, textPaint);
+
+                break;
+            case RIGHT:
+                break;
+            case BOTTOM:
+                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+                x = drawableBounds.left;
+                y = drawableBounds.bottom;
+                canvas.drawText((String) text, x, y, textPaint);
+                break;
+            case CENTERED:
+
+                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+//                x = drawableBounds.left + (drawableBounds.width() / 2f)  - (textBounds.width() / 2f) - textBounds.left;
+                x = drawableBounds.left;
+                y = drawableBounds.top + (drawableBounds.height() / 2f) + (textBounds.height() / 2f) - textBounds.bottom;
+                canvas.drawText((String) text, x, y, textPaint);
+
+                break;
+
+            case DEFAULT:
+                canvas.drawText(text, 0, text.length(),
+                        drawableBounds.left, drawableBounds.bottom, textPaint);
+                break;
+        }
     }
 
     public float getAspectRatio() {

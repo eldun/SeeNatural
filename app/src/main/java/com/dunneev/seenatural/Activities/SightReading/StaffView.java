@@ -314,8 +314,6 @@ public class StaffView extends ViewGroup {
             return;
         }
 
-        boolean noteScrollerLaidOut = false;
-
         for (int i = 0; i < childCount; i++) {
             final View child = getChildAt(i);
 
@@ -344,6 +342,7 @@ public class StaffView extends ViewGroup {
                     childBottom = childTop + child.getMeasuredHeight();
                 }
 
+                // TODO: 11/24/2020 Create separate noteScroller for each clef
                 clefWidth = childRight;
             }
 
@@ -351,6 +350,10 @@ public class StaffView extends ViewGroup {
 
             // NoteScroller
             else if (child.getClass() == HorizontalScrollView.class) {
+
+                // Right now, there's some space between the treble clef and the scroller,
+                // because the bass clef is a bit wider. The scroller's left coordinate gets set to
+                // the bass clef.
                 childLeft = clefWidth;
                 childTop = 0;
                 childRight = getMeasuredWidth();

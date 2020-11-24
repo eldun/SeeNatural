@@ -22,7 +22,8 @@ public class TextDrawable extends Drawable {
         BOTTOM
     }
 
-    private static int color = Color.WHITE;
+
+    private int color = Color.WHITE;
     private static final int DEFAULT_TEXTSIZE = 100;
     private Paint textPaint;
     private CharSequence text;
@@ -31,7 +32,10 @@ public class TextDrawable extends Drawable {
     private int intrinsicHeight;
     private float aspectRatio;
 
-
+    public void setColor(int color) {
+        this.color = color;
+        textPaint.setColor(color);
+    }
 
     public TextDrawable(CharSequence text, positioningInBounds positioningInBounds) {
         this.text = text;

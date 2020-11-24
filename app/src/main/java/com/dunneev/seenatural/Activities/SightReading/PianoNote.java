@@ -239,13 +239,30 @@ public enum PianoNote {
         return whiteKeyCount;
     }
 
-    public boolean equals(PianoNote note){
-        if (this.storedOrdinal == note.enharmonicEquivalentOrdinal ||
-                this.absoluteKeyIndex == note.absoluteKeyIndex){
-            return true;
+
+    public boolean equals(PianoNote note, boolean singleOctavePractice) {
+        if (!singleOctavePractice)
+            if (this.storedOrdinal == note.enharmonicEquivalentOrdinal ||
+                    this.absoluteKeyIndex == note.absoluteKeyIndex) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        else {
+            if (this.pitch == note.pitch) {
+                return true;
+            }
+            if (this.enharmonicEquivalentOrdinal > 0)
+            {
+                return valueOfStoredOrdinal(this.enharmonicEquivalentOrdinal).pitch ==
+                        valueOfStoredOrdinal(note.storedOrdinal).pitch;
+
+            }
+            else
+                return false;
         }
-        else
-            return false;
+
     }
 
     @Override

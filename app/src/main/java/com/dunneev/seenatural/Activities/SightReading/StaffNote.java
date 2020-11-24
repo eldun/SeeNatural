@@ -128,4 +128,8 @@ public class StaffNote extends View {
         noteDrawable.draw(canvas);
 
     }
+
+    public void setColor(int color) {
+        noteDrawable.setColor(color);
+    }
 }

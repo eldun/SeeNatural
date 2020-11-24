@@ -369,6 +369,7 @@ public class StaffView extends ViewGroup {
         }
     }
 
+    // TODO: 11/23/2020 Adjust positions when new notes are added mid-activity 
     private void populateStaffNoteHorizontalNotePositions() {
         int childCount = noteLinearLayout.getChildCount();
 

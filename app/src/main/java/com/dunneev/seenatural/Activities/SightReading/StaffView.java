@@ -1,8 +1,12 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -345,7 +349,7 @@ public class StaffView extends ViewGroup {
 
 
 
-                // NoteScroller
+            // NoteScroller
             else if (child.getClass() == HorizontalScrollView.class) {
                 childLeft = clefWidth;
                 childTop = 0;
@@ -362,16 +366,13 @@ public class StaffView extends ViewGroup {
         }
     }
 
-    // TODO: 11/23/2020 Adjust positions when new notes are added mid-activity 
-    private void populateStaffNoteHorizontalNotePositions() {
-        int childCount = noteLinearLayout.getChildCount();
 
-        for (int i=0;i<childCount;i++) {
-            int noteLeft = noteLinearLayout.getChildAt(i).getLeft();
-            staffNoteHorizontalPositions.add(noteLeft);
-        }
+    public void markNoteCorrect() {
+        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
+        note.setColor(Color.GREEN);
+//        note.setAlpha(.5f);
+        note.invalidate();
     }
-
 
     // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 
     public void scrollToNextNote() {
@@ -379,10 +380,18 @@ public class StaffView extends ViewGroup {
     }
 
     private void scrollToNote(int index) {
-        View child = noteLinearLayout.getChildAt(index);
 
+        // Keep the previous note in sight
+        View child = noteLinearLayout.getChildAt(index - 1);
 
         scrollView.smoothScrollTo(child.getLeft(), 0);
+    }
+
+
+    // TODO: 11/24/2020
+    public void highlightCurrentNote() {
+        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
+
     }
 }
 

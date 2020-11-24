@@ -27,6 +27,8 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     private PianoNote lowestPracticeNote;
     private PianoNote highestPracticeNote;
 
+    private boolean singleOctavePracticeMode = true;
+
     private String selectedDifficulty;
 
     private ArrayList<PianoNote> practicableNotes = new ArrayList();
@@ -42,6 +44,10 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
 
     StaffView staffView;
     PianoView pianoView;
+
+    public boolean isSingleOctavePractice() {
+        return singleOctavePracticeMode;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,8 +149,15 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     private void setUpPianoView() {
 
         pianoView = findViewById(R.id.pianoView);
-        pianoView.setLowestPracticeNote(lowestPracticeNote);
-        pianoView.setHighestPracticeNote(highestPracticeNote);
+        if (singleOctavePracticeMode) {
+            pianoView.setLowestPracticeNote(PianoNote.C4);
+            pianoView.setHighestPracticeNote(PianoNote.B4);
+        }
+
+        else {
+            pianoView.setLowestPracticeNote(lowestPracticeNote);
+            pianoView.setHighestPracticeNote(highestPracticeNote);
+        }
 
         pianoKeys = pianoView.getPianoKeys();
         setPianoKeyListeners();
@@ -218,7 +231,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     private boolean isCorrectNote(PianoNote note) {
-        if (note.equals(practiceNotesOnStaff.get(0)))
+        if (note.equals(practiceNotesOnStaff.get(0), isSingleOctavePractice()))
             return true;
         else
             return false;

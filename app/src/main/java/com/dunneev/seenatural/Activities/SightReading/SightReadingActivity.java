@@ -183,20 +183,14 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         staffView.addNote(note);
     }
 
-    private void markNoteCorrect(PianoNote note) {
-        practiceNotesOnStaff.remove(0);
-
-//        staffView.removeNote(note);
-    }
 
     @Override
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
 
-
         PianoNote note = key.getNote();
-        int relativePianoKeyIndex = note.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex;
 
+        int relativePianoKeyIndex = note.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex;
 
         if (isCorrectNote(note)) {
             correctKeyPressed(key);
@@ -221,15 +215,11 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     }
 
     private void correctKeyPressed(PianoKey key) {
-        Toast toast = new Toast(this);
-        toast.setGravity(Gravity.CENTER,0,0);
 
-        toast = Toast.makeText(this, "SUCCESS", Toast.LENGTH_SHORT);
-        toast.show();
-
-        markNoteCorrect(key.getNote());
-
+        practiceNotesOnStaff.remove(0);
+        staffView.markNoteCorrect();
         staffView.scrollToNextNote();
+        staffView.highlightCurrentNote();
 
         addSightReadingNote(generatePracticablePianoNote());
     }

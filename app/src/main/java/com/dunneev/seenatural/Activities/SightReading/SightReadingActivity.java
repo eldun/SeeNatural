@@ -193,7 +193,9 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
 
+
         PianoNote note = key.getNote();
+        int relativePianoKeyIndex = note.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex;
 
 
         if (isCorrectNote(note)) {
@@ -204,7 +206,8 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
             incorrectKeyPressed(key);
         }
 
-        soundPlayer.triggerDown(note.absoluteKeyIndex);
+        // TODO: 11/23/2020 Play note depending on StaffNote, not PianoKey (especially if in single octave mode)
+        soundPlayer.triggerDown(relativePianoKeyIndex);
 
     }
 

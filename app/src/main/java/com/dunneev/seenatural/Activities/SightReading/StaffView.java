@@ -352,9 +352,6 @@ public class StaffView extends ViewGroup {
                 childRight = getMeasuredWidth();
                 childBottom = getMeasuredHeight();
 
-                // Not sure if I should be populating StaffNote positions from onLayout
-                noteScrollerLaidOut = true;
-
             }
 
             else {
@@ -362,10 +359,6 @@ public class StaffView extends ViewGroup {
             }
 
             child.layout(childLeft, childTop, childRight, childBottom);
-
-            if (noteScrollerLaidOut) {
-                populateStaffNoteHorizontalNotePositions();
-            }
         }
     }
 
@@ -386,7 +379,10 @@ public class StaffView extends ViewGroup {
     }
 
     private void scrollToNote(int index) {
-        scrollView.smoothScrollTo(staffNoteHorizontalPositions.get(index), 0);
+        View child = noteLinearLayout.getChildAt(index);
+
+
+        scrollView.smoothScrollTo(child.getLeft(), 0);
     }
 }
 

@@ -141,6 +141,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         }
 
 
+        // TODO: 11/23/2020 Change the conditional to allow for max-range single-octave practice
         for (int i=0;i<PianoKey.count;i++) {
             practicableNotes.add(PianoNote.valueOfStoredOrdinal(lowestPracticeNote.storedOrdinal + i));
         }

@@ -2,13 +2,12 @@ package com.dunneev.seenatural.Activities.SightReading;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
-import com.dunneev.seenatural.Activities.Clef.ClefActivity;
-import com.dunneev.seenatural.Activities.Difficulty.DifficultyActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
     private ArrayList<PianoNote> practicableNotes = new ArrayList();
 
 
-    private ArrayList<PianoKey> pianoKeys = null;
+    private ArrayList<PianoKey> pianoKeys = new ArrayList();
 
     private ArrayList<PianoNote> practiceNotesOnStaff = new ArrayList();
 
@@ -54,8 +53,8 @@ public class SightReadingActivity extends AppCompatActivity implements PianoKey.
         Log.i(LOG_TAG, "onCreate()");
 
         Intent intent = getIntent();
-        selectedClef = intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF);
-        selectedDifficulty = intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY);
+//        selectedClef = intent.getExtras().getString(ClefActivity.EXTRA_SELECTED_CLEF);
+//        selectedDifficulty = intent.getExtras().getString(DifficultyActivity.EXTRA_SELECTED_DIFFICULTY);
 
         setTheme(R.style.Theme_AppCompat_DayNight_NoActionBar);
         super.onCreate(savedInstanceState);

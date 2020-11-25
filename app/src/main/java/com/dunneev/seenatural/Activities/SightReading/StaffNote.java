@@ -3,9 +3,10 @@ package com.dunneev.seenatural.Activities.SightReading;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.TextDrawable;

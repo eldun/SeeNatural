@@ -1,7 +1,7 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
-import com.dunneev.seenatural.KeySignature;
-import com.dunneev.seenatural.PianoNote;
+import com.dunneev.seenatural.Enums.KeySignature;
+import com.dunneev.seenatural.Enums.PianoNote;
 
 import org.junit.Test;
 

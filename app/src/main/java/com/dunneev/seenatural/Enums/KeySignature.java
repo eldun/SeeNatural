@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Enums;
 
 import java.util.Arrays;
 import java.util.HashMap;

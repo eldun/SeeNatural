@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Utilities;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

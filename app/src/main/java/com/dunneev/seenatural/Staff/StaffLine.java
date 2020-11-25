@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Staff;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import com.dunneev.seenatural.Enums.PianoNote;
 
 public class StaffLine extends View {
 

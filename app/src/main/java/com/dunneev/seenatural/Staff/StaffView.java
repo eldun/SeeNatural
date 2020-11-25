@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Staff;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,6 +12,10 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+
+import com.dunneev.seenatural.Enums.KeySignature;
+import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -226,7 +230,7 @@ public class StaffView extends ViewGroup {
     }
 
 
-    protected void addNote(PianoNote note) {
+    public void addNote(PianoNote note) {
         StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,

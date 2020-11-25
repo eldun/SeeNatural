@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Piano;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
+
+import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
 

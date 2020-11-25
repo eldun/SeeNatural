@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SightReadingActivity">
+    tools:context=".Activities.SightReadingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,22 +16,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.dunneev.seenatural.StaffView
+        <com.dunneev.seenatural.Staff.StaffView
             android:id="@+id/staffView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".6"
             app:keySignature="G_MAJOR">
 
-        </com.dunneev.seenatural.StaffView>
+        </com.dunneev.seenatural.Staff.StaffView>
 
-        <com.dunneev.seenatural.PianoView
+        <com.dunneev.seenatural.Piano.PianoView
             android:id="@+id/pianoView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".4">
 
-        </com.dunneev.seenatural.PianoView>
+        </com.dunneev.seenatural.Piano.PianoView>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 

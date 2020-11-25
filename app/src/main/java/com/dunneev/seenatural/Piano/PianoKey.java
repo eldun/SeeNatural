@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Piano;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,7 +12,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-class PianoKey extends View {
+import com.dunneev.seenatural.Enums.PianoNote;
+
+public class PianoKey extends View {
 
     private static final String LOG_TAG = PianoKey.class.getSimpleName();
 

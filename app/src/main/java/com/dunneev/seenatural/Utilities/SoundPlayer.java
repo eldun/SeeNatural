@@ -1,8 +1,10 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Utilities;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.util.Log;
+
+import com.dunneev.seenatural.Enums.PianoNote;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -45,7 +47,7 @@ public class SoundPlayer {
         this.numberOfKeys = numberOfKeys;
     }
 
-    SoundPlayer(PianoNote startingNote, int numberOfKeys) {
+    public SoundPlayer(PianoNote startingNote, int numberOfKeys) {
         setStartingNote(startingNote);
         setNumberOfKeys(numberOfKeys);
     }
@@ -58,14 +60,14 @@ public class SoundPlayer {
     public void teardownAudioStream() { teardownAudioStreamNative(); }
 
 
-    protected void loadWavAssets(AssetManager assetManager) {
+    public void loadWavAssets(AssetManager assetManager) {
         int startingKey = getStartingPianoKey();
         for (int i=startingKey; i<startingKey+getNumberOfKeys(); i++) {
             loadWavAsset(assetManager, notesFolder + "/" + PianoNote.valueOfAbsoluteKeyIndex(i).filename + ".wav");
         }
     }
 
-    protected void unloadWavAssets() {
+    public void unloadWavAssets() {
         unloadWavAssetsNative();
     }
 
@@ -89,8 +91,8 @@ public class SoundPlayer {
     private native void teardownAudioStreamNative();
     private native void loadWavAssetNative(byte[] dataBytes);
     private native void unloadWavAssetsNative();
-    protected native void triggerDown(int pianoKey);
-    protected native void triggerUp(int pianoKey);
+    public native void triggerDown(int pianoKey);
+    public native void triggerUp(int pianoKey);
     private native boolean getOutputReset();
     private native void clearOutputReset();
     private native void restartStream();

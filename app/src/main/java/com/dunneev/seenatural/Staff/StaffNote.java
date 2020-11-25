@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Staff;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,11 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import com.dunneev.seenatural.Enums.KeySignature;
+import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.Utilities.TextDrawable;
 
 public class StaffNote extends View {
 

@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,14 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.dunneev.seenatural.Enums.KeySignature;
+import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.Piano.PianoKey;
+import com.dunneev.seenatural.Piano.PianoView;
+import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.Utilities.SoundPlayer;
+import com.dunneev.seenatural.Staff.StaffView;
 
 import java.util.ArrayList;
 import java.util.Random;

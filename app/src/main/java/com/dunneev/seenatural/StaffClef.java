@@ -1,22 +1,14 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.dunneev.seenatural.R;
-import com.dunneev.seenatural.TextDrawable;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.function.ToDoubleBiFunction;
 
 public class StaffClef extends View {
     private static final String LOG_TAG = StaffClef.class.getSimpleName();
@@ -56,7 +48,7 @@ public class StaffClef extends View {
 
     private void createDefaultClef() {
         this.clef = getResources().getString(R.string.treble);
-        this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef), TextDrawable.positioningInBounds.DEFAULT);
+        this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef), TextDrawable.PositioningInBounds.DEFAULT);
         this.keySignature = KeySignature.C_SHARP_MAJOR;
     }
 
@@ -71,14 +63,14 @@ public class StaffClef extends View {
         if (keySignature.hasSharps) {
             for (int i=0;i< keySignature.sharpCount;i++){
                 symbolList.add(new TextDrawable(getResources().getString(R.string.char_sharp_symbol),
-                        TextDrawable.positioningInBounds.CENTERED));
+                        TextDrawable.PositioningInBounds.CENTERED));
             }
 
         }
         else if (keySignature.hasFlats) {
             for (int i=0;i< keySignature.flatCount;i++){
                 symbolList.add(new TextDrawable(getResources().getString(R.string.char_flat_symbol),
-                        TextDrawable.positioningInBounds.BOTTOM));
+                        TextDrawable.PositioningInBounds.BOTTOM));
             }
         }
         else {
@@ -88,13 +80,13 @@ public class StaffClef extends View {
 
     private void setClefDrawable() {
         if (clef.equals(getResources().getString(R.string.treble))) {
-            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef), TextDrawable.positioningInBounds.DEFAULT);
+            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_treble_clef), TextDrawable.PositioningInBounds.DEFAULT);
             isTreble = true;
             isBass = false;
         }
 
         else if (clef.equals(getResources().getString(R.string.bass))) {
-            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_bass_clef), TextDrawable.positioningInBounds.TOP);
+            this.clefDrawable = new TextDrawable(getResources().getString(R.string.char_bass_clef), TextDrawable.PositioningInBounds.TOP);
             isTreble = false;
             isBass = true;
         }

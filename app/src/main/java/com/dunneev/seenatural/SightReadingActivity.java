@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,6 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
 import java.util.Random;

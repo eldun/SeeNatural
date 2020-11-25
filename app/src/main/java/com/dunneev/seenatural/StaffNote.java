@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,9 +7,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-
-import com.dunneev.seenatural.R;
-import com.dunneev.seenatural.TextDrawable;
 
 public class StaffNote extends View {
 
@@ -44,11 +41,11 @@ public class StaffNote extends View {
         isAccidental = checkIfAccidental(note);
 
         if (isAccidental) {
-            noteDrawable = new TextDrawable(accidentalSymbol + getResources().getString(R.string.char_quarter_note), TextDrawable.positioningInBounds.DEFAULT);
+            noteDrawable = new TextDrawable(accidentalSymbol + getResources().getString(R.string.char_quarter_note), TextDrawable.PositioningInBounds.DEFAULT);
         }
 
         else {
-            noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note), TextDrawable.positioningInBounds.DEFAULT);
+            noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note), TextDrawable.PositioningInBounds.DEFAULT);
         }
     }
 

@@ -1,5 +1,8 @@
 package com.dunneev.seenatural.Activities.SightReading;
 
+import com.dunneev.seenatural.KeySignature;
+import com.dunneev.seenatural.PianoNote;
+
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;

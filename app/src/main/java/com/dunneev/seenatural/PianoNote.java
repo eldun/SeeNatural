@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural;
 
 import android.graphics.Color;
 

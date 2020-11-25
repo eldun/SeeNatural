@@ -2,12 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
+    android:id="@+id/nav_graph3"
     app:startDestination="@id/FirstFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.dunneev.seenatural.Activities.FirstFragment"
+        android:name="com.dunneev.seenatural.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.dunneev.seenatural.Activities.SecondFragment"
+        android:name="com.dunneev.seenatural.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 

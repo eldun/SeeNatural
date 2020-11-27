@@ -16,22 +16,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.dunneev.seenatural.Staff.StaffView
+        <com.dunneev.seenatural.Fragments.Staff.StaffView
             android:id="@+id/staffView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".6"
             app:keySignature="G_MAJOR">
 
-        </com.dunneev.seenatural.Staff.StaffView>
+        </com.dunneev.seenatural.Fragments.Staff.StaffView>
 
-        <com.dunneev.seenatural.Piano.PianoView
+        <com.dunneev.seenatural.Fragments.Piano.PianoView
             android:id="@+id/pianoView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight=".4">
 
-        </com.dunneev.seenatural.Piano.PianoView>
+        </com.dunneev.seenatural.Fragments.Piano.PianoView>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 

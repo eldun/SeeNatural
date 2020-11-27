@@ -10,11 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
-import com.dunneev.seenatural.Piano.PianoKey;
-import com.dunneev.seenatural.Piano.PianoView;
+import com.dunneev.seenatural.Fragments.Piano.PianoKey;
+import com.dunneev.seenatural.Fragments.Piano.PianoView;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.SoundPlayer;
-import com.dunneev.seenatural.Staff.StaffView;
+import com.dunneev.seenatural.Fragments.Staff.StaffView;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Staff;
+package com.dunneev.seenatural.Fragments.Staff;
 
 import android.content.Context;
 import android.graphics.Canvas;

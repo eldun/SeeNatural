@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Piano;
+package com.dunneev.seenatural.Fragments.Piano;
 
 import android.content.Context;
 import android.content.res.TypedArray;

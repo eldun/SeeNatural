@@ -10,14 +10,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.SightReading.SightReadingActivity">
-<!--            android:screenOrientation="sensorLandscape"> &lt;!&ndash; TODO: Consider a portrait option &ndash;&gt;-->
-        </activity>
-        <activity android:name=".Activities.Difficulty.DifficultyActivity" />
-        <activity android:name=".Activities.Clef.ClefActivity">
+            android:name=".Activities.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activities.SightReadingSetup.SightReadingSetupActivity"
+            android:label="@string/title_activity_sight_reading_setup"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

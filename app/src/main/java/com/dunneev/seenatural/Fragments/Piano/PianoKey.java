@@ -1,21 +1,20 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural.Fragments.Piano;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.dunneev.seenatural.R;
-import com.dunneev.seenatural.TextDrawable;
+import androidx.annotation.NonNull;
 
-class PianoKey extends View {
+import com.dunneev.seenatural.Enums.PianoNote;
+
+public class PianoKey extends View {
 
     private static final String LOG_TAG = PianoKey.class.getSimpleName();
 

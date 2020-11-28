@@ -1,13 +1,8 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural.Fragments.Staff;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +11,11 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+
+import com.dunneev.seenatural.Enums.KeySignature;
+import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.R;
-import com.dunneev.seenatural.TextDrawable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -232,7 +230,7 @@ public class StaffView extends ViewGroup {
     }
 
 
-    protected void addNote(PianoNote note) {
+    public void addNote(PianoNote note) {
         StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,

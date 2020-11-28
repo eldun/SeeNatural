@@ -27,15 +27,15 @@ extern "C" {
 static iolib::SimpleMultiPlayer simpleMultiPlayer;
 
 
-JNIEXPORT jstring JNICALL
-
-Java_com_dunneev_seenatural_Activities_Clef_ClefActivity_stringFromJNI(JNIEnv *env, jobject thiz) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
-}
+//JNIEXPORT jstring JNICALL
+//
+//Java_com_dunneev_seenatural_Activities_Clef_ClefActivity_stringFromJNI(JNIEnv *env, jobject thiz) {
+//    std::string hello = "Hello from C++";
+//    return env->NewStringUTF(hello.c_str());
+//}
 
 JNIEXPORT void JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_setupAudioStreamNative(JNIEnv *env,
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_setupAudioStreamNative(JNIEnv *env,
                                                                                        jobject thiz,
                                                                                        jint num_channels,
                                                                                        jint sample_rate) {
@@ -45,7 +45,7 @@ Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_setupAudioStream
 
 
 JNIEXPORT void JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_teardownAudioStreamNative(
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_teardownAudioStreamNative(
         JNIEnv *env, jobject thiz) {
 
     __android_log_print(ANDROID_LOG_INFO, LOG_TAG, "%s", "deinit()");
@@ -53,7 +53,7 @@ Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_teardownAudioStr
 }
 
 JNIEXPORT void JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_loadWavAssetNative(JNIEnv *env,
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_loadWavAssetNative(JNIEnv *env,
                                                                                    jobject thiz,
                                                                                    jbyteArray data_bytes) {
     int len = env->GetArrayLength(data_bytes);
@@ -76,13 +76,13 @@ Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_loadWavAssetNati
 }
 
 JNIEXPORT void JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_unloadWavAssetsNative(JNIEnv *env,
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_unloadWavAssetsNative(JNIEnv *env,
                                                                                       jobject thiz) {
     simpleMultiPlayer.unloadSampleData();
 }
 
 JNIEXPORT void JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_triggerDown(JNIEnv *env,
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_triggerDown(JNIEnv *env,
                                                                             jobject thiz,
                                                                             jint piano_key) {
     __android_log_print(ANDROID_LOG_INFO, LOG_TAG, "%s", "triggerDown()");
@@ -90,25 +90,25 @@ Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_triggerDown(JNIE
 }
 
 JNIEXPORT void JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_triggerUp(JNIEnv *env, jobject thiz,
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_triggerUp(JNIEnv *env, jobject thiz,
                                                                           jint piano_key) {
 //    simpleMultiPlayer.triggerUp(piano_key);
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_getOutputReset(JNIEnv *env,
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_getOutputReset(JNIEnv *env,
                                                                                jobject thiz) {
     return simpleMultiPlayer.getOutputReset();
 }
 
 JNIEXPORT void JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_clearOutputReset(JNIEnv *env,
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_clearOutputReset(JNIEnv *env,
                                                                                  jobject thiz) {
     simpleMultiPlayer.clearOutputReset();
 }
 
 JNIEXPORT void JNICALL
-Java_com_dunneev_seenatural_Activities_SightReading_SoundPlayer_restartStream(JNIEnv *env,
+Java_com_dunneev_seenatural_Utilities_SoundPlayer_restartStream(JNIEnv *env,
                                                                               jobject thiz) {
     simpleMultiPlayer.resetAll();
     if (simpleMultiPlayer.openStream()){

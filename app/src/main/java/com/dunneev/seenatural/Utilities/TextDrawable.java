@@ -1,19 +1,17 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Utilities;
 
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.text.TextPaint;
 
 public class TextDrawable extends Drawable {
 
     private static final String LOG_TAG = TextDrawable.class.getSimpleName();
 
-    public enum positioningInBounds {
+    public enum PositioningInBounds {
         DEFAULT,
         CENTERED,
         LEFT,
@@ -27,7 +25,7 @@ public class TextDrawable extends Drawable {
     private static final int DEFAULT_TEXTSIZE = 100;
     private Paint textPaint;
     private CharSequence text;
-    positioningInBounds positioningInBounds;
+    PositioningInBounds positioningInBounds;
     private int intrinsicWidth;
     private int intrinsicHeight;
     private float aspectRatio;
@@ -37,7 +35,7 @@ public class TextDrawable extends Drawable {
         textPaint.setColor(color);
     }
 
-    public TextDrawable(CharSequence text, positioningInBounds positioningInBounds) {
+    public TextDrawable(CharSequence text, PositioningInBounds positioningInBounds) {
         this.text = text;
         this.positioningInBounds = positioningInBounds;
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

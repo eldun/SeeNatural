@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural.Enums;
 
 import android.graphics.Color;
 

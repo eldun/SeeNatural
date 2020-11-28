@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/firstFragment">
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="com.dunneev.seenatural.Fragments.FirstFragment"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_first">
+        <action
+            android:id="@+id/action_firstFragment_to_pianoFragment"
+            app:destination="@id/pianoFragment"
+            app:enterAnim="@anim/fragment_fade_enter" />
+        <action
+            android:id="@+id/action_firstFragment_to_readingFragment"
+            app:destination="@id/readingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pianoFragment"
+        android:name="com.dunneev.seenatural.Fragments.Piano.PianoFragment"
+        android:label="PianoFragment"
+        tools:layout="@layout/fragment_piano" />
+    <fragment
+        android:id="@+id/readingFragment"
+        android:name="com.dunneev.seenatural.Fragments.ReadingFragment"
+        android:label="fragment_reading"
+        tools:layout="@layout/fragment_reading" />
+</navigation>

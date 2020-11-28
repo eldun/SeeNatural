@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural.Enums;
 
 import java.util.Arrays;
 import java.util.HashMap;

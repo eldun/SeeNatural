@@ -1,13 +1,16 @@
 package com.dunneev.seenatural.Fragments.Piano;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -15,6 +18,8 @@ import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.SoundPlayer;
 import com.dunneev.seenatural.databinding.FragmentPianoBinding;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -59,8 +64,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentPianoBinding.inflate(inflater, container, false);
 
+        binding = FragmentPianoBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
@@ -80,6 +85,13 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 //            }
 //        });
     }
+
+//    @Override
+//    public void onInflate(@NonNull @NotNull Context context, @NonNull @NotNull AttributeSet attrs, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+//        super.onInflate(context, attrs, savedInstanceState);
+//        setUpPiano();
+//        setUpSoundPlayer();
+//    }
 
     private void setUpSoundPlayer() {
         soundPlayer = new SoundPlayer(pianoView.getLowestPracticeNote(), PianoKey.count);

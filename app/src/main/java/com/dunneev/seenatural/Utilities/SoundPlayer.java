@@ -11,6 +11,10 @@ import java.io.IOException;
 
 public class SoundPlayer {
 
+    static {
+        System.loadLibrary("native-lib");
+    }
+
     private static final String LOG_TAG = SoundPlayer.class.getSimpleName();
 
     private final String notesFolder = "notes";

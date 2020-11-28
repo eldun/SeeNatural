@@ -22,7 +22,7 @@ public class PianoView extends ViewGroup {
 
     public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
         this.lowestPracticeNote = lowestPracticeNote;
-        init();
+//        init();
     }
 
     public PianoNote getHighestPracticeNote() {
@@ -31,7 +31,7 @@ public class PianoView extends ViewGroup {
 
     public void setHighestPracticeNote(PianoNote highestPracticeNote) {
         this.highestPracticeNote = highestPracticeNote;
-        init();
+//        init();
     }
 
     private PianoNote lowestPracticeNote;

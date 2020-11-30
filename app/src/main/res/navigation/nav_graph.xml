@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_firstFragment_to_readingFragment"
             app:destination="@id/readingFragment" />
+        <action
+            android:id="@+id/action_firstFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/pianoFragment"
@@ -27,4 +30,8 @@
         android:name="com.dunneev.seenatural.Fragments.ReadingFragment"
         android:label="fragment_reading"
         tools:layout="@layout/fragment_reading" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.dunneev.seenatural.Fragments.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

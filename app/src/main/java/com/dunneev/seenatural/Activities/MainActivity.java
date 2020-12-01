@@ -3,25 +3,15 @@ package com.dunneev.seenatural.Activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.dunneev.seenatural.R;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.preference.PreferenceFragment;
-import android.view.View;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {

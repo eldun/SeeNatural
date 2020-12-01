@@ -45,6 +45,14 @@ public class FirstFragment extends Fragment {
                         .navigate(R.id.action_firstFragment_to_readingFragment);
             }
         });
+
+        binding.settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(FirstFragment.this)
+                        .navigate(R.id.action_firstFragment_to_settings_nav_graph);
+            }
+        });
     }
 
     @Override

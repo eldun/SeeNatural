@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_firstFragment_to_readingFragment"
             app:destination="@id/readingFragment" />
+        <action
+            android:id="@+id/action_firstFragment_to_settings_nav_graph"
+            app:destination="@id/settings_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/pianoFragment"
@@ -24,7 +27,37 @@
         tools:layout="@layout/fragment_piano" />
     <fragment
         android:id="@+id/readingFragment"
-        android:name="com.dunneev.seenatural.Fragments.ReadingFragment"
+        android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
         android:label="fragment_reading"
         tools:layout="@layout/fragment_reading" />
+    <navigation
+        android:id="@+id/settings_nav_graph"
+        app:startDestination="@id/settingsFragment">
+        <fragment
+            android:id="@+id/settingsFragment"
+            android:name="com.dunneev.seenatural.Fragments.SettingsFragment"
+            android:label="SettingsFragment" >
+            <action
+                android:id="@+id/action_settingsFragment_to_pianoSettingsFragment"
+                app:destination="@id/pianoSettingsFragment" />
+            <action
+                android:id="@+id/action_settingsFragment_to_staffSettingsFragment"
+                app:destination="@id/staffSettingsFragment" />
+            <action
+                android:id="@+id/action_settingsFragment_to_readingSettingsFragment"
+                app:destination="@id/readingSettingsFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/pianoSettingsFragment"
+            android:name="com.dunneev.seenatural.Fragments.Piano.PianoSettingsFragment"
+            android:label="PianoSettingsFragment" />
+        <fragment
+            android:id="@+id/staffSettingsFragment"
+            android:name="com.dunneev.seenatural.Fragments.Staff.StaffSettingsFragment"
+            android:label="StaffSettingsFragment" />
+        <fragment
+            android:id="@+id/readingSettingsFragment"
+            android:name="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
+            android:label="ReadingSettingsFragment" />
+    </navigation>
 </navigation>

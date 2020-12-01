@@ -28,6 +28,28 @@
     <string name="char_sharp_symbol">♯</string>
     <string name="title_activity_sight_reading_setup">SightReadingSetupActivity</string>
 
+    <!-- Settings -->
+    <string name="piano_settings_key">PianoSettings</string>
+
+    <string name="staff_settings_key">StaffSettings</string>
+
+    <string name="reading_settings_key">ReadingSettings</string>
+    <string name="single_octave_mode_key">SingleOctaveMode</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Example strings for fragments -->
     <!-- Strings used for fragments for navigation -->
@@ -44,6 +66,20 @@
     <string name="piano_fragment_label">Piano Fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
 
 </resources>

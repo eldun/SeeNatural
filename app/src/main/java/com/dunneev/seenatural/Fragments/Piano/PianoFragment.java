@@ -1,6 +1,8 @@
 package com.dunneev.seenatural.Fragments.Piano;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -13,7 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.preference.PreferenceManager;
 
+import com.dunneev.seenatural.Activities.MainActivity;
 import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.SoundPlayer;
@@ -29,7 +33,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     private FragmentPianoBinding binding;
     PianoView pianoView;
-    private boolean singleOctavePracticeMode;
 
     // todo: set piano note range based on options selected
     private PianoNote lowestPracticeNote = PianoNote.C4;
@@ -37,13 +40,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private SoundPlayer soundPlayer;
 
 
-    public boolean isSingleOctavePracticeMode() {
-        return singleOctavePracticeMode;
-    }
-
-    public void setSingleOctavePracticeMode(boolean singleOctavePracticeMode) {
-        this.singleOctavePracticeMode = singleOctavePracticeMode;
-    }
 
     public PianoNote getLowestPracticeNote() {
         return lowestPracticeNote;

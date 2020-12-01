@@ -3,15 +3,21 @@
 
 
     <Preference
+        android:id="@+id/PianoSettingsPreference"
+        android:key="@string/piano_settings_key"
         android:fragment="com.dunneev.seenatural.Fragments.Piano.PianoSettingsFragment"
         android:title="Piano Settings" />
 
     <Preference
         android:fragment="com.dunneev.seenatural.Fragments.Staff.StaffSettingsFragment"
-        android:title="Staff Settings"></Preference>
+        android:title="Staff Settings"
+        android:key="@string/staff_settings_key"
+        ></Preference>
 
     <Preference
         android:fragment="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
-        android:title="Sight Reading Settings"></Preference>
+        android:title="Sight Reading Settings"
+        android:key="@string/reading_settings_key"
+        ></Preference>
 
 </PreferenceScreen>

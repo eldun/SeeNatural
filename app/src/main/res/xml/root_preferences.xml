@@ -4,20 +4,39 @@
 
     <Preference
         android:id="@+id/PianoSettingsPreference"
-        android:key="@string/piano_settings_key"
         android:fragment="com.dunneev.seenatural.Fragments.Piano.PianoSettingsFragment"
+        android:key="@string/piano_settings_key"
         android:title="Piano Settings" />
-
     <Preference
+        android:id="@+id/StaffSettingsPreference"
         android:fragment="com.dunneev.seenatural.Fragments.Staff.StaffSettingsFragment"
-        android:title="Staff Settings"
         android:key="@string/staff_settings_key"
-        ></Preference>
+        android:title="Staff Settings"></Preference>
 
     <Preference
+        android:id="@+id/ReadingSettingsPreference"
         android:fragment="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
-        android:title="Sight Reading Settings"
         android:key="@string/reading_settings_key"
-        ></Preference>
+        android:title="Sight Reading Settings"></Preference>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="check_box_preference_1"
+        android:title="Check box preference" />
+    <EditTextPreference
+        android:defaultValue="Default value"
+        android:key="edit_text_preference_1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Edit text preference" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/reply_entries"
+        android:entryValues="@array/reply_values"
+        android:key="list_preference_1"
+        android:title="List preference" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="switch_preference_1"
+        android:title="Switch preference" />
 
 </PreferenceScreen>

@@ -1,15 +1,13 @@
-package com.dunneev.seenatural.Fragments;
+package com.dunneev.seenatural.Fragments.Reading;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.FragmentReadingBinding;
 
 /**

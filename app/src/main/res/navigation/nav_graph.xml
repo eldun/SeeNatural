@@ -27,7 +27,7 @@
         tools:layout="@layout/fragment_piano" />
     <fragment
         android:id="@+id/readingFragment"
-        android:name="com.dunneev.seenatural.Fragments.ReadingFragment"
+        android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
         android:label="fragment_reading"
         tools:layout="@layout/fragment_reading" />
     <fragment

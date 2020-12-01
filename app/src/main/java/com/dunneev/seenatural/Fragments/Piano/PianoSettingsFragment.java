@@ -1,17 +1,18 @@
-package com.dunneev.seenatural.Fragments;
+package com.dunneev.seenatural.Fragments.Piano;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.dunneev.seenatural.R;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class PianoSettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        setPreferencesFromResource(R.xml.piano_preferences, rootKey);
     }
+
+
 }

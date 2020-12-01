@@ -1,5 +1,6 @@
 package com.dunneev.seenatural.Activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.dunneev.seenatural.R;
@@ -19,10 +20,14 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
+    public SharedPreferences sharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(this);
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;

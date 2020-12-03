@@ -16,8 +16,7 @@ import com.dunneev.seenatural.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    public SharedPreferences sharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(this);
+    public SharedPreferences sharedPreferences;
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -25,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

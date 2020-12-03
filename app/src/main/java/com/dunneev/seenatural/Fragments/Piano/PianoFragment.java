@@ -1,11 +1,7 @@
 package com.dunneev.seenatural.Fragments.Piano;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +10,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.preference.PreferenceManager;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.dunneev.seenatural.Activities.MainActivity;
 import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.SoundPlayer;
 import com.dunneev.seenatural.databinding.FragmentPianoBinding;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -32,34 +24,25 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private final String LOG_TAG = this.getClass().getSimpleName();
 
     private FragmentPianoBinding binding;
-    PianoView pianoView;
+    PianoViewModel pianoViewModel;
+    private PianoView pianoView;
 
-    // todo: set piano note range based on options selected
-    private PianoNote lowestPracticeNote = PianoNote.C4;
-    private PianoNote highestPracticeNote = PianoNote.C6;
     private SoundPlayer soundPlayer;
 
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Create a ViewModel the first time the system calls an activity's onCreate() method.
+        // Re-created activities receive the same MyViewModel instance created by the first activity.
 
-
-    public PianoNote getLowestPracticeNote() {
-        return lowestPracticeNote;
-    }
-
-    public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
-        this.lowestPracticeNote = lowestPracticeNote;
-    }
-
-    public PianoNote getHighestPracticeNote() {
-        return highestPracticeNote;
-    }
-
-    public void setHighestPracticeNote(PianoNote highestPracticeNote) {
-        this.highestPracticeNote = highestPracticeNote;
+        pianoViewModel = new ViewModelProvider(this).get(PianoViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+
+        super.onCreate(savedInstanceState);
 
         binding = FragmentPianoBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -100,6 +83,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private void setUpPiano() {
 
         pianoView = getView().findViewById(R.id.pianoview);
+        pianoView.setLowestPracticeNote(pianoViewModel.getLowPracticeNote());
+        pianoView.setHighestPracticeNote(pianoViewModel.getHighPracticeNote());
 
 //        if (singleOctavePracticeMode) {
 //            pianoView.setLowestPracticeNote(PianoNote.C4);
@@ -131,7 +116,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
         PianoNote note = key.getNote();
 
-        int relativePianoKeyIndex = note.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex;
+        int relativePianoKeyIndex = note.absoluteKeyIndex - pianoViewModel.getLowPracticeNote().absoluteKeyIndex;
 
 
 

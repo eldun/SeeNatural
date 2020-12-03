@@ -148,8 +148,8 @@ public enum PianoNote {
     // A value from 0 to 87, spanning any piano note
     public final int absoluteKeyIndex;
 
-    public final int keyColor;
-    public final int keyDownColor;
+    public final boolean isWhiteKey;
+    public final boolean isBlackKey;
     public final String filename;
 
     public final int storedOrdinal;
@@ -165,8 +165,8 @@ public enum PianoNote {
         this.storedOrdinal = storedOrdinal;
         this.enharmonicEquivalentOrdinal = enharmonicEquivalentOrdinal;
         this.filename = filename;
-        this.keyColor = setKeyColor();
-        this.keyDownColor = setKeyDownColor();
+        this.isWhiteKey = checkIfWhiteKey();
+        this.isBlackKey = !isWhiteKey;
 
     }
 
@@ -177,16 +177,11 @@ public enum PianoNote {
             return label.substring(0, 2);
     }
 
-    private int setKeyColor() {
-        if (label.length() == 2)
-            return Color.WHITE;
-        return Color.BLACK;
-    }
-
-    private int setKeyDownColor() {
-        if (this.keyColor == Color.WHITE)
-            return Color.LTGRAY;
-        return Color.DKGRAY;
+    private boolean checkIfWhiteKey() {
+        if (label.length() == 2) {
+            return true;
+        }
+        return false;
     }
 
     // Cache lookup values using Map that's populated when the class loads
@@ -232,7 +227,7 @@ public enum PianoNote {
         int whiteKeyCount = 0;
 
         for (int i = lowNote.absoluteKeyIndex; i < highNote.absoluteKeyIndex; i++) {
-            if (PianoNote.valueOfAbsoluteKeyIndex(i).keyColor == Color.WHITE) {
+            if (PianoNote.valueOfAbsoluteKeyIndex(i).isWhiteKey) {
                 whiteKeyCount++;
             }
         }

@@ -222,6 +222,15 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
+    public static int numberOfKeysInRangeInclusive(PianoNote lowNote, PianoNote highNote){
+        int keyCount = 0;
+
+        for (int i = lowNote.absoluteKeyIndex; i < highNote.absoluteKeyIndex; i++) {
+                keyCount++;
+        }
+        return keyCount;
+    }
+
     public static int numberOfWhiteKeysInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
 
         int whiteKeyCount = 0;

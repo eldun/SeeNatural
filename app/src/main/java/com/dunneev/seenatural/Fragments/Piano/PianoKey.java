@@ -34,42 +34,11 @@ public class PianoKey extends View {
 
     RectF keyRectangle = new RectF();
 
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-        if (note.keyColor == Color.WHITE) {
-            this.isWhiteKey = true;
-            this.isBlackKey = false;
-        }
-
-        else {
-            this.isWhiteKey = false;
-            this.isBlackKey = true;
-        }
-    }
-
-    private int color;
-    private Paint upColor;
-    private Paint downColor;
+    private Paint keyPaint;
     private Paint strokePaint;
 
-    private boolean isDown;
-
-    private boolean isWhiteKey;
-    private boolean isBlackKey;
-
-    public boolean isWhiteKey() {
-        return isWhiteKey;
-    }
-    public boolean isBlackKey() {
-        return isBlackKey;
-    }
-
-
-
+    public boolean isWhite;
+    public boolean isBlack;
 
 
     public interface PianoKeyListener {
@@ -89,27 +58,6 @@ public class PianoKey extends View {
     }
 
 
-    public Paint getUpColor() {
-        return upColor;
-    }
-    public void setUpColor(Paint upColor) {
-        this.upColor = upColor;
-    }
-
-    public Paint getDownColor() {
-        return downColor;
-    }
-    public void setDownColor(Paint downColor) {
-        this.downColor = downColor;
-    }
-
-    public boolean isDown() {
-        return isDown;
-    }
-    public void setIsDown(boolean isDown) {
-        this.isDown = isDown;
-    }
-
     // Assign the listener implementing events interface that will receive the events
     public void setPianoKeyListener(PianoKeyListener listener) {
         this.pianoKeyListener = listener;
@@ -127,19 +75,23 @@ public class PianoKey extends View {
         super(context);
 
         this.note = note;
-
-        setColor(note.keyColor);
-
+        isWhite = note.isWhiteKey;
+        isBlack = !isWhite;
 
         this.pianoKeyListener = null;
-        upColor = new Paint();
-        upColor.setColor(note.keyColor);
-        downColor = new Paint();
-        downColor.setColor(note.keyDownColor);
+
+        keyPaint = new Paint();
+
+        if(isWhite){
+            keyPaint.setColor(PianoView.getWhiteKeyUpColor());
+        }
+        else if(isBlack){
+            keyPaint.setColor(PianoView.getBlackKeyUpColor());
+        }
+
         strokePaint = new Paint();
         strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setColor(Color.BLACK);
-        isDown = false;
     }
 
     @Override
@@ -161,7 +113,7 @@ public class PianoKey extends View {
         blackKeyWidth = (int) (whiteKeyWidth / whiteToBlackWidthRatio);
         blackKeyHeight = (int) (whiteKeyHeight / whiteToBlackHeightRatio);
 
-        if (isWhiteKey) {
+        if (isWhite) {
             desiredWidth = whiteKeyWidth;
             desiredHeight = whiteKeyHeight;
         }
@@ -207,7 +159,7 @@ public class PianoKey extends View {
         int cornerRadius = 10;
         keyRectangle.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
         strokePaint.setStrokeWidth((float) 3);
-        canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, this.upColor);
+        canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, keyPaint);
         canvas.drawRoundRect(keyRectangle, cornerRadius, cornerRadius, strokePaint);
 
 //        TextDrawable textDrawable = new TextDrawable(note.label);
@@ -227,7 +179,7 @@ public class PianoKey extends View {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
 //                Log.i(LOG_TAG, "action down");
-                setIsDown(true);
+                drawKeyDown();
                 pianoKeyListener.keyDown(this);
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -235,11 +187,27 @@ public class PianoKey extends View {
                 break;
             case MotionEvent.ACTION_UP:
 //                Log.i(LOG_TAG, "action up");
-                setIsDown(false);
+                drawKeyUp();
                 pianoKeyListener.keyUp(this);
                 break;
         }
         return true;
+    }
+
+    private void drawKeyDown() {
+        if(isWhite)
+            keyPaint.setColor(PianoView.getWhiteKeyDownColor());
+        else
+            keyPaint.setColor(PianoView.getBlackKeyDownColor());
+        invalidate();
+    }
+
+    private void drawKeyUp() {
+        if(isWhite)
+            keyPaint.setColor(PianoView.getWhiteKeyUpColor());
+        else
+            keyPaint.setColor(PianoView.getBlackKeyUpColor());
+        invalidate();
     }
 
     @Override

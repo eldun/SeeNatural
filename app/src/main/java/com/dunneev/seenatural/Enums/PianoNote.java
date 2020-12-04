@@ -139,6 +139,9 @@ public enum PianoNote {
 
     C8("C8", 108, 124, -1, "[C8]");
 
+    public static final PianoNote LOWEST_NOTE = PianoNote.A0;
+    public static final PianoNote HIGHEST_NOTE = PianoNote.C8;
+
     public final String label;
     public final String pitch;
     public final int octave;

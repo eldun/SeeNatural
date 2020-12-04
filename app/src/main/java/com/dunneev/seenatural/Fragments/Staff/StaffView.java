@@ -30,12 +30,9 @@ public class StaffView extends ViewGroup {
 //    public static final int TYPE_BASS_CLEF = 1;
 //    public static final int TYPE_BOTH_CLEF = 2;
 
-    public static final PianoNote lowestNote = PianoNote.A0;
-    public static final PianoNote highestNote = PianoNote.C8;
-
-    private PianoNote lowestPracticeNote = PianoNote.C4;
-    private PianoNote highestPracticeNote = PianoNote.C6;
-    private static int numberOfPracticeNotes;
+    private PianoNote lowestPracticeNote;
+    private PianoNote highestPracticeNote;
+    private static int numberOfNotesInPracticeRange;
 
     private KeySignature keySignature;
     int clefWidth;
@@ -78,7 +75,6 @@ public class StaffView extends ViewGroup {
 
     public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
         this.lowestPracticeNote = lowestPracticeNote;
-        init();
     }
 
     public PianoNote getHighestPracticeNote() {
@@ -87,7 +83,6 @@ public class StaffView extends ViewGroup {
 
     public void setHighestPracticeNote(PianoNote highestPracticeNote) {
         this.highestPracticeNote = highestPracticeNote;
-        init();
     }
 
     public StaffView(Context context, PianoNote lowestPracticeNote, PianoNote highestPracticeNote) {
@@ -153,11 +148,11 @@ public class StaffView extends ViewGroup {
 
     private void populatePracticeNoteArrays() {
 
-        numberOfPracticeNotes = (highestPracticeNote.absoluteKeyIndex -
+        numberOfNotesInPracticeRange = (highestPracticeNote.absoluteKeyIndex -
                 lowestPracticeNote.absoluteKeyIndex)
                 + 1;
 
-        for (int i=0; i<numberOfPracticeNotes; i++) {
+        for (int i = 0; i< numberOfNotesInPracticeRange; i++) {
             PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.absoluteKeyIndex + i);
             practiceNotesAscending.add(note);
             practiceNotesDescending.add(note);
@@ -173,7 +168,7 @@ public class StaffView extends ViewGroup {
             // Staff lines are only ever "natural" (white).
             // Whether they are sharp or flat is signified by
             // either the key signature or a ♯/♮/♭ symbol if the note in question is an accidental.
-            if (note.keyColor == Color.WHITE) {
+            if (note.isWhiteKey) {
                 line = new StaffLine(getContext(), note);
                 staffLines.add(line);
                 LayoutParams staffLineParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -245,12 +240,40 @@ public class StaffView extends ViewGroup {
         noteLinearLayout.addView(staffNote);
 
         notesOnStaff++;
-
     }
 
     protected void removeNote(PianoNote note) {
 
     }
+
+
+    public void markNoteCorrect() {
+        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
+        note.setColor(Color.GREEN);
+//        note.setAlpha(.5f);
+        note.invalidate();
+    }
+
+    // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 
+    public void scrollToNextNote() {
+        scrollToNote(++noteScrollCounter);
+    }
+
+    private void scrollToNote(int index) {
+
+        // Keep the previous note in sight
+        View child = noteLinearLayout.getChildAt(index - 1);
+
+        scrollView.smoothScrollTo(child.getLeft(), 0);
+    }
+
+
+    // TODO: 11/24/2020
+    public void highlightCurrentNote() {
+        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
+
+    }
+
 
 
     /**
@@ -266,7 +289,7 @@ public class StaffView extends ViewGroup {
         staffNoteHorizontalMargins = staffLineSpacing * 4;
 
         visibleStaffHeight = staffLineSpacing * 8;
-        totalStaffHeight = staffLineSpacing * numberOfPracticeNotes;
+        totalStaffHeight = staffLineSpacing * numberOfNotesInPracticeRange;
         noteWidth = staffLineSpacing * 3;
 
         StaffLine.setDesiredHeight(staffLineSpacing);
@@ -289,7 +312,7 @@ public class StaffView extends ViewGroup {
         int childBottom = 300;
 
         // Only white notes take up space
-        int clippedHighStaffNoteCount= PianoNote.numberOfWhiteKeysInRangeInclusive(highestPracticeNote, highestNote);
+        int clippedHighStaffNoteCount= PianoNote.numberOfWhiteKeysInRangeInclusive(highestPracticeNote, PianoNote.HIGHEST_NOTE);
         staffLineYCoordinate = -(clippedHighStaffNoteCount * staffLineSpacing);
 
 
@@ -300,7 +323,7 @@ public class StaffView extends ViewGroup {
 
             noteStaffCoordinateMap.put(note, staffLineYCoordinate);
 
-            if (note.keyColor == Color.WHITE) {
+            if (note.isWhiteKey) {
                 staffLineYCoordinate += (staffLineSpacing);
             }
         }
@@ -365,34 +388,6 @@ public class StaffView extends ViewGroup {
 
             child.layout(childLeft, childTop, childRight, childBottom);
         }
-    }
-
-
-    public void markNoteCorrect() {
-        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
-        note.setColor(Color.GREEN);
-//        note.setAlpha(.5f);
-        note.invalidate();
-    }
-
-    // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 
-    public void scrollToNextNote() {
-        scrollToNote(++noteScrollCounter);
-    }
-
-    private void scrollToNote(int index) {
-
-        // Keep the previous note in sight
-        View child = noteLinearLayout.getChildAt(index - 1);
-
-        scrollView.smoothScrollTo(child.getLeft(), 0);
-    }
-
-
-    // TODO: 11/24/2020
-    public void highlightCurrentNote() {
-        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
-
     }
 }
 

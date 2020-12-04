@@ -2,6 +2,7 @@ package com.dunneev.seenatural.Enums;
 
 import android.graphics.Color;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -223,6 +224,14 @@ public enum PianoNote {
 
     public static PianoNote valueOfFilename(String filename) {
         return BY_FILENAME.get(filename);
+    }
+
+    public static ArrayList<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+        ArrayList<PianoNote> notes = new ArrayList<>();
+        for (int i = lowNote.storedOrdinal; i < highNote.storedOrdinal; i++) {
+            notes.add(valueOfStoredOrdinal(i));
+        }
+        return notes;
     }
 
     public static int numberOfKeysInRangeInclusive(PianoNote lowNote, PianoNote highNote){

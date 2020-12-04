@@ -36,6 +36,8 @@
 
 
     <string name="staff_settings_key">StaffSettings</string>
+    <string name="staff_low_practice_note_key">StaffLowPracticeNote</string>
+    <string name="staff_high_practice_note_key">StaffHighPracticeNote</string>
 
     <string name="reading_settings_key">ReadingSettings</string>
     <string name="single_octave_mode_key">SingleOctaveMode</string>
@@ -74,6 +76,8 @@
 
   <string name="PianoLowPracticeNoteDefault">C4</string>
     <string name="PianoHighPracticeNoteDefault">C6</string>
+    <string name="StaffLowPracticeNoteDefault">A0</string>
+    <string name="StaffhighPracticeNoteDefault">C8</string>
 
 
 </resources>

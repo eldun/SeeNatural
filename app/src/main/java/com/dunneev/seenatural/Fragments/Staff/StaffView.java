@@ -128,7 +128,7 @@ public class StaffView extends ViewGroup {
         init();
     }
 
-    private void init() {
+    public void init() {
         removeAllViews();
 
         practiceNotesAscending.clear();

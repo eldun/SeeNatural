@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <com.dunneev.seenatural.Utilities.NotePreference
+        android:id="@+id/StaffLowPracticeNotePreference"
+        android:defaultValue="@string/StaffLowPracticeNoteDefault"
+        android:key="@string/staff_low_practice_note_key"
+        android:summary="%s"
+        android:title="Low practice note" />
+
+    <com.dunneev.seenatural.Utilities.NotePreference
+        android:id="@+id/StaffhighPracticeNotePreference"
+        android:defaultValue="@string/StaffhighPracticeNoteDefault"
+        android:key="@string/staff_high_practice_note_key"
+        android:summary="%s"
+        android:title="high practice note" />
+
 </PreferenceScreen>

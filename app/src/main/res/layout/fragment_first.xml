@@ -6,35 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.FirstFragment">
 
-    <TextView
-        android:id="@+id/textview_first"
+    <Button
+        android:id="@+id/button_to_staff_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_first_fragment"
-        app:layout_constraintBottom_toTopOf="@id/button_to_piano_fragment"
+        android:text="Staff Fragment"
+        app:layout_constraintBottom_toTopOf="@+id/button_to_piano_fragment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_to_piano_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="pianoFragment"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Piano Fragment"
+        app:layout_constraintBottom_toTopOf="@+id/button_to_reading_fragment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_to_reading_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ReadingFragment"
+        android:text="Reading Fragment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_to_piano_fragment" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/settingsButton"

@@ -65,8 +65,8 @@ public class SoundPlayer {
 
 
     public void loadWavAssets(AssetManager assetManager) {
-        int startingKey = getStartingPianoKey();
-        for (int i=startingKey; i<startingKey+getNumberOfKeys(); i++) {
+        int startingKey = startingPianoKey;
+        for (int i=startingKey; i<startingKey+numberOfKeys; i++) {
             loadWavAsset(assetManager, notesFolder + "/" + PianoNote.valueOfAbsoluteKeyIndex(i).filename + ".wav");
         }
     }

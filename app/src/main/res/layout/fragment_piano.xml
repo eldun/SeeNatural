@@ -12,6 +12,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:pianoHighPracticeNote="C6"
-        app:pianoLowPracticeNote="C4" />
+        app:pianoHighPracticeNote="C8"
+        app:pianoLowPracticeNote="A0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

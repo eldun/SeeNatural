@@ -26,6 +26,26 @@ public class StaffNote extends View {
 
     private Rect noteBoundsRect = new Rect();
 
+    private static int desiredWidth = 500;
+    private static int desiredHeight = 500;
+
+
+    public static int getDesiredWidth() {
+        return desiredWidth;
+    }
+
+    public static void setDesiredWidth(int desiredWidth) {
+        StaffNote.desiredWidth = desiredWidth;
+    }
+
+    public static int getDesiredHeight() {
+        return desiredHeight;
+    }
+
+    public static void setDesiredHeight(int desiredHeight) {
+        StaffNote.desiredHeight = desiredHeight;
+    }
+
     // todo: draw a ledger line when necessary
     public StaffNote(Context context, KeySignature keySignature, PianoNote note) {
         super(context);

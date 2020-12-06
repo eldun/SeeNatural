@@ -18,7 +18,7 @@ public class StaffNote extends View {
     private static final String LOG_TAG = StaffNote.class.getSimpleName();
 
     private KeySignature keySignature;
-    private PianoNote note;
+    public PianoNote note;
 
     private boolean isAccidental;
     private String accidentalSymbol;
@@ -75,10 +75,6 @@ public class StaffNote extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        // Default values just in case something goes wrong
-        int desiredWidth = 100;
-        int desiredHeight = 100;
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);

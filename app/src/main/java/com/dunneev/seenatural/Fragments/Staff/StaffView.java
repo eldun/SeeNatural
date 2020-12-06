@@ -230,16 +230,15 @@ public class StaffView extends ViewGroup {
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.
-        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, visibleStaffHeight);
+        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT/*visibleStaffHeight*/);
         staffNote.setLayoutParams(staffNoteParams);
 
         staffNoteParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
 
-        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
+//        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
+
 
         noteLinearLayout.addView(staffNote);
-
-        notesOnStaff++;
     }
 
     protected void removeNote(PianoNote note) {
@@ -294,6 +293,7 @@ public class StaffView extends ViewGroup {
 
         StaffLine.setDesiredHeight(staffLineSpacing);
         StaffClef.setDesiredHeight(visibleStaffHeight);
+        StaffNote.setDesiredHeight(visibleStaffHeight);
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
@@ -387,6 +387,14 @@ public class StaffView extends ViewGroup {
             }
 
             child.layout(childLeft, childTop, childRight, childBottom);
+        }
+
+        // Adjust everything that was originally set in addNote because when using fragments,
+        // there's no (intuitive) way to find the dimensions of a view within that fragment
+        for (int i=0;i<noteLinearLayout.getChildCount();i++) {
+            StaffNote staffNote = (StaffNote) noteLinearLayout.getChildAt(i);
+
+            staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(staffNote.note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
         }
     }
 }

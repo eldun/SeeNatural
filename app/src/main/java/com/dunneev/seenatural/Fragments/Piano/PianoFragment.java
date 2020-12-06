@@ -36,7 +36,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         // Create a ViewModel the first time the system calls an activity's onCreate() method.
         // Re-created activities receive the same MyViewModel instance created by the first activity.
 
-        viewModel = new ViewModelProvider(this).get(PianoViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(PianoViewModel.class);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 

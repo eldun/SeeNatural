@@ -82,6 +82,16 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
         super.onViewCreated(view, savedInstanceState);
 
+        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!binding.toggleHighNoteButton2.isChecked())
+                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
+                else
+                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
+            }
+        });
+
         setUpStaff();
 //        for (PianoNote note:viewModel.practicableNotes) {
 //            binding.staffView.addNote(note);

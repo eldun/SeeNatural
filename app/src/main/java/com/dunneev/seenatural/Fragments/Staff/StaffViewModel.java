@@ -15,6 +15,8 @@ public class StaffViewModel extends ViewModel {
 
 
     private MutableLiveData<KeySignature> selectedKeySignature = new MutableLiveData<>();
+    private MutableLiveData<Boolean>  hideKeySignature = new MutableLiveData<>();
+
     private MutableLiveData<Boolean>  displayFlats = new MutableLiveData<>();
     private MutableLiveData<Boolean>  displaySharps = new MutableLiveData<>();
     private MutableLiveData<Boolean>  displayNaturals = new MutableLiveData<>();
@@ -33,6 +35,16 @@ public class StaffViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<PianoNote>> notesOnStaff = new MutableLiveData<>();
 
+
+    public MutableLiveData<Boolean> getMutableLiveDataHideKeySignature() {
+        return hideKeySignature;
+    }
+    public boolean getHideKeySignature() {
+        return hideKeySignature.getValue();
+    }
+    public void setHideKeySignature(boolean hideKeySignature) {
+        this.hideKeySignature.setValue(hideKeySignature);
+    }
 
     public MutableLiveData<Boolean> getMutableLiveDataDisplayFlats() {
         return displayFlats;

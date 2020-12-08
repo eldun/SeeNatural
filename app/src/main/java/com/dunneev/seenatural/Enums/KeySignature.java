@@ -54,9 +54,14 @@ public enum KeySignature {
 
     // Cache lookup values using Map that's populated when the class loads
     private static final Map<Integer, KeySignature> BY_STORED_ORDINAL = new HashMap<Integer, KeySignature>();
+    private static final Map<String, KeySignature> BY_STRING = new HashMap<String, KeySignature>();
+
 
     public static final String[] sharpsArray = {"F♯", "C♯", "G♯", "D♯", "A♯", "E♯", "B♯"};
     public static final String[] flatsArray = {"B♭", "E♭", "A♭", "D♭", "G♭", "C♭", "F♭"};
+
+    // Number of possible values, excluding relative key signatures
+    public static final int UNIQUE_KEY_SIGNATURE_COUNT = 15;
 
     KeySignature(String label,
                  Boolean isMajor,
@@ -118,6 +123,7 @@ public enum KeySignature {
 
         for (KeySignature key: values()) {
             BY_STORED_ORDINAL.put(key.storedOrdinal, key);
+            BY_STRING.put(key.toString(), key);
         }
     }
 
@@ -129,6 +135,10 @@ public enum KeySignature {
     // Is this stupid?
     public static KeySignature valueOfStoredOrdinal(int storedOrdinal) {
         return BY_STORED_ORDINAL.get(storedOrdinal);
+    }
+
+    public static KeySignature valueOfString(CharSequence keySignatureString) {
+        return BY_STRING.get(keySignatureString);
     }
 
 

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <com.dunneev.seenatural.Utilities.KeySignaturePreference
+        android:id="@+id/StaffKeySignaturePreference"
+        android:defaultValue="@string/StaffKeySignatureDefault"
+        android:key="@string/staff_low_practice_note_key"
+        android:summary="%s"
+        android:title="Key Signature" />
+
     <com.dunneev.seenatural.Utilities.NotePreference
         android:id="@+id/StaffLowPracticeNotePreference"
         android:defaultValue="@string/StaffLowPracticeNoteDefault"
@@ -13,6 +20,6 @@
         android:defaultValue="@string/StaffhighPracticeNoteDefault"
         android:key="@string/staff_high_practice_note_key"
         android:summary="%s"
-        android:title="high practice note" />
+        android:title="High practice note" />
 
 </PreferenceScreen>

@@ -179,18 +179,6 @@ public class PianoView extends ViewGroup {
 
     }
 
-    /**
-     * Calculate size of PianoView and all children
-     */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
-
-        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
-    }
-
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {

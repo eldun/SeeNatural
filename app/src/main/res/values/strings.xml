@@ -36,6 +36,7 @@
 
 
     <string name="staff_settings_key">StaffSettings</string>
+    <string name="staff_key_signature_key">StaffKeySignature</string>
     <string name="staff_low_practice_note_key">StaffLowPracticeNote</string>
     <string name="staff_high_practice_note_key">StaffHighPracticeNote</string>
 
@@ -76,6 +77,7 @@
 
   <string name="PianoLowPracticeNoteDefault">C4</string>
     <string name="PianoHighPracticeNoteDefault">C6</string>
+    <string name="StaffKeySignatureDefault">Cmaj / Amin</string>
     <string name="StaffLowPracticeNoteDefault">A0</string>
     <string name="StaffhighPracticeNoteDefault">C8</string>
 

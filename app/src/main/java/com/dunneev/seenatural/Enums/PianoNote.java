@@ -142,6 +142,7 @@ public enum PianoNote {
 
     public static final PianoNote LOWEST_NOTE = PianoNote.A0;
     public static final PianoNote HIGHEST_NOTE = PianoNote.C8;
+    public static final int NUMBER_OF_KEYS = 88;
 
     public final String label;
     public final String pitch;
@@ -237,7 +238,7 @@ public enum PianoNote {
     public static int numberOfKeysInRangeInclusive(PianoNote lowNote, PianoNote highNote){
         int keyCount = 0;
 
-        for (int i = lowNote.absoluteKeyIndex; i < highNote.absoluteKeyIndex; i++) {
+        for (int i = lowNote.absoluteKeyIndex; i <= highNote.absoluteKeyIndex; i++) {
                 keyCount++;
         }
         return keyCount;

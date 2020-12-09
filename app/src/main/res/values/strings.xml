@@ -36,6 +36,15 @@
 
 
     <string name="staff_settings_key">StaffSettings</string>
+    <string name="staff_key_signature_key">StaffKeySignature</string>
+    <string name="staff_hide_key_signature_key">StaffHideKeySignature</string>
+    <string name="hide_bass_clef_key">HideBassClef</string>
+    <string name="hide_bass_clef_lines_key">HideBassClefLines</string>
+    <string name="hide_treble_clef_key">HideTrebleClef</string>
+    <string name="hide_treble_clef_lines_key">HideTrebleClefLines</string>
+    <string name="display_flats_key">DisplayFlats</string>
+    <string name="display_naturals_key">DisplayNaturals</string>
+    <string name="display_sharps_key">DisplaySharps</string>
     <string name="staff_low_practice_note_key">StaffLowPracticeNote</string>
     <string name="staff_high_practice_note_key">StaffHighPracticeNote</string>
 
@@ -76,6 +85,7 @@
 
   <string name="PianoLowPracticeNoteDefault">C4</string>
     <string name="PianoHighPracticeNoteDefault">C6</string>
+    <string name="StaffKeySignatureDefault">Cmaj / Amin</string>
     <string name="StaffLowPracticeNoteDefault">A0</string>
     <string name="StaffhighPracticeNoteDefault">C8</string>
 

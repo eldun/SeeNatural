@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.Fragments.Piano.PianoKey;
 import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
@@ -48,24 +49,106 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         String lowNoteLabel = sharedPreferences.getString(getResources().getString(R.string.staff_low_practice_note_key), "");
         String highNoteLabel = sharedPreferences.getString(getResources().getString(R.string.staff_high_practice_note_key), "");
 
-        viewModel.lowestPracticeNote = PianoNote.valueOfLabel(lowNoteLabel);
-        viewModel.highestPracticeNote = PianoNote.valueOfLabel(highNoteLabel);
+        setUpObservables();
 
-        final Observer<ArrayList<PianoNote>> notesOnStaffObserver = new Observer<ArrayList<PianoNote>>() {
+    }
+
+    // TODO: 12/8/2020 Make StaffViewModel itself observable and update the binding with viewmodel properties
+    private void setUpObservables() {
+        final Observer<KeySignature> keySignatureObserver = new Observer<KeySignature>() {
             @Override
-            public void onChanged(ArrayList<PianoNote> notesOnStaff) {
-                Log.i(LOG_TAG, "notesOnStaff now has " + notesOnStaff.size() + " elements");
-                if (binding.staffView != null){
-//                    updateNotesOnStaff();
-                }
-
+            public void onChanged(KeySignature keySignature) {
+                setUpStaff();
             }
-
         };
 
-        // Observe the LiveData, passing in this fragment as the LifecycleOwner and the observer.
-        viewModel.getLiveNotesOnStaff().observe(this, notesOnStaffObserver);
+        final Observer<Boolean> hideKeySignatureObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean hideKeySignature) {
+                setUpStaff();
+            }
+        };
 
+        final Observer<Boolean> displayFlatsObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean displayFlats) {
+                setUpStaff();
+            }
+        };
+
+        final Observer<Boolean> displayNaturalsObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean displayNaturals) {
+                setUpStaff();
+            }
+        };
+
+        final Observer<Boolean> displaySharpsObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean displaySharps) {
+                setUpStaff();
+            }
+        };
+
+        final Observer<Boolean> hideTrebleClefObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean hideTrebleClef) {
+                setUpStaff();
+            }
+        };
+
+        final Observer<Boolean> hideTrebleClefLinesObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean hideTrebleClefLines) {
+                setUpStaff();
+            }
+        };
+
+        final Observer<Boolean> hideBassClefObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean hideBassClef) {
+                setUpStaff();
+            }
+        };
+
+
+        final Observer<Boolean> hideBassClefLinesObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean hideBassClefLines) {
+                setUpStaff();
+            }
+        };
+
+
+        final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
+            @Override
+            public void onChanged(PianoNote lowPianoNote) {
+                setUpStaff();
+            }
+        };
+
+        // Create the observer which updates the UI.
+        final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
+            @Override
+            public void onChanged(PianoNote highPianoNote) {
+                setUpStaff();
+            }
+        };
+
+
+        viewModel.getMutableLiveDataKeySignature().observe(this, keySignatureObserver);
+        viewModel.getMutableLiveDataHideKeySignature().observe(this, hideKeySignatureObserver);
+
+        viewModel.getMutableLiveDataHideTrebleClef().observe(this, hideTrebleClefObserver);
+        viewModel.getMutableLiveDataHideTrebleClefLines().observe(this, hideTrebleClefLinesObserver);
+        viewModel.getMutableLiveDataHideBassClef().observe(this, hideBassClefObserver);
+        viewModel.getMutableLiveDataHideBassClefLines().observe(this, hideBassClefLinesObserver);
+
+        viewModel.getMutableLiveDataDisplayFlats().observe(this, displayFlatsObserver);
+        viewModel.getMutableLiveDataDisplayNaturals().observe(this, displayNaturalsObserver);
+        viewModel.getMutableLiveDataDisplaySharps().observe(this, displaySharpsObserver);
+        viewModel.getMutableLiveDataLowestStaffPracticeNote().observe(this, lowNoteObserver);
+        viewModel.getMutableLiveDataHighestStaffPracticeNote().observe(this, highNoteObserver);
     }
 
     @Override
@@ -92,17 +175,31 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             }
         });
 
-        setUpStaff();
-//        for (PianoNote note:viewModel.practicableNotes) {
-//            binding.staffView.addNote(note);
-//        }
-
+        initializeStaff();
     }
 
 
     private void setUpStaff() {
-        binding.staffView.setLowestPracticeNote(viewModel.lowestPracticeNote);
-        binding.staffView.setHighestPracticeNote(viewModel.highestPracticeNote);
+
+        binding.staffView.setKeySignature(viewModel.getSelectedKeySignature());
+        binding.staffView.setHideKeySignature(viewModel.getHideKeySignature());
+
+        binding.staffView.setHideTrebleClef(viewModel.getHideTrebleClef());
+        binding.staffView.setHideTrebleClefLines(viewModel.getHideTrebleClefLines());
+        binding.staffView.setHideBassClef(viewModel.getHideBassClef());
+        binding.staffView.setHideBassClefLines(viewModel.getHideBassClefLines());
+
+        binding.staffView.setDisplayFlats(viewModel.getDisplayFlats());
+        binding.staffView.setDisplayNaturals(viewModel.getDisplayNaturals());
+        binding.staffView.setDisplaySharps(viewModel.getDisplaySharps());
+
+        binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
+        binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
+        
+    }
+    
+    
+    private void initializeStaff() {
         binding.staffView.init();
     }
 
@@ -115,10 +212,4 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding = null;
     }
 
-//    @Override
-//    public void onStaffLaidOut() {
-//        for (PianoNote note:viewModel.notesOnStaff) {
-//            binding.staffView.addNote(note);
-//        }
-//    }
 }

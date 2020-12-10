@@ -127,7 +127,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             }
         };
 
-        // Create the observer which updates the UI.
         final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
             @Override
             public void onChanged(PianoNote highPianoNote) {
@@ -149,6 +148,18 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         viewModel.getMutableLiveDataDisplaySharps().observe(this, displaySharpsObserver);
         viewModel.getMutableLiveDataLowestStaffPracticeNote().observe(this, lowNoteObserver);
         viewModel.getMutableLiveDataHighestStaffPracticeNote().observe(this, highNoteObserver);
+
+        // Functionality
+        final Observer<ArrayList<PianoNote>> notesOnStaffObserver = new Observer<ArrayList<PianoNote>>() {
+            @Override
+            public void onChanged(ArrayList<PianoNote> notesOnStaff) {
+                Log.i(LOG_TAG, "notesOnStaff changed");
+
+            }
+        };
+
+        viewModel.getMutableLiveDataNotesOnStaff().observe(requireParentFragment(), notesOnStaffObserver);
+
     }
 
     @Override
@@ -182,23 +193,23 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     private void setUpStaff() {
 
         binding.staffView.setKeySignature(viewModel.getSelectedKeySignature());
-        binding.staffView.setHideKeySignature(viewModel.getHideKeySignature());
-
-        binding.staffView.setHideTrebleClef(viewModel.getHideTrebleClef());
-        binding.staffView.setHideTrebleClefLines(viewModel.getHideTrebleClefLines());
-        binding.staffView.setHideBassClef(viewModel.getHideBassClef());
-        binding.staffView.setHideBassClefLines(viewModel.getHideBassClefLines());
-
-        binding.staffView.setDisplayFlats(viewModel.getDisplayFlats());
-        binding.staffView.setDisplayNaturals(viewModel.getDisplayNaturals());
-        binding.staffView.setDisplaySharps(viewModel.getDisplaySharps());
+//        binding.staffView.setHideKeySignature(viewModel.getHideKeySignature());
+//
+//        binding.staffView.setHideTrebleClef(viewModel.getHideTrebleClef());
+//        binding.staffView.setHideTrebleClefLines(viewModel.getHideTrebleClefLines());
+//        binding.staffView.setHideBassClef(viewModel.getHideBassClef());
+//        binding.staffView.setHideBassClefLines(viewModel.getHideBassClefLines());
+//
+//        binding.staffView.setDisplayFlats(viewModel.getDisplayFlats());
+//        binding.staffView.setDisplayNaturals(viewModel.getDisplayNaturals());
+//        binding.staffView.setDisplaySharps(viewModel.getDisplaySharps());
 
         binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
         binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
-        
+
     }
-    
-    
+
+
     private void initializeStaff() {
         binding.staffView.init();
     }

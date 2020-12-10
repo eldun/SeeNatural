@@ -86,56 +86,81 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<KeySignature> keySignatureObserver = new Observer<KeySignature>() {
             @Override
             public void onChanged(KeySignature keySignature) {
-                setUpStaff();
+                regenerateStaff();
+                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_key_signature_key), keySignature.toString());
+                sharedPreferencesEditor.apply();
             }
         };
 
         final Observer<Boolean> hideKeySignatureObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideKeySignature) {
-                setUpStaff();
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.staff_hide_key_signature_key), hideKeySignature);
+                sharedPreferencesEditor.apply();
             }
         };
 
-        final Observer<Boolean> displayFlatsObserver = new Observer<Boolean>() {
+        final Observer<Boolean> generateAccidentalsObserver = new Observer<Boolean>() {
             @Override
-            public void onChanged(Boolean displayFlats) {
-                setUpStaff();
+            public void onChanged(Boolean generateAccidentals) {
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_accidentals_key), generateAccidentals);
+                sharedPreferencesEditor.apply();
             }
         };
 
-        final Observer<Boolean> displayNaturalsObserver = new Observer<Boolean>() {
+        final Observer<Boolean> generateFlatsObserver = new Observer<Boolean>() {
             @Override
-            public void onChanged(Boolean displayNaturals) {
-                setUpStaff();
+            public void onChanged(Boolean generateFlats) {
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_flats_key), generateFlats);
+                sharedPreferencesEditor.apply();
             }
         };
 
-        final Observer<Boolean> displaySharpsObserver = new Observer<Boolean>() {
+        final Observer<Boolean> generateNaturalsObserver = new Observer<Boolean>() {
             @Override
-            public void onChanged(Boolean displaySharps) {
-                setUpStaff();
+            public void onChanged(Boolean generateNaturals) {
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_naturals_key), generateNaturals);
+                sharedPreferencesEditor.apply();
+            }
+        };
+
+        final Observer<Boolean> generateSharpsObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean generateSharps) {
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_sharps_key), generateSharps);
+                sharedPreferencesEditor.apply();
             }
         };
 
         final Observer<Boolean> hideTrebleClefObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideTrebleClef) {
-                setUpStaff();
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_treble_clef_key), hideTrebleClef);
+                sharedPreferencesEditor.apply();
             }
         };
 
         final Observer<Boolean> hideTrebleClefLinesObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideTrebleClefLines) {
-                setUpStaff();
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_treble_clef_lines_key), hideTrebleClefLines);
+                sharedPreferencesEditor.apply();
             }
         };
 
         final Observer<Boolean> hideBassClefObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideBassClef) {
-                setUpStaff();
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), hideBassClef);
+                sharedPreferencesEditor.apply();
             }
         };
 
@@ -143,7 +168,9 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> hideBassClefLinesObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideBassClefLines) {
-                setUpStaff();
+                regenerateStaff();
+                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), hideBassClefLines);
+                sharedPreferencesEditor.apply();
             }
         };
 
@@ -151,14 +178,18 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
             @Override
             public void onChanged(PianoNote lowPianoNote) {
-                setUpStaff();
+                regenerateStaff();
+                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_low_practice_note_key), lowPianoNote.label);
+                sharedPreferencesEditor.apply();
             }
         };
 
         final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
             @Override
             public void onChanged(PianoNote highPianoNote) {
-                setUpStaff();
+                regenerateStaff();
+                sharedPreferencesEditor.putString(getResources().getString(R.string.piano_high_practice_note_key), highPianoNote.label);
+                sharedPreferencesEditor.apply();
             }
         };
 
@@ -171,9 +202,11 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         viewModel.getMutableLiveDataHideBassClef().observe(this, hideBassClefObserver);
         viewModel.getMutableLiveDataHideBassClefLines().observe(this, hideBassClefLinesObserver);
 
-        viewModel.getMutableLiveDataDisplayFlats().observe(this, displayFlatsObserver);
-        viewModel.getMutableLiveDataDisplayNaturals().observe(this, displayNaturalsObserver);
-        viewModel.getMutableLiveDataDisplaySharps().observe(this, displaySharpsObserver);
+        viewModel.getMutableLiveDataGenerateAccidentals().observe(this, generateAccidentalsObserver);
+        viewModel.getMutableLiveDataGenerateFlats().observe(this, generateFlatsObserver);
+        viewModel.getMutableLiveDataGenerateNaturals().observe(this, generateNaturalsObserver);
+        viewModel.getMutableLiveDataGenerateSharps().observe(this, generateSharpsObserver);
+
         viewModel.getMutableLiveDataLowestStaffPracticeNote().observe(this, lowNoteObserver);
         viewModel.getMutableLiveDataHighestStaffPracticeNote().observe(this, highNoteObserver);
 
@@ -213,24 +246,24 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
                     viewModel.setHighestStaffPracticeNote(PianoNote.C8);
             }
         });
-
-        initializeStaff();
+        regenerateStaff();
     }
+
 
 
     private void setUpStaff() {
 
         binding.staffView.setKeySignature(viewModel.getSelectedKeySignature());
-//        binding.staffView.setHideKeySignature(viewModel.getHideKeySignature());
-//
-//        binding.staffView.setHideTrebleClef(viewModel.getHideTrebleClef());
-//        binding.staffView.setHideTrebleClefLines(viewModel.getHideTrebleClefLines());
-//        binding.staffView.setHideBassClef(viewModel.getHideBassClef());
-//        binding.staffView.setHideBassClefLines(viewModel.getHideBassClefLines());
-//
-//        binding.staffView.setDisplayFlats(viewModel.getDisplayFlats());
-//        binding.staffView.setDisplayNaturals(viewModel.getDisplayNaturals());
-//        binding.staffView.setDisplaySharps(viewModel.getDisplaySharps());
+        binding.staffView.setHideKeySignature(viewModel.getHideKeySignature());
+
+        binding.staffView.setHideTrebleClef(viewModel.getHideTrebleClef());
+        binding.staffView.setHideTrebleClefLines(viewModel.getHideTrebleClefLines());
+        binding.staffView.setHideBassClef(viewModel.getHideBassClef());
+        binding.staffView.setHideBassClefLines(viewModel.getHideBassClefLines());
+
+        binding.staffView.setDisplayFlats(viewModel.getGenerateFlats());
+        binding.staffView.setDisplayNaturals(viewModel.getGenerateNaturals());
+        binding.staffView.setDisplaySharps(viewModel.getGenerateSharps());
 
         binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
         binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
@@ -243,6 +276,10 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     }
 
 
+    private void regenerateStaff(){
+        setUpStaff();
+        initializeStaff();
+    }
 
 
     @Override

@@ -17,9 +17,10 @@ public class StaffViewModel extends ViewModel {
     private MutableLiveData<KeySignature> selectedKeySignature = new MutableLiveData<>();
     private MutableLiveData<Boolean>  hideKeySignature = new MutableLiveData<>();
 
-    private MutableLiveData<Boolean>  displayFlats = new MutableLiveData<>();
-    private MutableLiveData<Boolean>  displaySharps = new MutableLiveData<>();
-    private MutableLiveData<Boolean>  displayNaturals = new MutableLiveData<>();
+    private MutableLiveData<Boolean> generateAccidentals = new MutableLiveData<>();
+    private MutableLiveData<Boolean> generateFlats = new MutableLiveData<>();
+    private MutableLiveData<Boolean> generateSharps = new MutableLiveData<>();
+    private MutableLiveData<Boolean> generateNaturals = new MutableLiveData<>();
 
     private MutableLiveData<PianoNote> lowestStaffPracticeNote = new MutableLiveData<>();
     private MutableLiveData<PianoNote> highestStaffPracticeNote = new MutableLiveData<>();
@@ -46,35 +47,45 @@ public class StaffViewModel extends ViewModel {
         this.hideKeySignature.setValue(hideKeySignature);
     }
 
-    public MutableLiveData<Boolean> getMutableLiveDataDisplayFlats() {
-        return displayFlats;
+    public MutableLiveData<Boolean> getMutableLiveDataGenerateAccidentals() {
+        return generateAccidentals;
     }
-    public boolean getDisplayFlats() {
-        return displayFlats.getValue();
+    public boolean getGenerateAccidentals() {
+        return generateAccidentals.getValue();
     }
-    public void setDisplayFlats(boolean displayFlats) {
-        this.displayFlats.setValue(displayFlats);
+    public void setGenerateAccidentals(boolean generateAccidentals) {
+        this.generateAccidentals.setValue(generateAccidentals);
+    }
+    
+    public MutableLiveData<Boolean> getMutableLiveDataGenerateFlats() {
+        return generateFlats;
+    }
+    public boolean getGenerateFlats() {
+        return generateFlats.getValue();
+    }
+    public void setGenerateFlats(boolean generateFlats) {
+        this.generateFlats.setValue(generateFlats);
     }
 
-    public MutableLiveData<Boolean> getMutableLiveDataDisplaySharps() {
-        return displaySharps;
+    public MutableLiveData<Boolean> getMutableLiveDataGenerateSharps() {
+        return generateSharps;
     }
-    public boolean getDisplaySharps() {
-        return displaySharps.getValue();
+    public boolean getGenerateSharps() {
+        return generateSharps.getValue();
     }
-    public void setDisplaySharps(boolean displaySharps) {
-        this.displaySharps.setValue(displaySharps);
+    public void setGenerateSharps(boolean generateSharps) {
+        this.generateSharps.setValue(generateSharps);
     }
 
 
-    public MutableLiveData<Boolean> getMutableLiveDataDisplayNaturals() {
-        return displayNaturals;
+    public MutableLiveData<Boolean> getMutableLiveDataGenerateNaturals() {
+        return generateNaturals;
     }
-    public boolean getDisplayNaturals() {
-        return displayNaturals.getValue();
+    public boolean getGenerateNaturals() {
+        return generateNaturals.getValue();
     }
-    public void setDisplayNaturals(boolean displayNaturals) {
-        this.displayNaturals.setValue(displayNaturals);
+    public void setGenerateNaturals(boolean generateNaturals) {
+        this.generateNaturals.setValue(generateNaturals);
     }
 
     public MutableLiveData<Boolean> getMutableLiveDataHideTrebleClef() {

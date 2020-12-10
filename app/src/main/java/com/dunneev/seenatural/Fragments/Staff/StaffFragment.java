@@ -29,6 +29,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     private FragmentStaffBinding binding;
     private StaffViewModel viewModel;
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor sharedPreferencesEditor;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -38,13 +39,46 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(StaffViewModel.class);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-
-        String lowNoteLabel = sharedPreferences.getString(getResources().getString(R.string.staff_low_practice_note_key), "");
-        String highNoteLabel = sharedPreferences.getString(getResources().getString(R.string.staff_high_practice_note_key), "");
-
+        setViewModelFieldsFromPreferences();
         setUpObservables();
 
+    }
+
+    private void setViewModelFieldsFromPreferences() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        sharedPreferencesEditor = sharedPreferences.edit();
+
+        KeySignature keySignature = KeySignature.valueOfString(sharedPreferences.getString(getResources().getString(R.string.staff_key_signature_key), KeySignature.C_MAJOR.toString()));
+        boolean hideKeySignature = sharedPreferences.getBoolean(getResources().getString(R.string.staff_hide_key_signature_key), false);
+
+        boolean hideTrebleClef = sharedPreferences.getBoolean(getResources().getString(R.string.hide_treble_clef_key), false);
+        boolean hideTrebleClefLines = sharedPreferences.getBoolean(getResources().getString(R.string.hide_treble_clef_lines_key), false);
+        boolean hideBassClef = sharedPreferences.getBoolean(getResources().getString(R.string.hide_bass_clef_key), false);
+        boolean hideBassClefLines = sharedPreferences.getBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), false);
+
+        boolean generateAccidentals = sharedPreferences.getBoolean(getResources().getString(R.string.generate_accidentals_key), true);
+        boolean generateFlats = sharedPreferences.getBoolean(getResources().getString(R.string.generate_flats_key), true);
+        boolean generateNaturals = sharedPreferences.getBoolean(getResources().getString(R.string.generate_naturals_key), true);
+        boolean generateSharps = sharedPreferences.getBoolean(getResources().getString(R.string.generate_sharps_key), true);
+
+        PianoNote lowNote =  PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_low_practice_note_key), ""));
+        PianoNote highNote = PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_high_practice_note_key), ""));
+        
+        viewModel.setSelectedKeySignature(keySignature);
+        viewModel.setHideKeySignature(hideKeySignature);
+        
+        viewModel.setHideTrebleClef(hideTrebleClef);
+        viewModel.setHideTrebleClefLines(hideTrebleClefLines);
+        viewModel.setHideBassClef(hideBassClef);
+        viewModel.setHideBassClefLines(hideBassClefLines);
+        
+        viewModel.setGenerateAccidentals(generateAccidentals);
+        viewModel.setGenerateFlats(generateFlats);
+        viewModel.setGenerateNaturals(generateNaturals);
+        viewModel.setGenerateSharps(generateSharps);
+        
+        viewModel.setLowestStaffPracticeNote(lowNote);
+        viewModel.setHighestStaffPracticeNote(highNote);
     }
 
     // TODO: 12/8/2020 Make StaffViewModel itself observable and update the binding with viewmodel properties

@@ -2,27 +2,21 @@ package com.dunneev.seenatural.Fragments.Staff;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
-import com.dunneev.seenatural.Fragments.Piano.PianoKey;
-import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
-import com.dunneev.seenatural.Fragments.Reading.ReadingFragment;
-import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.FragmentStaffBinding;
 

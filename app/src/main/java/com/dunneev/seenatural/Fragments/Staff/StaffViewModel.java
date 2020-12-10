@@ -151,7 +151,12 @@ public class StaffViewModel extends ViewModel {
         return notesOnStaff;
     }
     public ArrayList<PianoNote> getNotesOnStaff() {
-        return this.notesOnStaff.getValue();
+        if (this.notesOnStaff.getValue() == null) {
+            return new ArrayList<PianoNote>();
+        }
+        else {
+            return this.notesOnStaff.getValue();
+        }
     }
     public void setNotesOnStaff(ArrayList<PianoNote> notesOnStaff) {
         this.notesOnStaff.setValue(notesOnStaff);
@@ -166,6 +171,12 @@ public class StaffViewModel extends ViewModel {
 
     public void addRandomNoteFromPracticableNotes() {
 
+        ArrayList tempNotesOnStaff = new ArrayList();
+        tempNotesOnStaff = getNotesOnStaff();
+        tempNotesOnStaff.add(PianoNote.G4);
+        setNotesOnStaff(tempNotesOnStaff);
+
     }
+
 }
 

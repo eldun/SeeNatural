@@ -34,6 +34,14 @@
             <enum name="D_SHARP_MINOR" value="28"/>
             <enum name="A_SHARP_MINOR" value="29"/>
         </attr>
+        <attr name="hideKeySignature" format="boolean"/>
+        <attr name="hideTrebleClef" format="boolean"/>
+        <attr name="hideTrebleClefLines" format="boolean"/>
+        <attr name="hideBassClef" format="boolean"/>
+        <attr name="hideBassClefLines" format="boolean"/>
+        <attr name="displayFlats" format="boolean"/>
+        <attr name="displayNaturals" format="boolean"/>
+        <attr name="displaySharps" format="boolean"/>
         <attr name="staffLowPracticeNote" format="enum">
             <enum name="A0" value="0"/>
             <enum name="A_SHARP_0" value="1"/>

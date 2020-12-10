@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_firstFragment_to_settings_nav_graph"
             app:destination="@id/settings_nav_graph" />
+        <action
+            android:id="@+id/action_firstFragment_to_staffFragment"
+            app:destination="@id/staffFragment" />
     </fragment>
     <fragment
         android:id="@+id/pianoFragment"
@@ -36,7 +39,7 @@
         <fragment
             android:id="@+id/settingsFragment"
             android:name="com.dunneev.seenatural.Fragments.SettingsFragment"
-            android:label="SettingsFragment" >
+            android:label="SettingsFragment">
             <action
                 android:id="@+id/action_settingsFragment_to_pianoSettingsFragment"
                 app:destination="@id/pianoSettingsFragment" />
@@ -60,4 +63,9 @@
             android:name="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
             android:label="ReadingSettingsFragment" />
     </navigation>
+    <fragment
+        android:id="@+id/staffFragment"
+        android:name="com.dunneev.seenatural.Fragments.Staff.StaffFragment"
+        android:label="StaffFragment"
+        tools:layout="@layout/fragment_staff" />
 </navigation>

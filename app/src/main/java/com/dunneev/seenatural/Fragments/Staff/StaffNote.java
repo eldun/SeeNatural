@@ -18,13 +18,33 @@ public class StaffNote extends View {
     private static final String LOG_TAG = StaffNote.class.getSimpleName();
 
     private KeySignature keySignature;
-    private PianoNote note;
+    public PianoNote note;
 
     private boolean isAccidental;
     private String accidentalSymbol;
     private TextDrawable noteDrawable;
 
     private Rect noteBoundsRect = new Rect();
+
+    private static int desiredWidth = 500;
+    private static int desiredHeight = 500;
+
+
+    public static int getDesiredWidth() {
+        return desiredWidth;
+    }
+
+    public static void setDesiredWidth(int desiredWidth) {
+        StaffNote.desiredWidth = desiredWidth;
+    }
+
+    public static int getDesiredHeight() {
+        return desiredHeight;
+    }
+
+    public static void setDesiredHeight(int desiredHeight) {
+        StaffNote.desiredHeight = desiredHeight;
+    }
 
     // todo: draw a ledger line when necessary
     public StaffNote(Context context, KeySignature keySignature, PianoNote note) {
@@ -75,10 +95,6 @@ public class StaffNote extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        // Default values just in case something goes wrong
-        int desiredWidth = 100;
-        int desiredHeight = 100;
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);

@@ -2,6 +2,7 @@ package com.dunneev.seenatural.Enums;
 
 import android.graphics.Color;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,6 +140,10 @@ public enum PianoNote {
 
     C8("C8", 108, 124, -1, "[C8]");
 
+    public static final PianoNote LOWEST_NOTE = PianoNote.A0;
+    public static final PianoNote HIGHEST_NOTE = PianoNote.C8;
+    public static final int NUMBER_OF_KEYS = 88;
+
     public final String label;
     public final String pitch;
     public final int octave;
@@ -148,8 +153,8 @@ public enum PianoNote {
     // A value from 0 to 87, spanning any piano note
     public final int absoluteKeyIndex;
 
-    public final int keyColor;
-    public final int keyDownColor;
+    public final boolean isWhiteKey;
+    public final boolean isBlackKey;
     public final String filename;
 
     public final int storedOrdinal;
@@ -165,8 +170,8 @@ public enum PianoNote {
         this.storedOrdinal = storedOrdinal;
         this.enharmonicEquivalentOrdinal = enharmonicEquivalentOrdinal;
         this.filename = filename;
-        this.keyColor = setKeyColor();
-        this.keyDownColor = setKeyDownColor();
+        this.isWhiteKey = checkIfWhiteKey();
+        this.isBlackKey = !isWhiteKey;
 
     }
 
@@ -177,16 +182,11 @@ public enum PianoNote {
             return label.substring(0, 2);
     }
 
-    private int setKeyColor() {
-        if (label.length() == 2)
-            return Color.WHITE;
-        return Color.BLACK;
-    }
-
-    private int setKeyDownColor() {
-        if (this.keyColor == Color.WHITE)
-            return Color.LTGRAY;
-        return Color.DKGRAY;
+    private boolean checkIfWhiteKey() {
+        if (label.length() == 2) {
+            return true;
+        }
+        return false;
     }
 
     // Cache lookup values using Map that's populated when the class loads
@@ -227,12 +227,29 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
+    public static ArrayList<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+        ArrayList<PianoNote> notes = new ArrayList<>();
+        for (int i = lowNote.storedOrdinal; i < highNote.storedOrdinal; i++) {
+            notes.add(valueOfStoredOrdinal(i));
+        }
+        return notes;
+    }
+
+    public static int numberOfKeysInRangeInclusive(PianoNote lowNote, PianoNote highNote){
+        int keyCount = 0;
+
+        for (int i = lowNote.absoluteKeyIndex; i <= highNote.absoluteKeyIndex; i++) {
+                keyCount++;
+        }
+        return keyCount;
+    }
+
     public static int numberOfWhiteKeysInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
 
         int whiteKeyCount = 0;
 
         for (int i = lowNote.absoluteKeyIndex; i < highNote.absoluteKeyIndex; i++) {
-            if (PianoNote.valueOfAbsoluteKeyIndex(i).keyColor == Color.WHITE) {
+            if (PianoNote.valueOfAbsoluteKeyIndex(i).isWhiteKey) {
                 whiteKeyCount++;
             }
         }

@@ -8,6 +8,7 @@ import com.dunneev.seenatural.Enums.PianoNote;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SoundPlayer {
 
@@ -18,6 +19,8 @@ public class SoundPlayer {
     private static final String LOG_TAG = SoundPlayer.class.getSimpleName();
 
     private final String notesFolder = "notes";
+
+    private ArrayList loadedNotes = new ArrayList(PianoNote.NUMBER_OF_KEYS);
 
 
 
@@ -31,29 +34,9 @@ public class SoundPlayer {
     // All the input samples are assumed to be mono.
     private final int SAMPLE_RATE = 44100;
 
-    private int startingPianoKey;
-    private int numberOfKeys;
 
-    public int getStartingPianoKey() {
-        return startingPianoKey;
-    }
 
-    public void setStartingNote(PianoNote startingNote) {
-        this.startingPianoKey = startingNote.absoluteKeyIndex;
-    }
-
-    public int getNumberOfKeys() {
-        return numberOfKeys;
-    }
-
-    public void setNumberOfKeys(int numberOfKeys) {
-
-        this.numberOfKeys = numberOfKeys;
-    }
-
-    public SoundPlayer(PianoNote startingNote, int numberOfKeys) {
-        setStartingNote(startingNote);
-        setNumberOfKeys(numberOfKeys);
+    public SoundPlayer() {
     }
 
 
@@ -64,15 +47,23 @@ public class SoundPlayer {
     public void teardownAudioStream() { teardownAudioStreamNative(); }
 
 
-    public void loadWavAssets(AssetManager assetManager) {
-        int startingKey = getStartingPianoKey();
-        for (int i=startingKey; i<startingKey+getNumberOfKeys(); i++) {
-            loadWavAsset(assetManager, notesFolder + "/" + PianoNote.valueOfAbsoluteKeyIndex(i).filename + ".wav");
+    public void loadPianoNoteWavAssets(AssetManager assetManager, PianoNote startingNote, int numberOfKeys) {
+        PianoNote note;
+        for (int i=startingNote.absoluteKeyIndex; i<startingNote.absoluteKeyIndex+numberOfKeys; i++) {
+            note = PianoNote.valueOfAbsoluteKeyIndex(i);
+
+            if (loadedNotes.contains(note))
+                continue;
+            else {
+                loadWavAsset(assetManager, notesFolder + "/" + PianoNote.valueOfAbsoluteKeyIndex(i).filename + ".wav");
+                loadedNotes.add(PianoNote.valueOfAbsoluteKeyIndex(i));
+            }
         }
     }
 
     public void unloadWavAssets() {
         unloadWavAssetsNative();
+        loadedNotes.clear();
     }
 
     private void loadWavAsset(AssetManager assetManager, String filename) {

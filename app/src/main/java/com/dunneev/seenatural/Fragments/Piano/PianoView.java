@@ -16,13 +16,30 @@ public class PianoView extends ViewGroup {
 
     private static final String LOG_TAG = PianoView.class.getSimpleName();
 
+    private PianoNote lowestPracticeNote;
+    private PianoNote highestPracticeNote;
+
+
+    private ArrayList<PianoKey> pianoKeys = new ArrayList<>();
+    private ArrayList<PianoKey> whitePianoKeys = new ArrayList<>();
+    private ArrayList<PianoKey> blackPianoKeys = new ArrayList<>();
+
+    // TODO: Change colors to facilitate correct/incorrect when sight-reading
+    private static int whiteKeyUpColor = Color.WHITE;
+    private static int whiteKeyDownColor = Color.GRAY;
+    private static int whiteKeyDownCorrectColor = Color.GREEN;
+    private static int whiteKeyDownIncorrectColor = Color.RED;
+    private static int blackKeyUpColor = Color.BLACK;
+    private static int blackKeyDownColor = Color.LTGRAY;
+    private static int blackKeyDownCorrectColor = Color.GREEN;
+    private static int blackKeyDownIncorrectColor = Color.RED;
+
     public PianoNote getLowestPracticeNote() {
         return lowestPracticeNote;
     }
 
     public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
         this.lowestPracticeNote = lowestPracticeNote;
-//        init();
     }
 
     public PianoNote getHighestPracticeNote() {
@@ -31,46 +48,78 @@ public class PianoView extends ViewGroup {
 
     public void setHighestPracticeNote(PianoNote highestPracticeNote) {
         this.highestPracticeNote = highestPracticeNote;
-//        init();
     }
 
-    private PianoNote lowestPracticeNote;
-    private PianoNote highestPracticeNote;
+    public static int getWhiteKeyUpColor() {
+        return whiteKeyUpColor;
+    }
 
-    // TODO: Change colors to facilitate correct/incorrect when sight-reading
-    private Paint white = new Paint();
-    private Paint black = new Paint();
+    public static int getWhiteKeyDownColor() {
+        return whiteKeyDownColor;
+    }
 
+    public static int getWhiteKeyDownCorrectColor() {
+        return whiteKeyDownCorrectColor;
+    }
 
-    private ArrayList<PianoKey> pianoKeys = new ArrayList<>();
-    private ArrayList<PianoKey> whitePianoKeys = new ArrayList<>();
-    private ArrayList<PianoKey> blackPianoKeys = new ArrayList<>();
+    public static int getWhiteKeyDownIncorrectColor() {
+        return whiteKeyDownIncorrectColor;
+    }
+
+    public static int getBlackKeyUpColor() {
+        return blackKeyUpColor;
+    }
+
+    public static int getBlackKeyDownColor() {
+        return blackKeyDownColor;
+    }
+
+    public static int getBlackKeyDownCorrectColor() {
+        return blackKeyDownCorrectColor;
+    }
+
+    public static int getBlackKeyDownIncorrectColor() {
+        return blackKeyDownIncorrectColor;
+    }
+
+    public static void setWhiteKeyUpColor(int whiteKeyUpColor) {
+        PianoView.whiteKeyUpColor = whiteKeyUpColor;
+    }
+
+    public static void setWhiteKeyDownColor(int whiteKeyDownColor) {
+        PianoView.whiteKeyDownColor = whiteKeyDownColor;
+    }
+
+    public static void setWhiteKeyDownCorrectColor(int whiteKeyDownCorrectColor) {
+        PianoView.whiteKeyDownCorrectColor = whiteKeyDownCorrectColor;
+    }
+
+    public static void setWhiteKeyDownIncorrectColor(int whiteKeyDownIncorrectColor) {
+        PianoView.whiteKeyDownIncorrectColor = whiteKeyDownIncorrectColor;
+    }
+
+    public static void setBlackKeyUpColor(int blackKeyUpColor) {
+        PianoView.blackKeyUpColor = blackKeyUpColor;
+    }
+
+    public static void setBlackKeyDownColor(int blackKeyDownColor) {
+        PianoView.blackKeyDownColor = blackKeyDownColor;
+    }
+
+    public static void setBlackKeyDownCorrectColor(int blackKeyDownCorrectColor) {
+        PianoView.blackKeyDownCorrectColor = blackKeyDownCorrectColor;
+    }
+
+    public static void setBlackKeyDownIncorrectColor(int blackKeyDownIncorrectColor) {
+        PianoView.blackKeyDownIncorrectColor = blackKeyDownIncorrectColor;
+    }
 
     public ArrayList<PianoKey> getPianoKeys() {
         return pianoKeys;
     }
 
-    public ArrayList<PianoKey> getWhitePianoKeys() {
-        return whitePianoKeys;
-    }
-
-    public void setWhitePianoKeys(ArrayList<PianoKey> whitePianoKeys) {
-        this.whitePianoKeys = whitePianoKeys;
-    }
-
-    public ArrayList<PianoKey> getBlackPianoKeys() {
-        return blackPianoKeys;
-    }
-
-    public void setBlackPianoKeys(ArrayList<PianoKey> blackPianoKeys) {
-        this.blackPianoKeys = blackPianoKeys;
-    }
-
-
-    public PianoView(Context context, PianoNote lowestPracticeNote, PianoNote highestPracticeNote) {
+    public PianoView(Context context) {
         super(context);
-        this.lowestPracticeNote = lowestPracticeNote;
-        this.highestPracticeNote = highestPracticeNote;
         init();
     }
 
@@ -88,13 +137,7 @@ public class PianoView extends ViewGroup {
         init();
     }
 
-    private void init() {
-        removeAllViews();
-
-        white.setColor(Color.WHITE);
-        white.setStyle(Paint.Style.FILL);
-        black.setColor(Color.BLACK);
-        black.setStyle(Paint.Style.FILL);
+    public void init() {
 
         PianoKey.count = (highestPracticeNote.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex) + 1;
 
@@ -102,7 +145,7 @@ public class PianoView extends ViewGroup {
         addKeysToView();
     }
 
-    protected void populatePianoKeyArrays() {
+    private void populatePianoKeyArrays() {
         pianoKeys.clear();
         whitePianoKeys.clear();
         blackPianoKeys.clear();
@@ -111,7 +154,7 @@ public class PianoView extends ViewGroup {
 
             PianoKey key = new PianoKey(getContext(), PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.absoluteKeyIndex + i));
             pianoKeys.add(key);
-            if (key.isWhiteKey()) {
+            if (key.isWhite) {
                 whitePianoKeys.add(key);
             }
             else
@@ -119,11 +162,13 @@ public class PianoView extends ViewGroup {
         }
         PianoKey.whiteCount = whitePianoKeys.size();
         PianoKey.blackCount = blackPianoKeys.size();
+
     }
 
     // Add child views of PianoKey to PianoView
     // White first, then black (for drawing order).
     protected void addKeysToView() {
+        this.removeAllViews();
         for (PianoKey key : whitePianoKeys) {
             addView(key);
         }
@@ -132,18 +177,6 @@ public class PianoView extends ViewGroup {
             addView(key);
         }
 
-    }
-
-    /**
-     * Calculate size of PianoView and all children
-     */
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
-
-        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
 
 
@@ -168,7 +201,7 @@ public class PianoView extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
             final PianoKey child = (PianoKey) getChildAt(i);
 
-            if (child.isWhiteKey()) {
+            if (child.isWhite) {
                 childLeft = PianoKey.whiteKeyWidth * i;
                 childTop = 0;
                 childRight = childLeft + PianoKey.whiteKeyWidth;

@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="check_box_preference_1"
-        android:title="Check box preference" />
+    <com.dunneev.seenatural.Utilities.NotePreference
+        android:id="@+id/PianoLowPracticeNotePreference"
+        android:defaultValue="@string/PianoLowPracticeNoteDefault"
+        android:key="@string/piano_low_practice_note_key"
+        android:summary="%s"
+        android:title="Low practice note" />
+
+    <com.dunneev.seenatural.Utilities.NotePreference
+        android:id="@+id/PianoHighPracticeNotePreference"
+        android:defaultValue="@string/PianoHighPracticeNoteDefault"
+        android:key="@string/piano_high_practice_note_key"
+        android:summary="%s"
+        android:title="High practice note" />
+
 </PreferenceScreen>

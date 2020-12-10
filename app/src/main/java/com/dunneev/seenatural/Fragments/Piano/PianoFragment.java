@@ -1,11 +1,8 @@
 package com.dunneev.seenatural.Fragments.Piano;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,52 +11,91 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
-import com.dunneev.seenatural.Activities.MainActivity;
 import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.SoundPlayer;
 import com.dunneev.seenatural.databinding.FragmentPianoBinding;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-
 public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener {
 
     private final String LOG_TAG = this.getClass().getSimpleName();
 
+    SharedPreferences sharedPreferences;
+
     private FragmentPianoBinding binding;
-    PianoView pianoView;
+    PianoViewModel viewModel;
 
-    // todo: set piano note range based on options selected
-    private PianoNote lowestPracticeNote = PianoNote.C4;
-    private PianoNote highestPracticeNote = PianoNote.C6;
     private SoundPlayer soundPlayer;
+    AssetManager assetManager;
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Create a ViewModel the first time the system calls an activity's onCreate() method.
+        // Re-created activities receive the same MyViewModel instance created by the first activity.
+
+        viewModel = new ViewModelProvider(this).get(PianoViewModel.class);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+
+        String lowNoteLabel = sharedPreferences.getString(getResources().getString(R.string.piano_low_practice_note_key), "");
+        String highNoteLabel = sharedPreferences.getString(getResources().getString(R.string.piano_high_practice_note_key), "");
+
+        viewModel.setLowestPracticeNote(PianoNote.valueOfLabel(lowNoteLabel));
+        viewModel.setHighestPracticeNote(PianoNote.valueOfLabel(highNoteLabel));
+
+        // todo: use shared prefs
+        viewModel.setIsSingleOctaveMode(false);
+        viewModel.populatePianoNoteArrays();
+
+        soundPlayer = new SoundPlayer();
+        assetManager = getResources().getAssets();
+
+        setUpObservables();
 
 
-
-    public PianoNote getLowestPracticeNote() {
-        return lowestPracticeNote;
     }
 
-    public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
-        this.lowestPracticeNote = lowestPracticeNote;
-    }
+    private void setUpObservables() {
 
-    public PianoNote getHighestPracticeNote() {
-        return highestPracticeNote;
-    }
+        // Create the observer which updates the UI.
+        final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
+            @Override
+            public void onChanged(PianoNote lowPianoNote) {
+                // Update the UI
+            }
+        };
 
-    public void setHighestPracticeNote(PianoNote highestPracticeNote) {
-        this.highestPracticeNote = highestPracticeNote;
+        // Create the observer which updates the UI.
+        final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
+            @Override
+            public void onChanged(PianoNote highPianoNote) {
+                setUpPiano();
+            }
+        };
+
+        // Create the observer which updates the UI.
+        final Observer<Boolean> singleOctaveObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isSingleOctave) {
+
+            }
+        };
+
+
+        viewModel.getMutableLiveDataLowestPracticeNote().observe(this, lowNoteObserver);
+        viewModel.getMutableLiveDataHighestPracticeNote().observe(this, highNoteObserver);
+        viewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
 
         binding = FragmentPianoBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -69,52 +105,59 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        binding.toggleHighNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!binding.toggleHighNoteButton.isChecked())
+                    viewModel.setHighestPracticeNote(PianoNote.C6);
+                else
+                    viewModel.setHighestPracticeNote(PianoNote.C8);
+            }
+        });
 
         setUpPiano();
-        setUpSoundPlayer();
-//        binding.pianoviewPiano.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                NavHostFragment.findNavController(PianoFragment.this)
-//                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
-//            }
-//        });
-    }
-
-//    @Override
-//    public void onInflate(@NonNull @NotNull Context context, @NonNull @NotNull AttributeSet attrs, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-//        super.onInflate(context, attrs, savedInstanceState);
-//        setUpPiano();
-//        setUpSoundPlayer();
-//    }
-
-    private void setUpSoundPlayer() {
-        soundPlayer = new SoundPlayer(pianoView.getLowestPracticeNote(), PianoKey.count);
-        AssetManager assetManager = getResources().getAssets();
-        soundPlayer.loadWavAssets(assetManager);
-        soundPlayer.setUpAudioStream();
-
     }
 
     private void setUpPiano() {
+        PianoView.setWhiteKeyUpColor(viewModel.whiteKeyUpColor);
+        PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownColor);
+        PianoView.setWhiteKeyDownCorrectColor(viewModel.whiteKeyDownCorrectColor);
+        PianoView.setWhiteKeyDownIncorrectColor(viewModel.whiteKeyDownIncorrectColor);
+        PianoView.setBlackKeyUpColor(viewModel.blackKeyUpColor);
+        PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
+        PianoView.setBlackKeyDownCorrectColor(viewModel.blackKeyDownCorrectColor);
+        PianoView.setBlackKeyDownIncorrectColor(viewModel.blackKeyDownIncorrectColor);
 
-        pianoView = getView().findViewById(R.id.pianoview);
+        binding.pianoview.setLowestPracticeNote(viewModel.getLowestPracticeNote());
+        binding.pianoview.setHighestPracticeNote(viewModel.getHighestPracticeNote());
+        viewModel.populatePianoNoteArrays();
 
-//        if (singleOctavePracticeMode) {
-//            pianoView.setLowestPracticeNote(PianoNote.C4);
-//            pianoView.setHighestPracticeNote(PianoNote.B4);
-//        }
-//
-//        else {
-//            pianoView.setLowestPracticeNote(lowestPracticeNote);
-//            pianoView.setHighestPracticeNote(highestPracticeNote);
-//        }
 
-        ArrayList<PianoKey> pianoKeys = pianoView.getPianoKeys();
-        for (PianoKey key : pianoKeys) {
+
+        // Not sure if this is the best way to do it. I call init from the PianoView xml constructor
+        // so I have to "refresh" it here after updating the notes based on sharedPrefs
+        binding.pianoview.init();
+
+        setUpPianoKeyListeners();
+        setUpSoundPlayer();
+
+    }
+
+    private void setUpPianoKeyListeners() {
+
+        // TODO: 12/7/2020 Better way to set listeners? (In terms of loose coupling)
+        for (PianoKey key:binding.pianoview.getPianoKeys()) {
             key.setPianoKeyListener(this);
         }
+    }
+
+
+    private void setUpSoundPlayer() {
+
+
+        soundPlayer.loadPianoNoteWavAssets(assetManager, viewModel.getLowestPracticeNote(), viewModel.numberOfKeys);
+        soundPlayer.setUpAudioStream();
+
     }
 
     @Override
@@ -125,14 +168,16 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         soundPlayer.unloadWavAssets();
     }
 
+
+    // Update UI in fragment, process data in the ViewModel
     @Override
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
 
+        viewModel.keyDown();
+
         PianoNote note = key.getNote();
-
-        int relativePianoKeyIndex = note.absoluteKeyIndex - lowestPracticeNote.absoluteKeyIndex;
-
+        int relativePianoKeyIndex = note.absoluteKeyIndex - viewModel.getLowestPracticeNote().absoluteKeyIndex;
 
 
         // TODO: 11/23/2020 Play note depending on StaffNote, not PianoKey (especially if in single octave mode)
@@ -141,14 +186,18 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     @Override
     public void keyUp(PianoKey key) {
-
+        viewModel.keyUp();
     }
 
 
-    // TODO: 11/18/2020 Consider displaying a translucent wrong note for a short time on incorrect key
-    private void incorrectKeyPressed(PianoKey key) {
-
-    }
+//    // TODO: 11/18/2020 Consider displaying a translucent wrong note for a short time on incorrect key
+//    private void incorrectKeyPressed(PianoKey key) {
+//        viewModel.incorrectKeyPressed();
+//    }
+//
+//    private void correctKeyPressed() {
+//        viewModel.correctKeyPressed();
+//    }
 
 
 

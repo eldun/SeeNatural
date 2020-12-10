@@ -42,6 +42,7 @@
     <string name="hide_bass_clef_lines_key">HideBassClefLines</string>
     <string name="hide_treble_clef_key">HideTrebleClef</string>
     <string name="hide_treble_clef_lines_key">HideTrebleClefLines</string>
+    <string name="display_accidentals_key">DisplayAccidentals</string>
     <string name="display_flats_key">DisplayFlats</string>
     <string name="display_naturals_key">DisplayNaturals</string>
     <string name="display_sharps_key">DisplaySharps</string>

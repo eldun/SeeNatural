@@ -27,7 +27,7 @@ public class StaffViewModel extends ViewModel {
     private ArrayList<PianoNote> allNotesInStaffPracticeRange = new ArrayList<>();
 
     // Allow users the ability to limit which notes/accidentals are to be practiced
-    private MutableLiveData<ArrayList<PianoNote>> practicableNotes = new MutableLiveData<>();
+    private ArrayList<PianoNote> practicableNotes = new ArrayList<>();
 
     private MutableLiveData<Boolean> hideTrebleClef = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideTrebleClefLines = new MutableLiveData<>();
@@ -180,7 +180,31 @@ public class StaffViewModel extends ViewModel {
             return allNotesInStaffPracticeRange;
     }
 
-    public void addRandomNoteFromPracticableNotes() {
+    public void generatePracticableNoteArray() {
+        ArrayList<PianoNote> allNotes = getAllNotesInStaffPracticeRange();
+
+        for (int i=0;i<allNotes.size();i++) {
+            boolean isAccidental = PianoNote.isAccidental(allNotes.get(i), getSelectedKeySignature());
+
+            if (!getGenerateAccidentals() && isAccidental) {
+                continue;
+            }
+            if (!getGenerateFlats() && isAccidental && allNotes.get(i).isFlat){
+                continue;
+            }
+            if (!getGenerateNaturals() && isAccidental && allNotes.get(i).isNatural){
+                continue;
+            }
+            if (!getGenerateSharps() && isAccidental && allNotes.get(i).isSharp){
+                continue;
+            }
+
+            practicableNotes.add(allNotes.get(i));
+        }
+
+    }
+
+    public void addRandomNoteFromPracticableNotesToStaff() {
 
         ArrayList tempNotesOnStaff = new ArrayList();
         tempNotesOnStaff = getNotesOnStaff();

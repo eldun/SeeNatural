@@ -273,7 +273,7 @@ public enum PianoNote {
 
     public static ArrayList<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
         ArrayList<PianoNote> notes = new ArrayList<>();
-        for (int i = lowNote.storedOrdinal; i < highNote.storedOrdinal; i++) {
+        for (int i = lowNote.storedOrdinal; i <= highNote.storedOrdinal; i++) {
             notes.add(valueOfStoredOrdinal(i));
         }
         return notes;

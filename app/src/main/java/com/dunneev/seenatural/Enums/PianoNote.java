@@ -199,21 +199,21 @@ public enum PianoNote {
     }
 
     private boolean checkIfSharp() {
-        if (this.label.contains("sharp")){
+        if (this.label.contains("♯")){
             return true;
         }
         return false;
     }
 
     private boolean checkIfNatural() {
-        if (this.label.contains("natural")){
+        if (this.label.contains("♮")){
             return true;
         }
         return false;
     }
 
     private boolean checkIfFlat() {
-        if (this.label.contains("flat")){
+        if (this.label.contains("♭")){
             return true;
         }
         return false;

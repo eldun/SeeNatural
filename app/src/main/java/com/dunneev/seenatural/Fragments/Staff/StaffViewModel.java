@@ -181,6 +181,8 @@ public class StaffViewModel extends ViewModel {
     }
 
     public void generatePracticableNoteArray() {
+        practicableNotes.clear();
+
         ArrayList<PianoNote> allNotes = getAllNotesInStaffPracticeRange();
 
         for (int i=0;i<allNotes.size();i++) {
@@ -204,13 +206,24 @@ public class StaffViewModel extends ViewModel {
 
     }
 
-    public void addRandomNoteFromPracticableNotesToStaff() {
+
+    public PianoNote generateRandomNoteFromPracticableNotes(){
+        int randomInt = random.nextInt(practicableNotes.size()-1);
+        return practicableNotes.get(randomInt);
+    }
+
+    public void addNoteToStaff(PianoNote note) {
 
         ArrayList tempNotesOnStaff = new ArrayList();
         tempNotesOnStaff = getNotesOnStaff();
-        tempNotesOnStaff.add(PianoNote.G4);
-        setNotesOnStaff(tempNotesOnStaff);
+        tempNotesOnStaff.add(note);
+        notesOnStaff.setValue(tempNotesOnStaff);
 
+
+    }
+
+    public void addAllPracticableNotesToStaff() {
+        setNotesOnStaff(practicableNotes);
     }
 
 }

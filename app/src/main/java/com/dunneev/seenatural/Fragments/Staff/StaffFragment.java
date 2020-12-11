@@ -188,7 +188,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(PianoNote highPianoNote) {
                 regenerateStaff();
-                sharedPreferencesEditor.putString(getResources().getString(R.string.piano_high_practice_note_key), highPianoNote.label);
+                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_high_practice_note_key), highPianoNote.label);
                 sharedPreferencesEditor.apply();
             }
         };
@@ -237,15 +237,23 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
         super.onViewCreated(view, savedInstanceState);
 
-        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!binding.toggleHighNoteButton2.isChecked())
-                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
-                else
-                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
-            }
-        });
+//        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!binding.toggleHighNoteButton2.isChecked())
+//                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
+//                else
+//                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
+//            }
+//        });
+//
+//        binding.toggleTrebleClefButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewModel.setHideTrebleClef(binding.toggleTrebleClefButton.isChecked());
+//
+//            }
+//        });
         regenerateStaff();
     }
 

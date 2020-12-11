@@ -300,6 +300,13 @@ public enum PianoNote {
         return whiteKeyCount;
     }
 
+    public static boolean isAccidental(PianoNote note, KeySignature key) {
+        if (key.containsNote(note))
+            return false;
+
+        return true;
+    }
+
 
     public boolean equals(PianoNote note, boolean singleOctavePractice) {
         if (!singleOctavePractice)

@@ -237,15 +237,13 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
         super.onViewCreated(view, savedInstanceState);
 
-//        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!binding.toggleHighNoteButton2.isChecked())
-//                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
-//                else
-//                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
-//            }
-//        });
+        binding.addNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(LOG_TAG, "addNoteButton clicked");
+                viewModel.addNoteToStaff(viewModel.generateRandomNoteFromPracticableNotes());
+            }
+        });
 //
 //        binding.toggleTrebleClefButton.setOnClickListener(new View.OnClickListener() {
 //            @Override

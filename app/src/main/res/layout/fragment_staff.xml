@@ -5,15 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ToggleButton
-        android:id="@+id/toggleHighNoteButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:textOff="switch to high note c8"
-        android:textOn="switch to high note c6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ToggleButton-->
+<!--        android:id="@+id/toggleHighNoteButton2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:checked="false"-->
+<!--        android:textOff="switch to high note c8"-->
+<!--        android:textOn="switch to high note c6"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <ToggleButton-->
+<!--        android:id="@+id/toggleTrebleClefButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textOff="toggle treble clef"-->
+<!--        android:textOn="toggle treble clef"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <com.dunneev.seenatural.Fragments.Staff.StaffView
         android:id="@+id/staffView"

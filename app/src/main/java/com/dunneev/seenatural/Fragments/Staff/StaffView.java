@@ -181,7 +181,7 @@ public class StaffView extends ViewGroup {
 
 
     private void addClefsToView() {
-        Log.i(LOG_TAG, "keySignature: " + keySignature);
+//        Log.i(LOG_TAG, "keySignature: " + keySignature);
 
         if (!hideTrebleClef) {
 

@@ -63,10 +63,11 @@ public class StaffNote extends View {
 
     private void init() {
 
-        isAccidental = checkIfAccidental(note);
 
-        if (isAccidental) {
-            noteDrawable = new TextDrawable(accidentalSymbol + getResources().getString(R.string.char_quarter_note), TextDrawable.PositioningInBounds.DEFAULT);
+
+        if (PianoNote.isAccidental(note, keySignature)) {
+//            setAccidentalSymbol();
+            noteDrawable = new TextDrawable(note.symbol + getResources().getString(R.string.char_quarter_note), TextDrawable.PositioningInBounds.DEFAULT);
         }
 
         else {
@@ -74,23 +75,16 @@ public class StaffNote extends View {
         }
     }
 
-    protected boolean checkIfAccidental(PianoNote note) {
-        if (keySignature.containsNote(note))
-            return false;
-
-        else {
-            if (note.label.contains(getResources().getString(R.string.char_sharp_symbol))) {
-                accidentalSymbol = getResources().getString(R.string.char_sharp_symbol);
-            }
-
-            else if (note.label.contains(getResources().getString(R.string.char_flat_symbol)))
-                accidentalSymbol = getResources().getString(R.string.char_flat_symbol);
-
-            else
-                accidentalSymbol = getResources().getString(R.string.char_natural_symbol);
-        }
-
-        return true;
+    private void setAccidentalSymbol() {
+//        if (note.isFlat) {
+//            accidentalSymbol = getResources().getString(R.string.char_flat_symbol);
+//        }
+//        if (note.isNatural) {
+//            accidentalSymbol = getResources().getString(R.string.char_natural_symbol);
+//        }
+//        if (note.isSharp) {
+//            accidentalSymbol = getResources().getString(R.string.char_sharp_symbol);
+//        }
     }
 
     @Override

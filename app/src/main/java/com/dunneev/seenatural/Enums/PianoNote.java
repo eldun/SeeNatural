@@ -145,6 +145,10 @@ public enum PianoNote {
     public static final int NUMBER_OF_KEYS = 88;
 
     public final String label;
+    public final boolean isFlat;
+    public final boolean isNatural;
+    public final boolean isSharp;
+    public final char symbol;
     public final String pitch;
     public final int octave;
     public final String naturalNoteLabel;
@@ -163,6 +167,14 @@ public enum PianoNote {
     PianoNote(String label, int midi, int storedOrdinal, Integer enharmonicEquivalentOrdinal, String filename) {
         this.label = label;
         this.pitch = setPitch();
+
+
+        this.isFlat = checkIfFlat();
+        this.isNatural = checkIfNatural();
+        this.isSharp = checkIfSharp();
+
+        this.symbol = getSymbol();
+
         this.octave = Integer.parseInt(String.valueOf(this.label.charAt(this.label.length() - 1)));
         this.naturalNoteLabel = String.valueOf(this.label.charAt(0)) + this.octave;
         this.midiValue = midi;
@@ -173,6 +185,38 @@ public enum PianoNote {
         this.isWhiteKey = checkIfWhiteKey();
         this.isBlackKey = !isWhiteKey;
 
+    }
+
+    private char getSymbol() {
+        if (isFlat)
+            return '♭';
+        else if (isNatural)
+            return '♮';
+        else if (isSharp)
+            return '♯';
+
+        return ' ';
+    }
+
+    private boolean checkIfSharp() {
+        if (this.label.contains("sharp")){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfNatural() {
+        if (this.label.contains("natural")){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfFlat() {
+        if (this.label.contains("flat")){
+            return true;
+        }
+        return false;
     }
 
     private String setPitch() {

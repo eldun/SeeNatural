@@ -136,9 +136,9 @@ public enum PianoNote {
     A7("A7", 105, 119, -1, "[A7]"),
     A_SHARP_7("A♯7", 106, 120, 121, "[A♯7]-[B♭7]"),
     B_FLAT_7("B♭7", 106, 121, 120, "[A♯7]-[B♭7]"),
-    B7("B7", 107, 123, -1, "[B7]"),
+    B7("B7", 107, 122, -1, "[B7]"),
 
-    C8("C8", 108, 124, -1, "[C8]");
+    C8("C8", 108, 123, -1, "[C8]");
 
     public static final PianoNote LOWEST_NOTE = PianoNote.A0;
     public static final PianoNote HIGHEST_NOTE = PianoNote.C8;

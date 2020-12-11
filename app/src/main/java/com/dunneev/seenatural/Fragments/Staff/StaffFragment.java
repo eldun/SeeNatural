@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -40,6 +39,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         viewModel = new ViewModelProvider(this).get(StaffViewModel.class);
 
         setViewModelFieldsFromPreferences();
+        viewModel.generatePracticableNoteArray();
         setUpObservables();
 
     }
@@ -79,6 +79,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         
         viewModel.setLowestStaffPracticeNote(lowNote);
         viewModel.setHighestStaffPracticeNote(highNote);
+
     }
 
     // TODO: 12/8/2020 Make StaffViewModel itself observable and update the binding with viewmodel properties
@@ -87,6 +88,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(KeySignature keySignature) {
                 regenerateStaff();
+                viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putString(getResources().getString(R.string.staff_key_signature_key), keySignature.toString());
                 sharedPreferencesEditor.apply();
             }
@@ -105,6 +107,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(Boolean generateAccidentals) {
                 regenerateStaff();
+                viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_accidentals_key), generateAccidentals);
                 sharedPreferencesEditor.apply();
             }
@@ -114,6 +117,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(Boolean generateFlats) {
                 regenerateStaff();
+                viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_flats_key), generateFlats);
                 sharedPreferencesEditor.apply();
             }
@@ -123,6 +127,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(Boolean generateNaturals) {
                 regenerateStaff();
+                viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_naturals_key), generateNaturals);
                 sharedPreferencesEditor.apply();
             }
@@ -132,6 +137,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(Boolean generateSharps) {
                 regenerateStaff();
+                viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_sharps_key), generateSharps);
                 sharedPreferencesEditor.apply();
             }
@@ -179,6 +185,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(PianoNote lowPianoNote) {
                 regenerateStaff();
+                viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putString(getResources().getString(R.string.staff_low_practice_note_key), lowPianoNote.label);
                 sharedPreferencesEditor.apply();
             }
@@ -187,7 +194,10 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
             @Override
             public void onChanged(PianoNote highPianoNote) {
+
                 regenerateStaff();
+                viewModel.generatePracticableNoteArray();
+
                 sharedPreferencesEditor.putString(getResources().getString(R.string.staff_high_practice_note_key), highPianoNote.label);
                 sharedPreferencesEditor.apply();
             }
@@ -214,8 +224,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<ArrayList<PianoNote>> notesOnStaffObserver = new Observer<ArrayList<PianoNote>>() {
             @Override
             public void onChanged(ArrayList<PianoNote> notesOnStaff) {
-                Log.i(LOG_TAG, "notesOnStaff changed");
-
+                PianoNote latestNote = notesOnStaff.get(notesOnStaff.size()-1);
+                    binding.staffView.addNote(latestNote);
             }
         };
 
@@ -258,6 +268,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
 
     private void setUpStaff() {
+        Log.i(LOG_TAG, "setUpStaff()");
 
         binding.staffView.setKeySignature(viewModel.getSelectedKeySignature());
         binding.staffView.setHideKeySignature(viewModel.getHideKeySignature());
@@ -267,10 +278,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.staffView.setHideBassClef(viewModel.getHideBassClef());
         binding.staffView.setHideBassClefLines(viewModel.getHideBassClefLines());
 
-        binding.staffView.setDisplayFlats(viewModel.getGenerateFlats());
-        binding.staffView.setDisplayNaturals(viewModel.getGenerateNaturals());
-        binding.staffView.setDisplaySharps(viewModel.getGenerateSharps());
-
         binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
         binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
 
@@ -278,11 +285,16 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
 
     private void initializeStaff() {
+        Log.i(LOG_TAG, "initializeStaff()");
         binding.staffView.init();
+//        viewModel.addAllPracticableNotesToStaff();
+//        binding.staffView.addNote(PianoNote.G4);
     }
 
 
     private void regenerateStaff(){
+        Log.i(LOG_TAG, "regenerateStaff()");
+
         setUpStaff();
         initializeStaff();
     }

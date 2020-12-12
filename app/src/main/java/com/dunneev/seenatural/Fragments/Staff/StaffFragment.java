@@ -56,10 +56,22 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         boolean hideBassClef = sharedPreferences.getBoolean(getResources().getString(R.string.hide_bass_clef_key), false);
         boolean hideBassClefLines = sharedPreferences.getBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), false);
 
+        // Staff preferences are set up so that the flats, naturals, and sharps preferences are grayed out when generateAccidentals is false.
+        // However, this does not change their value in sharedPrefs. That's the reason for the conditionals here. I could change them to false in
+        // StaffSettingsFragment, but I think the persistence of what was selected is more user friendly.
         boolean generateAccidentals = sharedPreferences.getBoolean(getResources().getString(R.string.generate_accidentals_key), true);
-        boolean generateFlats = sharedPreferences.getBoolean(getResources().getString(R.string.generate_flats_key), true);
-        boolean generateNaturals = sharedPreferences.getBoolean(getResources().getString(R.string.generate_naturals_key), true);
-        boolean generateSharps = sharedPreferences.getBoolean(getResources().getString(R.string.generate_sharps_key), true);
+        boolean generateFlats;
+        boolean generateNaturals;
+        boolean generateSharps;
+        if (generateAccidentals) {
+            generateFlats = sharedPreferences.getBoolean(getResources().getString(R.string.generate_flats_key), true);
+            generateNaturals = sharedPreferences.getBoolean(getResources().getString(R.string.generate_naturals_key), true);
+            generateSharps = sharedPreferences.getBoolean(getResources().getString(R.string.generate_sharps_key), true);
+        }
+        else {
+            generateFlats = generateNaturals = generateSharps = false;
+        }
+
 
         PianoNote lowNote =  PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_low_practice_note_key), ""));
         PianoNote highNote = PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_high_practice_note_key), ""));

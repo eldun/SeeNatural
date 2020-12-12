@@ -35,6 +35,11 @@ public class StaffView extends ViewGroup {
     private static int numberOfNotesInPracticeRange;
 
     private KeySignature keySignature;
+    private boolean hideKeySignature;
+    private boolean hideTrebleClef;
+    private boolean hideTrebleClefLines;
+    private boolean hideBassClef;
+    private boolean hideBassClefLines;
     int clefWidth;
 
     // The distance between natural notes e.g. A4 to B4
@@ -64,7 +69,27 @@ public class StaffView extends ViewGroup {
 
     public void setKeySignature(KeySignature keySignature) {
         this.keySignature = keySignature;
-        init();
+//        init();
+    }
+
+    public void setHideKeySignature(boolean hideKeySignature) {
+        this.hideKeySignature = hideKeySignature;
+    }
+
+    public void setHideTrebleClef(boolean hideTrebleClef) {
+        this.hideTrebleClef = hideTrebleClef;
+    }
+
+    public void setHideTrebleClefLines(boolean hideTrebleClefLines) {
+        this.hideTrebleClefLines = hideTrebleClefLines;
+    }
+
+    public void setHideBassClef(boolean hideBassClef) {
+        this.hideBassClef = hideBassClef;
+    }
+
+    public void setHideBassClefLines(boolean hideBassClefLines) {
+        this.hideBassClefLines = hideBassClefLines;
     }
 
     // TODO: 11/17/2020 Create specialized method to redraw staff after setting practice notes instead of init()
@@ -84,6 +109,7 @@ public class StaffView extends ViewGroup {
     public void setHighestPracticeNote(PianoNote highestPracticeNote) {
         this.highestPracticeNote = highestPracticeNote;
     }
+
 
     public StaffView(Context context, PianoNote lowestPracticeNote, PianoNote highestPracticeNote) {
         super(context);
@@ -118,9 +144,21 @@ public class StaffView extends ViewGroup {
 
 
         keySignature = KeySignature.valueOfStoredOrdinal(styledAttributes.getInt(R.styleable.StaffView_keySignature, 7));
+        hideKeySignature = styledAttributes.getBoolean(R.styleable.StaffView_hideKeySignature, false);
+
+        hideTrebleClef = styledAttributes.getBoolean(R.styleable.StaffView_hideTrebleClef, false);
+        hideTrebleClefLines = styledAttributes.getBoolean(R.styleable.StaffView_hideTrebleClefLines, false);
+        hideBassClef = styledAttributes.getBoolean(R.styleable.StaffView_hideBassClef, false);
+        hideBassClefLines = styledAttributes.getBoolean(R.styleable.StaffView_hideBassClefLines, false);
+
+//        displayFlats = styledAttributes.getBoolean(R.styleable.StaffView_displayFlats, true);
+//        displayNaturals = styledAttributes.getBoolean(R.styleable.StaffView_displayNaturals, true);
+//        displaySharps = styledAttributes.getBoolean(R.styleable.StaffView_displaySharps, true);
+
 
         lowestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffLowPracticeNote, 0));
         highestPracticeNote = PianoNote.valueOfAbsoluteKeyIndex(styledAttributes.getInt(R.styleable.StaffView_staffHighPracticeNote, 87));
+
 
 
         styledAttributes.recycle();
@@ -162,6 +200,8 @@ public class StaffView extends ViewGroup {
 
     private void addStaffLinesToView() {
         StaffLine line;
+        StaffLine.hideTrebleClefLines = hideTrebleClefLines;
+        StaffLine.hideBassClefLines = hideBassClefLines;
 
         for (PianoNote note: practiceNotesDescending) {
 
@@ -181,22 +221,17 @@ public class StaffView extends ViewGroup {
 
 
     private void addClefsToView() {
-//        Log.i(LOG_TAG, "keySignature: " + keySignature);
+        Log.i(LOG_TAG, "keySignature: " + keySignature);
 
-        if (!hideTrebleClef) {
+        StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.treble), keySignature);
 
-            StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.treble), keySignature);
-            trebleClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            addView(trebleClef);
-        }
+        StaffClef bassClef = new StaffClef(getContext(), getResources().getString(R.string.bass), keySignature);
 
-        if (!hideBassClef) {
-            StaffClef bassClef = new StaffClef(getContext(), getResources().getString(R.string.bass), keySignature);
+        trebleClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        bassClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-            bassClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-            addView(bassClef);
-        }
+        addView(trebleClef);
+        addView(bassClef);
     }
 
 
@@ -232,6 +267,7 @@ public class StaffView extends ViewGroup {
 
     public void addNote(PianoNote note) {
         StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
+
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.

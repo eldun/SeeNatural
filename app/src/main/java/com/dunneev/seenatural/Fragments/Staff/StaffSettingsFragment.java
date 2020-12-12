@@ -12,4 +12,6 @@ public class StaffSettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.staff_preferences, rootKey);
     }
+
+    // TODO: 12/10/2020 move all the sharedPref editor operations in StaffFragment OnChanged observer operations to here
 }

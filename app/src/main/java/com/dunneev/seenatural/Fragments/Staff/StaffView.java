@@ -181,17 +181,22 @@ public class StaffView extends ViewGroup {
 
 
     private void addClefsToView() {
-        Log.i(LOG_TAG, "keySignature: " + keySignature);
+//        Log.i(LOG_TAG, "keySignature: " + keySignature);
 
-        StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.treble), keySignature);
+        if (!hideTrebleClef) {
 
-        StaffClef bassClef = new StaffClef(getContext(), getResources().getString(R.string.bass), keySignature);
+            StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.treble), keySignature);
+            trebleClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            addView(trebleClef);
+        }
 
-        trebleClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        bassClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        if (!hideBassClef) {
+            StaffClef bassClef = new StaffClef(getContext(), getResources().getString(R.string.bass), keySignature);
 
-        addView(trebleClef);
-        addView(bassClef);
+            bassClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+            addView(bassClef);
+        }
     }
 
 

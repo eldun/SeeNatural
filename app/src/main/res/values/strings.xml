@@ -42,9 +42,10 @@
     <string name="hide_bass_clef_lines_key">HideBassClefLines</string>
     <string name="hide_treble_clef_key">HideTrebleClef</string>
     <string name="hide_treble_clef_lines_key">HideTrebleClefLines</string>
-    <string name="display_flats_key">DisplayFlats</string>
-    <string name="display_naturals_key">DisplayNaturals</string>
-    <string name="display_sharps_key">DisplaySharps</string>
+    <string name="generate_accidentals_key">GenerateAccidentals</string>
+    <string name="generate_flats_key">GenerateFlats</string>
+    <string name="generate_naturals_key">GenerateNaturals</string>
+    <string name="generate_sharps_key">GenerateSharps</string>
     <string name="staff_low_practice_note_key">StaffLowPracticeNote</string>
     <string name="staff_high_practice_note_key">StaffHighPracticeNote</string>
 

@@ -18,25 +18,5 @@
         android:fragment="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
         android:key="@string/reading_settings_key"
         android:title="Sight Reading Settings"></Preference>
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="check_box_preference_1"
-        android:title="Check box preference" />
-    <EditTextPreference
-        android:defaultValue="Default value"
-        android:key="edit_text_preference_1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="Edit text preference" />
-    <ListPreference
-        android:defaultValue="1"
-        android:entries="@array/reply_entries"
-        android:entryValues="@array/reply_values"
-        android:key="list_preference_1"
-        android:title="List preference" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="switch_preference_1"
-        android:title="Switch preference" />
 
 </PreferenceScreen>

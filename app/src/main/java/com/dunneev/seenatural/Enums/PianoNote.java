@@ -136,15 +136,19 @@ public enum PianoNote {
     A7("A7", 105, 119, -1, "[A7]"),
     A_SHARP_7("A♯7", 106, 120, 121, "[A♯7]-[B♭7]"),
     B_FLAT_7("B♭7", 106, 121, 120, "[A♯7]-[B♭7]"),
-    B7("B7", 107, 123, -1, "[B7]"),
+    B7("B7", 107, 122, -1, "[B7]"),
 
-    C8("C8", 108, 124, -1, "[C8]");
+    C8("C8", 108, 123, -1, "[C8]");
 
     public static final PianoNote LOWEST_NOTE = PianoNote.A0;
     public static final PianoNote HIGHEST_NOTE = PianoNote.C8;
     public static final int NUMBER_OF_KEYS = 88;
 
     public final String label;
+    public final boolean isFlat;
+    public final boolean isNatural;
+    public final boolean isSharp;
+    public final char symbol;
     public final String pitch;
     public final int octave;
     public final String naturalNoteLabel;
@@ -163,6 +167,14 @@ public enum PianoNote {
     PianoNote(String label, int midi, int storedOrdinal, Integer enharmonicEquivalentOrdinal, String filename) {
         this.label = label;
         this.pitch = setPitch();
+
+
+        this.isFlat = checkIfFlat();
+        this.isNatural = checkIfNatural();
+        this.isSharp = checkIfSharp();
+
+        this.symbol = getSymbol();
+
         this.octave = Integer.parseInt(String.valueOf(this.label.charAt(this.label.length() - 1)));
         this.naturalNoteLabel = String.valueOf(this.label.charAt(0)) + this.octave;
         this.midiValue = midi;
@@ -173,6 +185,38 @@ public enum PianoNote {
         this.isWhiteKey = checkIfWhiteKey();
         this.isBlackKey = !isWhiteKey;
 
+    }
+
+    private char getSymbol() {
+        if (isFlat)
+            return '♭';
+        else if (isNatural)
+            return '♮';
+        else if (isSharp)
+            return '♯';
+
+        return ' ';
+    }
+
+    private boolean checkIfSharp() {
+        if (this.label.contains("♯")){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfNatural() {
+        if (this.label.contains("♮")){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfFlat() {
+        if (this.label.contains("♭")){
+            return true;
+        }
+        return false;
     }
 
     private String setPitch() {
@@ -229,7 +273,7 @@ public enum PianoNote {
 
     public static ArrayList<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
         ArrayList<PianoNote> notes = new ArrayList<>();
-        for (int i = lowNote.storedOrdinal; i < highNote.storedOrdinal; i++) {
+        for (int i = lowNote.storedOrdinal; i <= highNote.storedOrdinal; i++) {
             notes.add(valueOfStoredOrdinal(i));
         }
         return notes;
@@ -254,6 +298,13 @@ public enum PianoNote {
             }
         }
         return whiteKeyCount;
+    }
+
+    public static boolean isAccidental(PianoNote note, KeySignature key) {
+        if (key.containsNote(note))
+            return false;
+
+        return true;
     }
 
 

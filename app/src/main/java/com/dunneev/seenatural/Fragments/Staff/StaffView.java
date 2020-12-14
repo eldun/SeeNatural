@@ -18,7 +18,6 @@ import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +31,7 @@ public class StaffView extends ViewGroup {
 
     private PianoNote lowestPracticeNote;
     private PianoNote highestPracticeNote;
-    private static int numberOfNotesInPracticeRange;
+    private static int numberOfStaffLinesInPracticeRange;
 
     private KeySignature keySignature;
     private boolean hideKeySignature;
@@ -48,9 +47,7 @@ public class StaffView extends ViewGroup {
     int visibleStaffHeight;
     int totalStaffHeight;
     int noteWidth;
-    int notesOnStaff = 0;
-    ArrayList<PianoNote> practiceNotesAscending = new ArrayList<>();
-    ArrayList<PianoNote> practiceNotesDescending = new ArrayList<>();
+    ArrayList<PianoNote> notesOnStaff = new ArrayList<>();
     ArrayList<StaffLine> staffLines = new ArrayList<>();
     ArrayList<Integer> staffNoteHorizontalPositions = new ArrayList<>();
     private int noteScrollCounter = 0;
@@ -169,11 +166,8 @@ public class StaffView extends ViewGroup {
     public void init() {
         removeAllViews();
 
-        practiceNotesAscending.clear();
-        practiceNotesDescending.clear();
-        staffLines.clear();
-
-        populatePracticeNoteArrays();
+//        populatePracticeNoteArrays();
+        numberOfStaffLinesInPracticeRange = PianoNote.numberOfWhiteKeysInRangeInclusive(lowestPracticeNote, highestPracticeNote)
         addStaffLinesToView();
         addClefsToView();
         addNoteScrollerToView();
@@ -186,16 +180,14 @@ public class StaffView extends ViewGroup {
 
     private void populatePracticeNoteArrays() {
 
-        numberOfNotesInPracticeRange = (highestPracticeNote.absoluteKeyIndex -
-                lowestPracticeNote.absoluteKeyIndex)
-                + 1;
 
-        for (int i = 0; i< numberOfNotesInPracticeRange; i++) {
-            PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.absoluteKeyIndex + i);
-            practiceNotesAscending.add(note);
-            practiceNotesDescending.add(note);
-        }
-        Collections.reverse(practiceNotesDescending);
+
+//        for (int i = 0; i< numberOfNotesInPracticeRange; i++) {
+//            PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.absoluteKeyIndex + i);
+//            practiceNotesAscending.add(note);
+//            practiceNotesDescending.add(note);
+//        }
+//        Collections.reverse(practiceNotesDescending);
     }
 
     private void addStaffLinesToView() {
@@ -203,7 +195,9 @@ public class StaffView extends ViewGroup {
         StaffLine.hideTrebleClefLines = hideTrebleClefLines;
         StaffLine.hideBassClefLines = hideBassClefLines;
 
-        for (PianoNote note: practiceNotesDescending) {
+        practiceNotesDescending =
+
+        for (PianoNote note: ) {
 
             // Staff lines are only ever "natural" (white).
             // Whether they are sharp or flat is signified by
@@ -329,7 +323,7 @@ public class StaffView extends ViewGroup {
         staffNoteHorizontalMargins = staffLineSpacing * 4;
 
         visibleStaffHeight = staffLineSpacing * 8;
-        totalStaffHeight = staffLineSpacing * numberOfNotesInPracticeRange;
+        totalStaffHeight = staffLineSpacing * PianoNote.numberOfKeysInRangeInclusive(lowestPracticeNote, highestPracticeNote);
         noteWidth = staffLineSpacing * 3;
 
         StaffLine.setDesiredHeight(staffLineSpacing);

@@ -25,14 +25,14 @@ public class PianoView extends ViewGroup {
     private ArrayList<PianoKey> blackPianoKeys = new ArrayList<>();
 
     // TODO: Change colors to facilitate correct/incorrect when sight-reading
-    private static int whiteKeyUpColor = Color.WHITE;
-    private static int whiteKeyDownColor = Color.GRAY;
-    private static int whiteKeyDownCorrectColor = Color.GREEN;
-    private static int whiteKeyDownIncorrectColor = Color.RED;
-    private static int blackKeyUpColor = Color.BLACK;
-    private static int blackKeyDownColor = Color.LTGRAY;
-    private static int blackKeyDownCorrectColor = Color.GREEN;
-    private static int blackKeyDownIncorrectColor = Color.RED;
+    private static int whiteKeyUpColor;
+    private static int whiteKeyDownColor;
+    private static int whiteKeyDownCorrectColor;
+    private static int whiteKeyDownIncorrectColor;
+    private static int blackKeyUpColor;
+    private static int blackKeyDownColor;
+    private static int blackKeyDownCorrectColor;
+    private static int blackKeyDownIncorrectColor;
 
     public PianoNote getLowestPracticeNote() {
         return lowestPracticeNote;
@@ -179,6 +179,11 @@ public class PianoView extends ViewGroup {
 
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
+    }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {

@@ -36,7 +36,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
 
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(StaffViewModel.class);
+        viewModel = new ViewModelProvider(requireParentFragment()).get(StaffViewModel.class);
 
         setViewModelFieldsFromPreferences();
         viewModel.generatePracticableNoteArray();

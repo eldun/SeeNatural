@@ -99,7 +99,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<KeySignature> keySignatureObserver = new Observer<KeySignature>() {
             @Override
             public void onChanged(KeySignature keySignature) {
-                regenerateStaff();
                 viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putString(getResources().getString(R.string.staff_key_signature_key), keySignature.toString());
                 sharedPreferencesEditor.apply();
@@ -109,7 +108,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> hideKeySignatureObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideKeySignature) {
-                regenerateStaff();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.staff_hide_key_signature_key), hideKeySignature);
                 sharedPreferencesEditor.apply();
             }
@@ -118,7 +116,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> generateAccidentalsObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean generateAccidentals) {
-                regenerateStaff();
                 viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_accidentals_key), generateAccidentals);
                 sharedPreferencesEditor.apply();
@@ -128,7 +125,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> generateFlatsObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean generateFlats) {
-                regenerateStaff();
                 viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_flats_key), generateFlats);
                 sharedPreferencesEditor.apply();
@@ -138,7 +134,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> generateNaturalsObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean generateNaturals) {
-                regenerateStaff();
                 viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_naturals_key), generateNaturals);
                 sharedPreferencesEditor.apply();
@@ -148,7 +143,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> generateSharpsObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean generateSharps) {
-                regenerateStaff();
                 viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_sharps_key), generateSharps);
                 sharedPreferencesEditor.apply();
@@ -158,7 +152,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> hideTrebleClefObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideTrebleClef) {
-                regenerateStaff();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_treble_clef_key), hideTrebleClef);
                 sharedPreferencesEditor.apply();
             }
@@ -167,7 +160,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> hideTrebleClefLinesObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideTrebleClefLines) {
-                regenerateStaff();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_treble_clef_lines_key), hideTrebleClefLines);
                 sharedPreferencesEditor.apply();
             }
@@ -176,7 +168,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> hideBassClefObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideBassClef) {
-                regenerateStaff();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), hideBassClef);
                 sharedPreferencesEditor.apply();
             }
@@ -186,7 +177,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Boolean> hideBassClefLinesObserver = new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hideBassClefLines) {
-                regenerateStaff();
                 sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), hideBassClefLines);
                 sharedPreferencesEditor.apply();
             }
@@ -196,7 +186,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
             @Override
             public void onChanged(PianoNote lowPianoNote) {
-                regenerateStaff();
                 viewModel.generatePracticableNoteArray();
                 sharedPreferencesEditor.putString(getResources().getString(R.string.staff_low_practice_note_key), lowPianoNote.label);
                 sharedPreferencesEditor.apply();
@@ -207,7 +196,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(PianoNote highPianoNote) {
 
-                regenerateStaff();
                 viewModel.generatePracticableNoteArray();
 
                 sharedPreferencesEditor.putString(getResources().getString(R.string.staff_high_practice_note_key), highPianoNote.label);
@@ -293,8 +281,10 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.correctNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
                 viewModel.onCorrectNote();
                 binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
+
             }
         });
 
@@ -305,6 +295,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             }
         });
         regenerateStaff();
+
+
     }
 
 
@@ -330,6 +322,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 //        if (!viewModel.getNotesOnStaff().isEmpty()) {
 //            binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
 //        }
+
     }
 
 

@@ -290,6 +290,11 @@ public class StaffView extends ViewGroup {
 
     }
 
+    private void markPreviousNotesCorrect() {
+        for (int i=0;i<currentNoteIndex;i++){
+            markNoteCorrect(i);
+        }
+    }
 
     public void markNoteCorrect(int index) {
         StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
@@ -445,9 +450,15 @@ public class StaffView extends ViewGroup {
         }
 
         // Again, not sure if this is the right place for it, but on rotation,
-        // no dimensions for notes are set
-        if (noteLinearLayout.getChildCount()!=0)
+        // no dimensions for notes are set, so the ScrollView always returns to the beginning
+
+        // Apparently if you set an id for noteLinearLayout and set the data before layout,
+        // it will retain the scroll position. Didn't have immediate success, so I'm not going to
+        // waste time on this right now.
+        if (noteLinearLayout.getChildCount()!=0) {
             scrollToNote(currentNoteIndex);
+            markPreviousNotesCorrect();
+        }
 
     }
 

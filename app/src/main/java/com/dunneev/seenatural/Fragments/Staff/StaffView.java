@@ -291,11 +291,11 @@ public class StaffView extends ViewGroup {
     }
 
 
-    public void markNoteCorrect() {
-//        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
-//        note.setColor(Color.GREEN);
-////        note.setAlpha(.5f);
-//        note.invalidate();
+    public void markNoteCorrect(int index) {
+        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
+        note.setColor(Color.GREEN);
+//        note.setAlpha(.5f);
+        note.invalidate();
     }
 
     // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 

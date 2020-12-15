@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <ToggleButton-->
-<!--        android:id="@+id/toggleHighNoteButton2"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:checked="false"-->
-<!--        android:textOff="switch to high note c8"-->
-<!--        android:textOn="switch to high note c6"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <ToggleButton
+        android:id="@+id/toggleHighNoteButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:textOff="toggle high note"
+        android:textOn="toggle high note"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/addNoteButton"

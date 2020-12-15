@@ -236,8 +236,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<ArrayList<PianoNote>> notesOnStaffObserver = new Observer<ArrayList<PianoNote>>() {
             @Override
             public void onChanged(ArrayList<PianoNote> notesOnStaff) {
-                PianoNote latestNote = notesOnStaff.get(notesOnStaff.size()-1);
-                    binding.staffView.addNote(latestNote);
+                binding.staffView.setNotesOnStaff(notesOnStaff);
+                binding.staffView.addNotesOnStaffToView();
             }
         };
 
@@ -263,17 +263,21 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onClick(View v) {
                 Log.i(LOG_TAG, "addNoteButton clicked");
-                viewModel.addNoteToStaff(viewModel.generateRandomNoteFromPracticableNotes());
+                viewModel.addNoteToStaff(PianoNote.G4);
             }
         });
 //
-//        binding.toggleTrebleClefButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewModel.setHideTrebleClef(binding.toggleTrebleClefButton.isChecked());
-//
-//            }
-//        });
+        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewModel.getHighestStaffPracticeNote() == PianoNote.C6) {
+                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
+                }
+                else
+                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
+
+            }
+        });
         regenerateStaff();
     }
 
@@ -292,6 +296,10 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
         binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
         binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
+
+        viewModel.populateStaffLines();
+        binding.staffView.setStaffLines(viewModel.staffLines);
+        binding.staffView.setNotesOnStaff(viewModel.getNotesOnStaff());
 
     }
 

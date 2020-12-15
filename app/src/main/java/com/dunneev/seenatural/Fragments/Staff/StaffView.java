@@ -29,10 +29,16 @@ public class StaffView extends ViewGroup {
 //    public static final int TYPE_BASS_CLEF = 1;
 //    public static final int TYPE_BOTH_CLEF = 2;
 
-    private PianoNote lowestPracticeNote;
-    private PianoNote highestPracticeNote;
+    HorizontalScrollView scrollView;
+    public LinearLayout noteLinearLayout;
 
     private KeySignature keySignature;
+    private PianoNote lowestPracticeNote;
+    private PianoNote highestPracticeNote;
+    private ArrayList<PianoNote> notesOnStaff = new ArrayList<>();
+    private ArrayList<PianoNote> staffLines = new ArrayList<>();
+    private int currentNoteIndex;
+
     private boolean hideKeySignature;
     private boolean hideTrebleClef;
     private boolean hideTrebleClefLines;
@@ -46,22 +52,8 @@ public class StaffView extends ViewGroup {
     int visibleStaffHeight;
     int totalStaffHeight;
     int noteWidth;
-
-    public void setNotesOnStaff(ArrayList<PianoNote> notesOnStaff) {
-        this.notesOnStaff = notesOnStaff;
-    }
-
-    private ArrayList<PianoNote> notesOnStaff = new ArrayList<>();
-    private ArrayList<PianoNote> staffLines = new ArrayList<>();
-
-    HorizontalScrollView scrollView;
-    public LinearLayout noteLinearLayout;
-
-    public void setStaffLines(ArrayList<PianoNote> staffLines) {
-        this.staffLines = staffLines;
-    }
-
     private static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
+
 
 
     public KeySignature getKeySignature() {
@@ -72,6 +64,38 @@ public class StaffView extends ViewGroup {
         this.keySignature = keySignature;
 //        init();
     }
+
+    // TODO: 11/17/2020 Create specialized method to redraw staff after setting practice notes instead of init()
+    // Ensure that invalidate and requestLayout are called
+    public PianoNote getLowestPracticeNote() {
+        return lowestPracticeNote;
+    }
+
+    public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
+        this.lowestPracticeNote = lowestPracticeNote;
+    }
+
+    public PianoNote getHighestPracticeNote() {
+        return highestPracticeNote;
+    }
+
+    public void setHighestPracticeNote(PianoNote highestPracticeNote) {
+        this.highestPracticeNote = highestPracticeNote;
+    }
+
+    public void setNotesOnStaff(ArrayList<PianoNote> notesOnStaff) {
+        this.notesOnStaff = notesOnStaff;
+    }
+
+    public void setStaffLines(ArrayList<PianoNote> staffLines) {
+        this.staffLines = staffLines;
+    }
+
+    public void setCurrentNoteIndex(int currentNoteIndex) {
+        this.currentNoteIndex = currentNoteIndex;
+    }
+
+
 
     public void setHideKeySignature(boolean hideKeySignature) {
         this.hideKeySignature = hideKeySignature;
@@ -93,23 +117,9 @@ public class StaffView extends ViewGroup {
         this.hideBassClefLines = hideBassClefLines;
     }
 
-    // TODO: 11/17/2020 Create specialized method to redraw staff after setting practice notes instead of init()
-    // Ensure that invalidate and requestLayout are called
-    public PianoNote getLowestPracticeNote() {
-        return lowestPracticeNote;
-    }
 
-    public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
-        this.lowestPracticeNote = lowestPracticeNote;
-    }
 
-    public PianoNote getHighestPracticeNote() {
-        return highestPracticeNote;
-    }
 
-    public void setHighestPracticeNote(PianoNote highestPracticeNote) {
-        this.highestPracticeNote = highestPracticeNote;
-    }
 
 
     public StaffView(Context context, PianoNote lowestPracticeNote, PianoNote highestPracticeNote) {
@@ -180,27 +190,6 @@ public class StaffView extends ViewGroup {
         setClipChildren(false);
     }
 
-
-    public void addNotesOnStaffToView() {
-        noteLinearLayout.removeAllViews();
-        for (PianoNote note:notesOnStaff) {
-            addNote(note);
-        }
-    }
-
-
-    private void populatePracticeNoteArrays() {
-
-
-
-//        for (int i = 0; i< numberOfNotesInPracticeRange; i++) {
-//            PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.absoluteKeyIndex + i);
-//            practiceNotesAscending.add(note);
-//            practiceNotesDescending.add(note);
-//        }
-//        Collections.reverse(practiceNotesDescending);
-    }
-
     private void addStaffLinesToView() {
         StaffLine line;
         StaffLine.hideTrebleClefLines = hideTrebleClefLines;
@@ -220,9 +209,6 @@ public class StaffView extends ViewGroup {
         }
     }
 
-
-
-
     private void addClefsToView() {
         Log.i(LOG_TAG, "keySignature: " + keySignature);
 
@@ -236,7 +222,6 @@ public class StaffView extends ViewGroup {
         addView(trebleClef);
         addView(bassClef);
     }
-
 
     private void addNoteScrollerToView() {
 
@@ -267,6 +252,25 @@ public class StaffView extends ViewGroup {
         addView(scrollView);
     }
 
+    public void addNotesOnStaffToView() {
+        noteLinearLayout.removeAllViews();
+        for (PianoNote note:notesOnStaff) {
+            addNote(note);
+        }
+    }
+
+
+
+
+
+
+
+
+    // TODO: 11/24/2020
+    public void highlightCurrentNote() {
+//        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
+
+    }
 
     public void addNote(PianoNote note) {
         StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
@@ -289,12 +293,17 @@ public class StaffView extends ViewGroup {
 
     }
 
+    private void markPreviousNotesCorrect() {
+        for (int i=0;i<currentNoteIndex;i++){
+            markNoteCorrect(i);
+        }
+    }
 
-    public void markNoteCorrect() {
-//        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
-//        note.setColor(Color.GREEN);
-////        note.setAlpha(.5f);
-//        note.invalidate();
+    public void markNoteCorrect(int index) {
+        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
+        note.setColor(Color.GREEN);
+//        note.setAlpha(.5f);
+        note.invalidate();
     }
 
     // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 
@@ -302,20 +311,16 @@ public class StaffView extends ViewGroup {
 //        scrollToNote(++noteScrollCounter);
     }
 
-    private void scrollToNote(int index) {
+    public void scrollToNote(int index) {
 
         // Keep the previous note in sight
-        View child = noteLinearLayout.getChildAt(index - 1);
+//        View child = noteLinearLayout.getChildAt(index - 1);
 
-        scrollView.smoothScrollTo(child.getLeft(), 0);
+            View child = noteLinearLayout.getChildAt(index);
+
+            scrollView.smoothScrollTo(child.getLeft(), 0);
     }
 
-
-    // TODO: 11/24/2020
-    public void highlightCurrentNote() {
-//        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(noteScrollCounter);
-
-    }
 
 
 
@@ -440,6 +445,19 @@ public class StaffView extends ViewGroup {
 
             staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(staffNote.note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
         }
+
+        // Again, not sure if this is the right place for it, but on rotation,
+        // no dimensions for notes are set, so the ScrollView always returns to the beginning
+
+        // Apparently if you set an id for noteLinearLayout and set the data before layout,
+        // it will retain the scroll position. Didn't have immediate success, so I'm not going to
+        // waste time on this right now.
+        if (noteLinearLayout.getChildCount()!=0) {
+            scrollToNote(currentNoteIndex);
+            markPreviousNotesCorrect();
+        }
+
     }
+
 }
 

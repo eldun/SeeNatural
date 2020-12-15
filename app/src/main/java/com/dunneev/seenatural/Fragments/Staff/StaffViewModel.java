@@ -14,6 +14,8 @@ public class StaffViewModel extends ViewModel {
 
     Random random = new Random();
 
+    private int currentNoteIndex = 0;
+
     private MutableLiveData<KeySignature> selectedKeySignature = new MutableLiveData<>();
     private MutableLiveData<Boolean>  hideKeySignature = new MutableLiveData<>();
 
@@ -37,6 +39,13 @@ public class StaffViewModel extends ViewModel {
     public ArrayList<PianoNote> staffLines = new ArrayList<>();
     public MutableLiveData<ArrayList<PianoNote>> notesOnStaff = new MutableLiveData<>();
 
+    public int getCurrentNoteIndex() {
+        return currentNoteIndex;
+    }
+
+    public void setCurrentNoteIndex(int currentNoteIndex) {
+        this.currentNoteIndex = currentNoteIndex;
+    }
 
     public MutableLiveData<Boolean> getMutableLiveDataHideKeySignature() {
         return hideKeySignature;
@@ -240,6 +249,14 @@ public class StaffViewModel extends ViewModel {
 
     public void addAllPracticableNotesToStaff() {
         setNotesOnStaff(practicableNotes);
+    }
+
+    public void onCorrectNote(){
+        currentNoteIndex ++;
+    }
+
+    public void onIncorrectNote() {
+
     }
 
 }

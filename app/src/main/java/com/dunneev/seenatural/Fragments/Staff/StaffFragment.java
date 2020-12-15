@@ -278,6 +278,32 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
             }
         });
+        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewModel.getHighestStaffPracticeNote() == PianoNote.C6) {
+                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
+                }
+                else
+                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
+
+            }
+        });
+
+        binding.correctNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.onCorrectNote();
+                binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
+            }
+        });
+
+        binding.incorrectNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.onIncorrectNote();
+            }
+        });
         regenerateStaff();
     }
 

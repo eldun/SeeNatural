@@ -180,6 +180,7 @@ public class StaffView extends ViewGroup {
     public void init() {
         removeAllViews();
 
+        populateStaffLines();
         addStaffLinesToView();
         addClefsToView();
         addNoteScrollerToView();
@@ -188,6 +189,15 @@ public class StaffView extends ViewGroup {
         // The treble clef is taller than the staff, but the clipped parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
         setClipChildren(false);
+    }
+
+    private void populateStaffLines() {
+        staffLines.clear();
+        for (int i=highestPracticeNote.absoluteKeyIndex; i>=lowestPracticeNote.absoluteKeyIndex;i--){
+            PianoNote note = PianoNote.valueOfAbsoluteKeyIndex(i);
+            if (note.isWhiteKey)
+                staffLines.add(note);
+        }
     }
 
     private void addStaffLinesToView() {

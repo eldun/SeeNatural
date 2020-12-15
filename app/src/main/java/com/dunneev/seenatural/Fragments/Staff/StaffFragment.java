@@ -263,7 +263,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onClick(View v) {
                 Log.i(LOG_TAG, "addNoteButton clicked");
-                viewModel.addNoteToStaff(PianoNote.G4);
+                viewModel.addRandomPracticableNoteToStaff();
             }
         });
 //
@@ -308,7 +308,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     }
 
 
-
     private void setUpStaff() {
         Log.i(LOG_TAG, "setUpStaff()");
 
@@ -326,7 +325,11 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         viewModel.populateStaffLines();
         binding.staffView.setStaffLines(viewModel.staffLines);
         binding.staffView.setNotesOnStaff(viewModel.getNotesOnStaff());
-
+        binding.staffView.addNotesOnStaffToView();
+        binding.staffView.setCurrentNoteIndex(viewModel.getCurrentNoteIndex());
+//        if (!viewModel.getNotesOnStaff().isEmpty()) {
+//            binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
+//        }
     }
 
 

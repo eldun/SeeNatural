@@ -46,6 +46,7 @@ public class StaffView extends ViewGroup {
     int visibleStaffHeight;
     int totalStaffHeight;
     int noteWidth;
+    private int currentNoteIndex;
 
     public void setNotesOnStaff(ArrayList<PianoNote> notesOnStaff) {
         this.notesOnStaff = notesOnStaff;
@@ -302,12 +303,14 @@ public class StaffView extends ViewGroup {
 //        scrollToNote(++noteScrollCounter);
     }
 
-    private void scrollToNote(int index) {
+    public void scrollToNote(int index) {
 
         // Keep the previous note in sight
-        View child = noteLinearLayout.getChildAt(index - 1);
+//        View child = noteLinearLayout.getChildAt(index - 1);
 
-        scrollView.smoothScrollTo(child.getLeft(), 0);
+            View child = noteLinearLayout.getChildAt(index);
+
+            scrollView.smoothScrollTo(child.getLeft(), 0);
     }
 
 
@@ -440,6 +443,20 @@ public class StaffView extends ViewGroup {
 
             staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(staffNote.note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
         }
+
+        // Again, not sure if this is the right place for it, but on rotation,
+        // no dimensions for notes are set
+        if (noteLinearLayout.getChildCount()!=0)
+            scrollToNote(currentNoteIndex);
+
+    }
+
+    public int getCurrentNoteIndex() {
+        return currentNoteIndex;
+    }
+
+    public void setCurrentNoteIndex(int currentNoteIndex) {
+        this.currentNoteIndex = currentNoteIndex;
     }
 }
 

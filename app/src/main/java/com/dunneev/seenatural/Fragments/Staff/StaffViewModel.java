@@ -7,12 +7,12 @@ import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class StaffViewModel extends ViewModel {
 
     Random random = new Random();
-
 
     private MutableLiveData<KeySignature> selectedKeySignature = new MutableLiveData<>();
     private MutableLiveData<Boolean>  hideKeySignature = new MutableLiveData<>();
@@ -24,7 +24,7 @@ public class StaffViewModel extends ViewModel {
 
     private MutableLiveData<PianoNote> lowestStaffPracticeNote = new MutableLiveData<>();
     private MutableLiveData<PianoNote> highestStaffPracticeNote = new MutableLiveData<>();
-    private ArrayList<PianoNote> allNotesInStaffPracticeRange = new ArrayList<>();
+    private ArrayList<PianoNote> allNotesInStaffPracticeRangeDescending = new ArrayList<>();
 
     // Allow users the ability to limit which notes/accidentals are to be practiced
     private ArrayList<PianoNote> practicableNotes = new ArrayList<>();
@@ -34,6 +34,7 @@ public class StaffViewModel extends ViewModel {
     private MutableLiveData<Boolean> hideBassClef = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideBassClefLines = new MutableLiveData<>();
 
+    public ArrayList<PianoNote> staffLines = new ArrayList<>();
     public MutableLiveData<ArrayList<PianoNote>> notesOnStaff = new MutableLiveData<>();
 
 
@@ -173,17 +174,31 @@ public class StaffViewModel extends ViewModel {
         this.notesOnStaff.setValue(notesOnStaff);
     }
 
+    public void populateStaffLines() {
+        staffLines.clear();
 
-    public ArrayList<PianoNote> getAllNotesInStaffPracticeRange() {
+        for (PianoNote note: getAllNotesInStaffPracticeRangeDescending()) {
 
-            allNotesInStaffPracticeRange = PianoNote.NotesInRangeInclusive(getLowestStaffPracticeNote(), getHighestStaffPracticeNote());
-            return allNotesInStaffPracticeRange;
+            // Staff lines are only ever "natural" (white).
+            // Whether they are sharp or flat is signified by
+            // either the key signature or a ♯/♮/♭ symbol if the note in question is an accidental.
+            if (note.isWhiteKey) {
+                staffLines.add(note);
+            }
+        }
+    }
+
+    public ArrayList<PianoNote> getAllNotesInStaffPracticeRangeDescending() {
+
+            allNotesInStaffPracticeRangeDescending = PianoNote.NotesInRangeInclusive(getLowestStaffPracticeNote(), getHighestStaffPracticeNote());
+            Collections.reverse(allNotesInStaffPracticeRangeDescending);
+            return allNotesInStaffPracticeRangeDescending;
     }
 
     public void generatePracticableNoteArray() {
         practicableNotes.clear();
 
-        ArrayList<PianoNote> allNotes = getAllNotesInStaffPracticeRange();
+        ArrayList<PianoNote> allNotes = getAllNotesInStaffPracticeRangeDescending();
 
         for (int i=0;i<allNotes.size();i++) {
             boolean isAccidentalNote = PianoNote.isAccidental(allNotes.get(i), getSelectedKeySignature());
@@ -206,6 +221,9 @@ public class StaffViewModel extends ViewModel {
 
     }
 
+    public void addRandomPracticableNoteToStaff() {
+        addNoteToStaff(generateRandomNoteFromPracticableNotes());
+    }
 
     public PianoNote generateRandomNoteFromPracticableNotes(){
         int randomInt = random.nextInt(practicableNotes.size()-1);
@@ -218,8 +236,6 @@ public class StaffViewModel extends ViewModel {
         tempNotesOnStaff = getNotesOnStaff();
         tempNotesOnStaff.add(note);
         notesOnStaff.setValue(tempNotesOnStaff);
-
-
     }
 
     public void addAllPracticableNotesToStaff() {

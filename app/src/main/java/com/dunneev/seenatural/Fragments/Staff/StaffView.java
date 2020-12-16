@@ -316,28 +316,48 @@ public class StaffView extends ViewGroup {
         note.invalidate();
     }
 
-    public void markNoteIncorrect(int index) {
+    public void markNoteIncorrect(int index, PianoNote incorrectNote) {
         StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
         note.setColor(Color.RED);
 //        note.setAlpha(.5f);
         note.invalidate();
 
+//        StaffNote ghostNote = new StaffNote(getContext(), keySignature, incorrectNote);
+//        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT/*visibleStaffHeight*/);
+//        ghostNote.setLayoutParams(staffNoteParams);
+//
+//        ghostNote.setColor(Color.RED);
+//        ghostNote.setAlpha(.4f);
+//
+//        staffNoteParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
+//
+//        noteLinearLayout.addView(ghostNote, index + 1);
+//        ghostNote.setX(-(noteLinearLayout.getChildAt(index).getRight() + staffNoteHorizontalMargins));
+//        ghostNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(incorrectNote.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
+
+
+    }
+
+    private void addGhostNote(PianoNote incorrectNote, int index) {
+
+        //        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
+
     }
 
     // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 
-    public void scrollToNextNote() {
+//    public void scrollToNextNote() {
 //        scrollToNote(++noteScrollCounter);
-    }
+//    }
 
     public void scrollToNote(int index) {
 
         // Keep the previous note in sight
 //        View child = noteLinearLayout.getChildAt(index - 1);
 
-            View child = noteLinearLayout.getChildAt(index);
-            if (child != null) {
-                scrollView.smoothScrollTo(child.getLeft(), 0);
-            }
+        View child = noteLinearLayout.getChildAt(index);
+        if (child != null) {
+            scrollView.smoothScrollTo(child.getLeft(), 0);
+        }
     }
 
 
@@ -477,6 +497,7 @@ public class StaffView extends ViewGroup {
         }
 
     }
+
 
 }
 

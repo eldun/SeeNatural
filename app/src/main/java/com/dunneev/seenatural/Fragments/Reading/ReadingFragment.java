@@ -31,8 +31,6 @@ public class ReadingFragment extends Fragment {
     private final String LOG_TAG = this.getClass().getSimpleName();
 
     private FragmentReadingBinding binding;
-    FragmentStaffBinding staffBinding;
-    FragmentPianoBinding pianoBinding;
     private ReadingViewModel viewModel;
     private StaffViewModel staffViewModel;
     private PianoViewModel pianoViewModel;
@@ -57,24 +55,22 @@ public class ReadingFragment extends Fragment {
 
     private void setUpObservers() {
 
-        final Observer<Boolean> singleOctaveObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isSingleOctaveMode) {
-                viewModel.isSingleOctaveMode = isSingleOctaveMode;
-            }
-        };
+//        final Observer<Boolean> singleOctaveObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean isSingleOctaveMode) {
+//                viewModel.isSingleOctaveMode = isSingleOctaveMode;
+//            }
+//        };
 
         final Observer<PianoNote> keyPressedObserver = new Observer<PianoNote>() {
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, note.toString() + " pressed");
                 if (isCorrect(note)) {
-                    staffViewModel.onCorrectNote();
-                    pianoViewModel.onCorrectKeyPressed();
+                    viewModel.onCorrectKeyPressed(note);
                 }
                 else {
-                    staffViewModel.onIncorrectNote();
-                    pianoViewModel.onIncorrectKeyPressed();
+                    viewModel.onIncorrectKeyPressed(note);
                 }
             }
         };
@@ -83,21 +79,26 @@ public class ReadingFragment extends Fragment {
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, note.toString() + " released");
-
             }
         };
 
-        pianoViewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);
+//        pianoViewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);
         pianoViewModel.getMutableLiveDataKeyPressed().observe(this, keyPressedObserver);
         pianoViewModel.getMutableLiveDataKeyReleased().observe(this, keyReleasedObserver);
 
     }
 
     private boolean isCorrect(PianoNote note) {
-        if (note.equals(staffViewModel.getNotesOnStaff().get(staffViewModel.getCurrentNoteIndex()), viewModel.isSingleOctaveMode)){
+
+        if (staffViewModel.getNotesOnStaff().size() == 0) {
+            return false;
+        }
+
+        if (note.equals(staffViewModel.getNotesOnStaff().get(staffViewModel.getCurrentNoteIndex()), viewModel.isSingleOctaveMode)) {
             return true;
         }
         return false;
+
     }
 
 

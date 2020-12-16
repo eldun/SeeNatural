@@ -16,6 +16,9 @@ import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.Fragments.Piano.PianoView;
+import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
+import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.FragmentStaffBinding;
 
@@ -26,7 +29,9 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     private final String LOG_TAG = this.getClass().getSimpleName();
 
     private FragmentStaffBinding binding;
+    private ReadingViewModel readingViewModel;
     private StaffViewModel viewModel;
+    private PianoViewModel pianoViewModel;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor sharedPreferencesEditor;
 
@@ -34,9 +39,11 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Log.i(LOG_TAG, "create");
 
-
         super.onCreate(savedInstanceState);
+
+        readingViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingViewModel.class);
         viewModel = new ViewModelProvider(requireParentFragment()).get(StaffViewModel.class);
+        pianoViewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
 
         setViewModelFieldsFromPreferences();
         viewModel.generatePracticableNoteArray();
@@ -96,149 +103,150 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
     // TODO: 12/8/2020 Make StaffViewModel itself observable and update the binding with viewmodel properties
     private void setUpObservables() {
-        final Observer<KeySignature> keySignatureObserver = new Observer<KeySignature>() {
-            @Override
-            public void onChanged(KeySignature keySignature) {
-                viewModel.generatePracticableNoteArray();
-                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_key_signature_key), keySignature.toString());
-                sharedPreferencesEditor.apply();
-            }
-        };
+//        final Observer<KeySignature> keySignatureObserver = new Observer<KeySignature>() {
+//            @Override
+//            public void onChanged(KeySignature keySignature) {
+//                viewModel.generatePracticableNoteArray();
+//                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_key_signature_key), keySignature.toString());
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<Boolean> hideKeySignatureObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean hideKeySignature) {
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.staff_hide_key_signature_key), hideKeySignature);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<Boolean> generateAccidentalsObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean generateAccidentals) {
+//                viewModel.generatePracticableNoteArray();
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_accidentals_key), generateAccidentals);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<Boolean> generateFlatsObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean generateFlats) {
+//                viewModel.generatePracticableNoteArray();
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_flats_key), generateFlats);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<Boolean> generateNaturalsObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean generateNaturals) {
+//                viewModel.generatePracticableNoteArray();
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_naturals_key), generateNaturals);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<Boolean> generateSharpsObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean generateSharps) {
+//                viewModel.generatePracticableNoteArray();
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_sharps_key), generateSharps);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<Boolean> hideTrebleClefObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean hideTrebleClef) {
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_treble_clef_key), hideTrebleClef);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<Boolean> hideTrebleClefLinesObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean hideTrebleClefLines) {
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_treble_clef_lines_key), hideTrebleClefLines);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<Boolean> hideBassClefObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean hideBassClef) {
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), hideBassClef);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//
+//        final Observer<Boolean> hideBassClefLinesObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean hideBassClefLines) {
+//                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), hideBassClefLines);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//
+//        final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
+//            @Override
+//            public void onChanged(PianoNote lowPianoNote) {
+//                viewModel.generatePracticableNoteArray();
+//                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_low_practice_note_key), lowPianoNote.label);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
+//
+//        final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
+//            @Override
+//            public void onChanged(PianoNote highPianoNote) {
+//
+//                viewModel.generatePracticableNoteArray();
+//
+//                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_high_practice_note_key), highPianoNote.label);
+//                sharedPreferencesEditor.apply();
+//            }
+//        };
 
-        final Observer<Boolean> hideKeySignatureObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean hideKeySignature) {
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.staff_hide_key_signature_key), hideKeySignature);
-                sharedPreferencesEditor.apply();
-            }
-        };
 
-        final Observer<Boolean> generateAccidentalsObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean generateAccidentals) {
-                viewModel.generatePracticableNoteArray();
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_accidentals_key), generateAccidentals);
-                sharedPreferencesEditor.apply();
-            }
-        };
+//        viewModel.getMutableLiveDataKeySignature().observe(this, keySignatureObserver);
+//        viewModel.getMutableLiveDataHideKeySignature().observe(this, hideKeySignatureObserver);
+//
+//        viewModel.getMutableLiveDataHideTrebleClef().observe(this, hideTrebleClefObserver);
+//        viewModel.getMutableLiveDataHideTrebleClefLines().observe(this, hideTrebleClefLinesObserver);
+//        viewModel.getMutableLiveDataHideBassClef().observe(this, hideBassClefObserver);
+//        viewModel.getMutableLiveDataHideBassClefLines().observe(this, hideBassClefLinesObserver);
+//
+//        viewModel.getMutableLiveDataGenerateAccidentals().observe(this, generateAccidentalsObserver);
+//        viewModel.getMutableLiveDataGenerateFlats().observe(this, generateFlatsObserver);
+//        viewModel.getMutableLiveDataGenerateNaturals().observe(this, generateNaturalsObserver);
+//        viewModel.getMutableLiveDataGenerateSharps().observe(this, generateSharpsObserver);
 
-        final Observer<Boolean> generateFlatsObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean generateFlats) {
-                viewModel.generatePracticableNoteArray();
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_flats_key), generateFlats);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-        final Observer<Boolean> generateNaturalsObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean generateNaturals) {
-                viewModel.generatePracticableNoteArray();
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_naturals_key), generateNaturals);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-        final Observer<Boolean> generateSharpsObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean generateSharps) {
-                viewModel.generatePracticableNoteArray();
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.generate_sharps_key), generateSharps);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-        final Observer<Boolean> hideTrebleClefObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean hideTrebleClef) {
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_treble_clef_key), hideTrebleClef);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-        final Observer<Boolean> hideTrebleClefLinesObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean hideTrebleClefLines) {
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_treble_clef_lines_key), hideTrebleClefLines);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-        final Observer<Boolean> hideBassClefObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean hideBassClef) {
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), hideBassClef);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-
-        final Observer<Boolean> hideBassClefLinesObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean hideBassClefLines) {
-                sharedPreferencesEditor.putBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), hideBassClefLines);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-
-        final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote lowPianoNote) {
-                viewModel.generatePracticableNoteArray();
-                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_low_practice_note_key), lowPianoNote.label);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-        final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote highPianoNote) {
-
-                viewModel.generatePracticableNoteArray();
-
-                sharedPreferencesEditor.putString(getResources().getString(R.string.staff_high_practice_note_key), highPianoNote.label);
-                sharedPreferencesEditor.apply();
-            }
-        };
-
-
-        viewModel.getMutableLiveDataKeySignature().observe(this, keySignatureObserver);
-        viewModel.getMutableLiveDataHideKeySignature().observe(this, hideKeySignatureObserver);
-
-        viewModel.getMutableLiveDataHideTrebleClef().observe(this, hideTrebleClefObserver);
-        viewModel.getMutableLiveDataHideTrebleClefLines().observe(this, hideTrebleClefLinesObserver);
-        viewModel.getMutableLiveDataHideBassClef().observe(this, hideBassClefObserver);
-        viewModel.getMutableLiveDataHideBassClefLines().observe(this, hideBassClefLinesObserver);
-
-        viewModel.getMutableLiveDataGenerateAccidentals().observe(this, generateAccidentalsObserver);
-        viewModel.getMutableLiveDataGenerateFlats().observe(this, generateFlatsObserver);
-        viewModel.getMutableLiveDataGenerateNaturals().observe(this, generateNaturalsObserver);
-        viewModel.getMutableLiveDataGenerateSharps().observe(this, generateSharpsObserver);
-
-        viewModel.getMutableLiveDataLowestStaffPracticeNote().observe(this, lowNoteObserver);
-        viewModel.getMutableLiveDataHighestStaffPracticeNote().observe(this, highNoteObserver);
+//        viewModel.getMutableLiveDataLowestStaffPracticeNote().observe(this, lowNoteObserver);
+//        viewModel.getMutableLiveDataHighestStaffPracticeNote().observe(this, highNoteObserver);
 
         // Functionality
 
-        final Observer<Boolean> correctNotePressedObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean correctNotePressed) {
-                if (correctNotePressed) {
-                    binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
-                    binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex() + 1);
-                }
-                else {
-                    binding.staffView.markNoteIncorrect(viewModel.getCurrentNoteIndex());
-                }
-            }
-
-        };
-
-        viewModel.getMutableLiveDataCorrectNotePressed().observe(this, correctNotePressedObserver);
-
-
+//        final Observer<Boolean> correctNotePressedObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean correctNotePressed) {
+//                if (correctNotePressed) {
+//                    binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
+//                    binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex() + 1);
+//                }
+//                else {
+//                    PianoNote incorrectNotePressed = viewModel.getIncorrectNoteEntries().get(viewModel.getIncorrectNoteEntries().size()-1);
+//                    binding.staffView.markNoteIncorrect(viewModel.getCurrentNoteIndex(), incorrectNotePressed);
+//
+//                }
+//            }
+//
+//        };
+//
+//
+//
         final Observer<ArrayList<PianoNote>> notesOnStaffObserver = new Observer<ArrayList<PianoNote>>() {
             @Override
             public void onChanged(ArrayList<PianoNote> notesOnStaff) {
@@ -247,7 +255,48 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             }
         };
 
+
+        final Observer<PianoNote> keyPressedObserver = new Observer<PianoNote>() {
+            @Override
+            public void onChanged(PianoNote note) {
+                Log.i(LOG_TAG, note.toString() + " pressed");
+
+                }
+            };
+
+
+        final Observer<PianoNote> keyReleasedObserver = new Observer<PianoNote>() {
+            @Override
+            public void onChanged(PianoNote note) {
+                Log.i(LOG_TAG, note.toString() + " released");
+            }
+        };
+
+        final Observer<PianoNote> correctKeyPressedObserver = new Observer<PianoNote>() {
+            @Override
+            public void onChanged(PianoNote note) {
+                Log.i(LOG_TAG, "correct key pressed");
+                binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
+                viewModel.onCorrectNote();
+                binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
+
+            }
+        };
+
+        final Observer<PianoNote> incorrectKeyPressedObserver = new Observer<PianoNote>() {
+            @Override
+            public void onChanged(PianoNote note) {
+                Log.i(LOG_TAG, "wrong key pressed");
+
+            }
+        };
+
         viewModel.getMutableLiveDataNotesOnStaff().observe(requireParentFragment(), notesOnStaffObserver);
+        pianoViewModel.getMutableLiveDataKeyPressed().observe(requireParentFragment(), keyPressedObserver);
+        pianoViewModel.getMutableLiveDataKeyReleased().observe(requireParentFragment(), keyReleasedObserver);
+        readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(requireParentFragment(), correctKeyPressedObserver);
+        readingViewModel.getMutableLiveDataIncorrectKeyPressed().observe(requireParentFragment(), incorrectKeyPressedObserver);
+
 
     }
 

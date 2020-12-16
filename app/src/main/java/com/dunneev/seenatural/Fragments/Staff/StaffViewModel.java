@@ -15,8 +15,8 @@ public class StaffViewModel extends ViewModel {
     Random random = new Random();
 
     private int currentNoteIndex = 0;
+    private ArrayList<PianoNote> incorrectNoteEntries = new ArrayList<>();
 
-    private MutableLiveData<Boolean> correctNotePressed = new MutableLiveData<>();
 
     private MutableLiveData<KeySignature> selectedKeySignature = new MutableLiveData<>();
     private MutableLiveData<Boolean>  hideKeySignature = new MutableLiveData<>();
@@ -48,15 +48,10 @@ public class StaffViewModel extends ViewModel {
         this.currentNoteIndex = currentNoteIndex;
     }
 
-    public MutableLiveData<Boolean> getMutableLiveDataCorrectNotePressed() {
-        return correctNotePressed;
+    public ArrayList<PianoNote> getIncorrectNoteEntries() {
+        return incorrectNoteEntries;
     }
-    public boolean getCorrectNotePressed() {
-        return correctNotePressed.getValue();
-    }
-    public void setCorrectNotePressed(boolean correctNotePressed) {
-        this.correctNotePressed.setValue(correctNotePressed);
-    }
+
 
     public MutableLiveData<Boolean> getMutableLiveDataHideKeySignature() {
         return hideKeySignature;
@@ -263,12 +258,11 @@ public class StaffViewModel extends ViewModel {
     }
 
     public void onCorrectNote(){
-        setCorrectNotePressed(true);
         currentNoteIndex ++;
     }
 
-    public void onIncorrectNote() {
-        setCorrectNotePressed(false);
+    public void onIncorrectNote(PianoNote note) {
+        incorrectNoteEntries.add(note);
 
     }
 

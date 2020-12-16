@@ -14,5 +14,25 @@ public class ReadingViewModel extends ViewModel {
 
     public boolean isSingleOctaveMode;
 
+    private MutableLiveData<PianoNote> correctKeyPressed = new MutableLiveData<>();
+    private MutableLiveData<PianoNote> incorrectKeyPressed = new MutableLiveData<>();
+
+
+    public MutableLiveData<PianoNote> getMutableLiveDataCorrectKeyPressed(){
+        return correctKeyPressed;
+    }
+
+    public MutableLiveData<PianoNote> getMutableLiveDataIncorrectKeyPressed(){
+        return incorrectKeyPressed;
+    }
+
+    public void onCorrectKeyPressed(PianoNote note) {
+        correctKeyPressed.setValue(note);
+    }
+
+    public void onIncorrectKeyPressed(PianoNote note) {
+        incorrectKeyPressed.setValue(note);
+    }
+
 
 }

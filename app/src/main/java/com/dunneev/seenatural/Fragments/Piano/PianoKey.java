@@ -172,7 +172,6 @@ public class PianoKey extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        Log.i(LOG_TAG, "onTouchEvent(motionEvent)");
         int x = (int) motionEvent.getX();
         int y = (int) motionEvent.getY();
 

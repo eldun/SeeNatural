@@ -62,6 +62,20 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     private void setUpObservables() {
 
+        final Observer<Boolean> correctKeyPressedObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean correctKeyPressed) {
+                if (correctKeyPressed) {
+                    PianoView.setBlackKeyDownColor(viewModel.blackKeyDownCorrectColor);
+                    PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownCorrectColor);
+                }
+                else {
+                    PianoView.setBlackKeyDownColor(viewModel.blackKeyDownIncorrectColor);
+                    PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownIncorrectColor);
+                }
+            }
+        };
+
         // Create the observer which updates the UI.
         final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
             @Override
@@ -86,7 +100,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
             }
         };
 
-
+        viewModel.getMutableLiveDataCorrectKeyPressed().observe(this, correctKeyPressedObserver);
         viewModel.getMutableLiveDataLowestPracticeNote().observe(this, lowNoteObserver);
         viewModel.getMutableLiveDataHighestPracticeNote().observe(this, highNoteObserver);
         viewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);
@@ -121,12 +135,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private void setUpPiano() {
         PianoView.setWhiteKeyUpColor(viewModel.whiteKeyUpColor);
         PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownColor);
-        PianoView.setWhiteKeyDownCorrectColor(viewModel.whiteKeyDownCorrectColor);
-        PianoView.setWhiteKeyDownIncorrectColor(viewModel.whiteKeyDownIncorrectColor);
         PianoView.setBlackKeyUpColor(viewModel.blackKeyUpColor);
         PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
-        PianoView.setBlackKeyDownCorrectColor(viewModel.blackKeyDownCorrectColor);
-        PianoView.setBlackKeyDownIncorrectColor(viewModel.blackKeyDownIncorrectColor);
 
         binding.pianoview.setLowestPracticeNote(viewModel.getLowestPracticeNote());
         binding.pianoview.setHighestPracticeNote(viewModel.getHighestPracticeNote());
@@ -173,10 +183,10 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     @Override
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
-
-        viewModel.keyDown();
-
         PianoNote note = key.getNote();
+
+        viewModel.keyDown(note);
+
         int relativePianoKeyIndex = note.absoluteKeyIndex - viewModel.getLowestPracticeNote().absoluteKeyIndex;
 
 
@@ -186,7 +196,9 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     @Override
     public void keyUp(PianoKey key) {
-        viewModel.keyUp();
+        viewModel.keyUp(key.getNote());
+        PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
+        PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownColor);
     }
 
 

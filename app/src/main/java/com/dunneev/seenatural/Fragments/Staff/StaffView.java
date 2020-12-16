@@ -316,6 +316,14 @@ public class StaffView extends ViewGroup {
         note.invalidate();
     }
 
+    public void markNoteIncorrect(int index) {
+        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
+        note.setColor(Color.RED);
+//        note.setAlpha(.5f);
+        note.invalidate();
+
+    }
+
     // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 
     public void scrollToNextNote() {
 //        scrollToNote(++noteScrollCounter);
@@ -327,8 +335,9 @@ public class StaffView extends ViewGroup {
 //        View child = noteLinearLayout.getChildAt(index - 1);
 
             View child = noteLinearLayout.getChildAt(index);
-
-            scrollView.smoothScrollTo(child.getLeft(), 0);
+            if (child != null) {
+                scrollView.smoothScrollTo(child.getLeft(), 0);
+            }
     }
 
 

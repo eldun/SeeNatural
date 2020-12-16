@@ -221,6 +221,24 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         viewModel.getMutableLiveDataHighestStaffPracticeNote().observe(this, highNoteObserver);
 
         // Functionality
+
+        final Observer<Boolean> correctNotePressedObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean correctNotePressed) {
+                if (correctNotePressed) {
+                    binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
+                    binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex() + 1);
+                }
+                else {
+                    binding.staffView.markNoteIncorrect(viewModel.getCurrentNoteIndex());
+                }
+            }
+
+        };
+
+        viewModel.getMutableLiveDataCorrectNotePressed().observe(this, correctNotePressedObserver);
+
+
         final Observer<ArrayList<PianoNote>> notesOnStaffObserver = new Observer<ArrayList<PianoNote>>() {
             @Override
             public void onChanged(ArrayList<PianoNote> notesOnStaff) {
@@ -251,49 +269,50 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onClick(View v) {
                 Log.i(LOG_TAG, "addNoteButton clicked");
-                viewModel.addRandomPracticableNoteToStaff();
+//                viewModel.addRandomPracticableNoteToStaff();
+                viewModel.addNoteToStaff(PianoNote.G4);
             }
         });
+////
+//        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (viewModel.getHighestStaffPracticeNote() == PianoNote.C6) {
+//                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
+//                }
+//                else
+//                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
 //
-        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewModel.getHighestStaffPracticeNote() == PianoNote.C6) {
-                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
-                }
-                else
-                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
-
-            }
-        });
-        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewModel.getHighestStaffPracticeNote() == PianoNote.C6) {
-                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
-                }
-                else
-                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
-
-            }
-        });
-
-        binding.correctNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
-                viewModel.onCorrectNote();
-                binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
-
-            }
-        });
-
-        binding.incorrectNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.onIncorrectNote();
-            }
-        });
+//            }
+//        });
+//        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (viewModel.getHighestStaffPracticeNote() == PianoNote.C6) {
+//                    viewModel.setHighestStaffPracticeNote(PianoNote.C8);
+//                }
+//                else
+//                    viewModel.setHighestStaffPracticeNote(PianoNote.C6);
+//
+//            }
+//        });
+//
+//        binding.correctNoteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
+//                viewModel.onCorrectNote();
+//                binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
+//
+//            }
+//        });
+//
+//        binding.incorrectNoteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewModel.onIncorrectNote();
+//            }
+//        });
         regenerateStaff();
 
 

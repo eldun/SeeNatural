@@ -27,12 +27,8 @@ public class PianoView extends ViewGroup {
     // TODO: Change colors to facilitate correct/incorrect when sight-reading
     private static int whiteKeyUpColor;
     private static int whiteKeyDownColor;
-    private static int whiteKeyDownCorrectColor;
-    private static int whiteKeyDownIncorrectColor;
     private static int blackKeyUpColor;
     private static int blackKeyDownColor;
-    private static int blackKeyDownCorrectColor;
-    private static int blackKeyDownIncorrectColor;
 
     public PianoNote getLowestPracticeNote() {
         return lowestPracticeNote;
@@ -58,13 +54,6 @@ public class PianoView extends ViewGroup {
         return whiteKeyDownColor;
     }
 
-    public static int getWhiteKeyDownCorrectColor() {
-        return whiteKeyDownCorrectColor;
-    }
-
-    public static int getWhiteKeyDownIncorrectColor() {
-        return whiteKeyDownIncorrectColor;
-    }
 
     public static int getBlackKeyUpColor() {
         return blackKeyUpColor;
@@ -72,14 +61,6 @@ public class PianoView extends ViewGroup {
 
     public static int getBlackKeyDownColor() {
         return blackKeyDownColor;
-    }
-
-    public static int getBlackKeyDownCorrectColor() {
-        return blackKeyDownCorrectColor;
-    }
-
-    public static int getBlackKeyDownIncorrectColor() {
-        return blackKeyDownIncorrectColor;
     }
 
     public static void setWhiteKeyUpColor(int whiteKeyUpColor) {
@@ -90,13 +71,6 @@ public class PianoView extends ViewGroup {
         PianoView.whiteKeyDownColor = whiteKeyDownColor;
     }
 
-    public static void setWhiteKeyDownCorrectColor(int whiteKeyDownCorrectColor) {
-        PianoView.whiteKeyDownCorrectColor = whiteKeyDownCorrectColor;
-    }
-
-    public static void setWhiteKeyDownIncorrectColor(int whiteKeyDownIncorrectColor) {
-        PianoView.whiteKeyDownIncorrectColor = whiteKeyDownIncorrectColor;
-    }
 
     public static void setBlackKeyUpColor(int blackKeyUpColor) {
         PianoView.blackKeyUpColor = blackKeyUpColor;
@@ -104,14 +78,6 @@ public class PianoView extends ViewGroup {
 
     public static void setBlackKeyDownColor(int blackKeyDownColor) {
         PianoView.blackKeyDownColor = blackKeyDownColor;
-    }
-
-    public static void setBlackKeyDownCorrectColor(int blackKeyDownCorrectColor) {
-        PianoView.blackKeyDownCorrectColor = blackKeyDownCorrectColor;
-    }
-
-    public static void setBlackKeyDownIncorrectColor(int blackKeyDownIncorrectColor) {
-        PianoView.blackKeyDownIncorrectColor = blackKeyDownIncorrectColor;
     }
 
     public ArrayList<PianoKey> getPianoKeys() {

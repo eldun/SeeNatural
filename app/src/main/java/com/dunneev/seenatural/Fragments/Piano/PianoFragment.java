@@ -217,18 +217,4 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
         PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownColor);
     }
-
-
-//    // TODO: 11/18/2020 Consider displaying a translucent wrong note for a short time on incorrect key
-//    private void incorrectKeyPressed(PianoKey key) {
-//        viewModel.incorrectKeyPressed();
-//    }
-//
-//    private void correctKeyPressed() {
-//        viewModel.correctKeyPressed();
-//    }
-
-
-
-
 }

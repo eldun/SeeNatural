@@ -12,9 +12,13 @@ import java.util.Random;
 
 public class StaffViewModel extends ViewModel {
 
+
     Random random = new Random();
 
     private int currentNoteIndex = 0;
+    public boolean incorrectKeyDown;
+    public boolean correctKeyDown;
+
     private ArrayList<PianoNote> incorrectNoteEntries = new ArrayList<>();
 
 

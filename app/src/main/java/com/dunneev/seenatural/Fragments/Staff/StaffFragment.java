@@ -269,6 +269,11 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, note.toString() + " released");
+                if (viewModel.incorrectKeyDown) {
+                    binding.staffView.removeIncorrectGhostNote(viewModel.getCurrentNoteIndex());
+                }
+                viewModel.correctKeyDown = false;
+                viewModel.incorrectKeyDown = false;
             }
         };
 
@@ -276,6 +281,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, "correct key pressed");
+                viewModel.correctKeyDown = true;
                 binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
                 viewModel.onCorrectNote();
                 binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
@@ -287,6 +293,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, "wrong key pressed");
+                viewModel.incorrectKeyDown = true;
+                binding.staffView.markNoteIncorrect(viewModel.getCurrentNoteIndex(), note);
 
             }
         };

@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
+import com.dunneev.seenatural.Fragments.Staff.StaffViewModel;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.SoundPlayer;
 import com.dunneev.seenatural.databinding.FragmentPianoBinding;
@@ -27,7 +29,10 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     SharedPreferences sharedPreferences;
 
     private FragmentPianoBinding binding;
+    ReadingViewModel readingViewModel;
+    StaffViewModel staffViewModel;
     PianoViewModel viewModel;
+
 
     private SoundPlayer soundPlayer;
     AssetManager assetManager;
@@ -38,7 +43,10 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         // Create a ViewModel the first time the system calls an activity's onCreate() method.
         // Re-created activities receive the same MyViewModel instance created by the first activity.
 
-        viewModel = new ViewModelProvider(this).get(PianoViewModel.class);
+
+        readingViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingViewModel.class);
+        staffViewModel = new ViewModelProvider(requireParentFragment()).get(StaffViewModel.class);
+        viewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 
@@ -62,34 +70,57 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     private void setUpObservables() {
 
-        // Create the observer which updates the UI.
-        final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
+
+
+        final Observer<PianoNote> correctKeyPressedObserver = new Observer<PianoNote>() {
             @Override
-            public void onChanged(PianoNote lowPianoNote) {
-                // Update the UI
+            public void onChanged(PianoNote note) {
+                Log.i(LOG_TAG, "correct key pressed");
+
+                PianoView.setBlackKeyDownColor(viewModel.blackKeyDownCorrectColor);
+                PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownCorrectColor);
             }
         };
 
-        // Create the observer which updates the UI.
-        final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
+        final Observer<PianoNote> incorrectKeyPressedObserver = new Observer<PianoNote>() {
             @Override
-            public void onChanged(PianoNote highPianoNote) {
-                setUpPiano();
+            public void onChanged(PianoNote note) {
+                Log.i(LOG_TAG, "incorrect key pressed");
+
+                PianoView.setBlackKeyDownColor(viewModel.blackKeyDownIncorrectColor);
+                PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownIncorrectColor);
             }
         };
-
-        // Create the observer which updates the UI.
-        final Observer<Boolean> singleOctaveObserver = new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isSingleOctave) {
-
-            }
-        };
-
-
-        viewModel.getMutableLiveDataLowestPracticeNote().observe(this, lowNoteObserver);
-        viewModel.getMutableLiveDataHighestPracticeNote().observe(this, highNoteObserver);
-        viewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);
+//
+//        // Create the observer which updates the UI.
+//        final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
+//            @Override
+//            public void onChanged(PianoNote lowPianoNote) {
+//                // Update the UI
+//            }
+//        };
+//
+//        // Create the observer which updates the UI.
+//        final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
+//            @Override
+//            public void onChanged(PianoNote highPianoNote) {
+//                setUpPiano();
+//            }
+//        };
+//
+//        // Create the observer which updates the UI.
+//        final Observer<Boolean> singleOctaveObserver = new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean isSingleOctave) {
+//
+//            }
+//        };
+//
+        readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(requireParentFragment(), correctKeyPressedObserver);
+        readingViewModel.getMutableLiveDataIncorrectKeyPressed().observe(requireParentFragment(), incorrectKeyPressedObserver);
+//        viewModel.getMutableLiveDataLowestPracticeNote().observe(this, lowNoteObserver);
+//        viewModel.getMutableLiveDataHighestPracticeNote().observe(this, highNoteObserver);
+//        viewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);
 
     }
 
@@ -121,12 +152,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private void setUpPiano() {
         PianoView.setWhiteKeyUpColor(viewModel.whiteKeyUpColor);
         PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownColor);
-        PianoView.setWhiteKeyDownCorrectColor(viewModel.whiteKeyDownCorrectColor);
-        PianoView.setWhiteKeyDownIncorrectColor(viewModel.whiteKeyDownIncorrectColor);
         PianoView.setBlackKeyUpColor(viewModel.blackKeyUpColor);
         PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
-        PianoView.setBlackKeyDownCorrectColor(viewModel.blackKeyDownCorrectColor);
-        PianoView.setBlackKeyDownIncorrectColor(viewModel.blackKeyDownIncorrectColor);
 
         binding.pianoview.setLowestPracticeNote(viewModel.getLowestPracticeNote());
         binding.pianoview.setHighestPracticeNote(viewModel.getHighestPracticeNote());
@@ -173,10 +200,10 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     @Override
     public void keyDown(PianoKey key) {
         Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
-
-        viewModel.keyDown();
-
         PianoNote note = key.getNote();
+
+        viewModel.keyDown(note);
+
         int relativePianoKeyIndex = note.absoluteKeyIndex - viewModel.getLowestPracticeNote().absoluteKeyIndex;
 
 
@@ -186,20 +213,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     @Override
     public void keyUp(PianoKey key) {
-        viewModel.keyUp();
+        viewModel.keyUp(key.getNote());
+        PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
+        PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownColor);
     }
-
-
-//    // TODO: 11/18/2020 Consider displaying a translucent wrong note for a short time on incorrect key
-//    private void incorrectKeyPressed(PianoKey key) {
-//        viewModel.incorrectKeyPressed();
-//    }
-//
-//    private void correctKeyPressed() {
-//        viewModel.correctKeyPressed();
-//    }
-
-
-
-
 }

@@ -17,11 +17,17 @@ public class PianoViewModel extends ViewModel {
 
     public static final int TOTAL_KEYS = 88;
 
+    private MutableLiveData<Boolean> correctKeyPressed = new MutableLiveData<>();
+
+
     // todo: set piano note range based on options selected
     private MutableLiveData<PianoNote> lowestPracticeNote = new MutableLiveData<PianoNote>();
     private MutableLiveData<PianoNote> highestPracticeNote  = new MutableLiveData<PianoNote>();
 
     private MutableLiveData<Boolean> isSingleOctaveMode = new MutableLiveData<Boolean>();
+
+    private MutableLiveData<PianoNote> keyPressed = new MutableLiveData<>();
+    private MutableLiveData<PianoNote> keyReleased = new MutableLiveData<>();
 
     public int numberOfKeys;
 
@@ -38,6 +44,16 @@ public class PianoViewModel extends ViewModel {
     public int blackKeyDownColor = Color.LTGRAY;
     public int blackKeyDownCorrectColor = Color.GREEN;
     public int blackKeyDownIncorrectColor = Color.RED;
+
+    public MutableLiveData<Boolean> getMutableLiveDataCorrectKeyPressed() {
+        return correctKeyPressed;
+    }
+    public boolean getCorrectKeyPressed() {
+        return correctKeyPressed.getValue();
+    }
+    public void setCorrectKeyPressed(boolean correctKeyPressed) {
+        this.correctKeyPressed.setValue(correctKeyPressed);
+    }
 
     public MutableLiveData<PianoNote> getMutableLiveDataLowestPracticeNote() {
         return lowestPracticeNote;
@@ -69,8 +85,28 @@ public class PianoViewModel extends ViewModel {
         this.isSingleOctaveMode.setValue(isSingleOctaveMode);
     }
 
+    public MutableLiveData<PianoNote> getMutableLiveDataKeyPressed() {
+        return keyPressed;
+    }
+    public PianoNote getKeyPressed() {
+        return keyPressed.getValue();
+    }
+    public void setKeyPressed(PianoNote note) {
+        this.keyPressed.setValue(note);
+    }
+
+    public MutableLiveData<PianoNote> getMutableLiveDataKeyReleased() {
+        return keyReleased;
+    }
+    public PianoNote getKeyReleased() {
+        return keyReleased.getValue();
+    }
+    public void setKeyReleased(PianoNote note) {
+        this.keyReleased.setValue(note);
+    }
 
 
+    // TODO: 12/15/2020 Move this to PianoView or something
     public void populatePianoNoteArrays() {
         numberOfKeys = PianoNote.numberOfKeysInRangeInclusive(getLowestPracticeNote(), getHighestPracticeNote());
 
@@ -91,9 +127,21 @@ public class PianoViewModel extends ViewModel {
     }
 
     // Do processing of data here in the ViewModel, UI management in the fragment.
-    public void keyDown() {
+    public void keyDown(PianoNote note) {
+        setKeyPressed(note);
     }
 
-    public void keyUp() {
+    public void keyUp(PianoNote note) {
+        setKeyReleased(note);
+    }
+
+
+
+    public void onCorrectKeyPressed() {
+        correctKeyPressed.setValue(true);
+    }
+
+    public void onIncorrectKeyPressed() {
+        correctKeyPressed.setValue(false);
     }
 }

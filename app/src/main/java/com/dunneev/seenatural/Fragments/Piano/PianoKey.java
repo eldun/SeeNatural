@@ -172,23 +172,22 @@ public class PianoKey extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        Log.i(LOG_TAG, "onTouchEvent(motionEvent)");
         int x = (int) motionEvent.getX();
         int y = (int) motionEvent.getY();
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
 //                Log.i(LOG_TAG, "action down");
-                drawKeyDown();
                 pianoKeyListener.keyDown(this);
+                drawKeyDown();
                 break;
             case MotionEvent.ACTION_MOVE:
 //                Log.i(LOG_TAG, "moving: (" + x + ", " + y + ")");
                 break;
             case MotionEvent.ACTION_UP:
 //                Log.i(LOG_TAG, "action up");
-                drawKeyUp();
                 pianoKeyListener.keyUp(this);
+                drawKeyUp();
                 break;
         }
         return true;

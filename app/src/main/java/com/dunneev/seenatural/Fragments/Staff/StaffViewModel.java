@@ -12,9 +12,15 @@ import java.util.Random;
 
 public class StaffViewModel extends ViewModel {
 
+
     Random random = new Random();
 
     private int currentNoteIndex = 0;
+    public boolean incorrectKeyDown;
+    public boolean correctKeyDown;
+
+    private ArrayList<PianoNote> incorrectNoteEntries = new ArrayList<>();
+
 
     private MutableLiveData<KeySignature> selectedKeySignature = new MutableLiveData<>();
     private MutableLiveData<Boolean>  hideKeySignature = new MutableLiveData<>();
@@ -42,10 +48,14 @@ public class StaffViewModel extends ViewModel {
     public int getCurrentNoteIndex() {
         return currentNoteIndex;
     }
-
     public void setCurrentNoteIndex(int currentNoteIndex) {
         this.currentNoteIndex = currentNoteIndex;
     }
+
+    public ArrayList<PianoNote> getIncorrectNoteEntries() {
+        return incorrectNoteEntries;
+    }
+
 
     public MutableLiveData<Boolean> getMutableLiveDataHideKeySignature() {
         return hideKeySignature;
@@ -183,19 +193,19 @@ public class StaffViewModel extends ViewModel {
         this.notesOnStaff.setValue(notesOnStaff);
     }
 
-    public void populateStaffLines() {
-        staffLines.clear();
-
-        for (PianoNote note: getAllNotesInStaffPracticeRangeDescending()) {
-
-            // Staff lines are only ever "natural" (white).
-            // Whether they are sharp or flat is signified by
-            // either the key signature or a ♯/♮/♭ symbol if the note in question is an accidental.
-            if (note.isWhiteKey) {
-                staffLines.add(note);
-            }
-        }
-    }
+//    public void populateStaffLines() {
+//        staffLines.clear();
+//
+//        for (PianoNote note: getAllNotesInStaffPracticeRangeDescending()) {
+//
+//            // Staff lines are only ever "natural" (white).
+//            // Whether they are sharp or flat is signified by
+//            // either the key signature or a ♯/♮/♭ symbol if the note in question is an accidental.
+//            if (note.isWhiteKey) {
+//                staffLines.add(note);
+//            }
+//        }
+//    }
 
     public ArrayList<PianoNote> getAllNotesInStaffPracticeRangeDescending() {
 
@@ -255,7 +265,8 @@ public class StaffViewModel extends ViewModel {
         currentNoteIndex ++;
     }
 
-    public void onIncorrectNote() {
+    public void onIncorrectNote(PianoNote note) {
+        incorrectNoteEntries.add(note);
 
     }
 

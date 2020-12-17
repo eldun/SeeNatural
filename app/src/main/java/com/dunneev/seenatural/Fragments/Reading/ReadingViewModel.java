@@ -12,29 +12,40 @@ import java.util.Random;
 
 public class ReadingViewModel extends ViewModel {
 
-    public PianoNote currentNote;
     public boolean isSingleOctaveMode;
-    public MutableLiveData<Boolean> correctKeyPressed = new MutableLiveData<>();
 
-    public void incorrectKeyPressed() {
-        correctKeyPressed.setValue(false);
+    private MutableLiveData<PianoNote> correctKeyPressed = new MutableLiveData<>();
+    private MutableLiveData<PianoNote> incorrectKeyPressed = new MutableLiveData<>();
+
+
+    public MutableLiveData<PianoNote> getMutableLiveDataCorrectKeyPressed(){
+        return correctKeyPressed;
     }
 
-    public void correctKeyPressed() {
-        correctKeyPressed.setValue(true);
+    public MutableLiveData<PianoNote> getMutableLiveDataIncorrectKeyPressed(){
+        return incorrectKeyPressed;
     }
 
-    public void keyDown(PianoNote note) {
+    public boolean isCorrectPress(PianoNote notePressed, ArrayList<PianoNote> notesOnStaff, int currentNoteIndex) {
 
-        if (note.equals(currentNote, isSingleOctaveMode)){
-            correctKeyPressed();
+        if (notesOnStaff.size() == 0) {
+            return false;
         }
-        else {
-            incorrectKeyPressed();
+
+        if (notePressed.equals(notesOnStaff.get(currentNoteIndex), isSingleOctaveMode)) {
+            return true;
         }
+        return false;
+
     }
 
-    public void keyUp(PianoNote note) {
-        correctKeyPressed.setValue(null);
+    public void onCorrectKeyPressed(PianoNote note) {
+        correctKeyPressed.setValue(note);
     }
+
+    public void onIncorrectKeyPressed(PianoNote note) {
+        incorrectKeyPressed.setValue(note);
+    }
+
+
 }

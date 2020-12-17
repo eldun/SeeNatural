@@ -26,6 +26,19 @@ public class ReadingViewModel extends ViewModel {
         return incorrectKeyPressed;
     }
 
+    public boolean isCorrectPress(PianoNote notePressed, ArrayList<PianoNote> notesOnStaff, int currentNoteIndex) {
+
+        if (notesOnStaff.size() == 0) {
+            return false;
+        }
+
+        if (notePressed.equals(notesOnStaff.get(currentNoteIndex), isSingleOctaveMode)) {
+            return true;
+        }
+        return false;
+
+    }
+
     public void onCorrectKeyPressed(PianoNote note) {
         correctKeyPressed.setValue(note);
     }

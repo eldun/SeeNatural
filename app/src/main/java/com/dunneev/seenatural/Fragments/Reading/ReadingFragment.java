@@ -66,7 +66,7 @@ public class ReadingFragment extends Fragment {
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, note.toString() + " pressed");
-                if (isCorrect(note)) {
+                if (viewModel.isCorrectPress(note, staffViewModel.getNotesOnStaff(), staffViewModel.getCurrentNoteIndex())) {
                     viewModel.onCorrectKeyPressed(note);
                 }
                 else {
@@ -88,18 +88,7 @@ public class ReadingFragment extends Fragment {
 
     }
 
-    private boolean isCorrect(PianoNote note) {
 
-        if (staffViewModel.getNotesOnStaff().size() == 0) {
-            return false;
-        }
-
-        if (note.equals(staffViewModel.getNotesOnStaff().get(staffViewModel.getCurrentNoteIndex()), viewModel.isSingleOctaveMode)) {
-            return true;
-        }
-        return false;
-
-    }
 
 
     @Override

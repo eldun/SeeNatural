@@ -317,10 +317,6 @@ public class StaffView extends ViewGroup {
     }
 
     public void markNoteIncorrect(int index, PianoNote incorrectNote) {
-        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
-        note.setColor(Color.RED);
-//        note.setAlpha(.5f);
-        note.invalidate();
 
 //        StaffNote ghostNote = new StaffNote(getContext(), keySignature, incorrectNote);
 //        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT/*visibleStaffHeight*/);
@@ -329,20 +325,21 @@ public class StaffView extends ViewGroup {
 //        ghostNote.setColor(Color.RED);
 //        ghostNote.setAlpha(.4f);
 //
-//        staffNoteParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
+//        staffNoteParams.setMargins(0, 0, 0, 0);
 //
 //        noteLinearLayout.addView(ghostNote, index + 1);
-//        ghostNote.setX(-(noteLinearLayout.getChildAt(index).getRight() + staffNoteHorizontalMargins));
+//        ghostNote.setX(-(noteLinearLayout.getChildAt(index).getRight() + (staffNoteHorizontalMargins)));
 //        ghostNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(incorrectNote.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
 
-
     }
 
-    private void addGhostNote(PianoNote incorrectNote, int index) {
+    public void removeIncorrectGhostNote(int index) {
 
-        //        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
-
+        // Ghost notes are added to the linear layout with an index of the current note + 1
+        // (See markNoteIncorrect(...))
+//        noteLinearLayout.removeViewAt(index + 1);
     }
+
 
     // TODO: 11/18/2020 Set up customizable scroll/keep previous note in view on scroll 
 //    public void scrollToNextNote() {

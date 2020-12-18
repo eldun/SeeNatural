@@ -32,6 +32,7 @@ public class StaffView extends ViewGroup {
 //    public static final int TYPE_BASS_CLEF = 1;
 //    public static final int TYPE_BOTH_CLEF = 2;
 
+
     HorizontalScrollView scrollView;
     public LinearLayout noteLinearLayout;
 
@@ -50,12 +51,10 @@ public class StaffView extends ViewGroup {
     int clefWidth;
 
     // The distance between natural notes e.g. A4 to B4
-    int staffLineSpacing;
+    static int staffLineSpacing;
     int staffNoteHorizontalMargins = 100;
-    int visibleStaffHeight;
-    int totalStaffHeight;
-    int noteWidth;
-    private static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
+    static int visibleStaffHeight;
+    static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
 
 
 
@@ -286,20 +285,26 @@ public class StaffView extends ViewGroup {
     }
 
     public void addNote(PianoNote note) {
-        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
+//        ArrayList notes = new ArrayList<PianoNote>();
+//        notes.add(PianoNote.C4);
+//        notes.add(PianoNote.E4);
+//        notes.add(PianoNote.G5);
+
+        StaffPracticableItem item = new StaffPracticableItem(getContext(), keySignature, note);
+//        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
 
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.
-        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT/*visibleStaffHeight*/);
-        staffNote.setLayoutParams(staffNoteParams);
+        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT/*visibleStaffHeight*/);
+        item.setLayoutParams(itemParams);
 
-        staffNoteParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
+        itemParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
 
 //        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
 
 
-        noteLinearLayout.addView(staffNote);
+        noteLinearLayout.addView(item);
     }
 
     protected void removeNote(PianoNote note) {
@@ -313,10 +318,10 @@ public class StaffView extends ViewGroup {
     }
 
     public void markNoteCorrect(int index) {
-        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
-        note.setColor(Color.GREEN);
-//        note.setAlpha(.5f);
-        note.invalidate();
+//        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
+//        note.setColor(Color.GREEN);
+////        note.setAlpha(.5f);
+//        note.invalidate();
     }
 
     public void markNoteIncorrect(int index, PianoNote incorrectNote) {
@@ -376,12 +381,10 @@ public class StaffView extends ViewGroup {
         staffNoteHorizontalMargins = staffLineSpacing * 4;
 
         visibleStaffHeight = staffLineSpacing * 8;
-        totalStaffHeight = staffLineSpacing * PianoNote.numberOfKeysInRangeInclusive(lowestPracticeNote, highestPracticeNote);
-        noteWidth = staffLineSpacing * 3;
 
         StaffLine.setDesiredHeight(staffLineSpacing);
         StaffClef.setDesiredHeight(visibleStaffHeight);
-        StaffNote.setDesiredHeight(visibleStaffHeight);
+//        StaffNote.setDesiredHeight(visibleStaffHeight);
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
@@ -479,11 +482,12 @@ public class StaffView extends ViewGroup {
 
         // Adjust everything that was originally set in addNote because when using fragments,
         // there's no (intuitive) way to find the dimensions of a view within that fragment
-        for (int i=0;i<noteLinearLayout.getChildCount();i++) {
-            StaffNote staffNote = (StaffNote) noteLinearLayout.getChildAt(i);
-
-            staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(staffNote.note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
-        }
+//        for (int i=0;i<noteLinearLayout.getChildCount();i++) {
+//            StaffPracticableItem practicableItem = (StaffPracticableItem) noteLinearLayout.getChildAt(i);
+//
+//            practicableItem.layout(left, top, right, bottom);
+//            practicableItem.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(practicableItem.note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
+//        }
 
         // Again, not sure if this is the right place for it, but on rotation,
         // no dimensions for notes are set, so the ScrollView always returns to the beginning
@@ -491,10 +495,8 @@ public class StaffView extends ViewGroup {
         // Apparently if you set an id for noteLinearLayout and set the data before layout,
         // it will retain the scroll position. Didn't have immediate success, so I'm not going to
         // waste time on this right now.
-        if (noteLinearLayout.getChildCount()!=0) {
-            scrollToNote(currentNoteIndex);
-            markPreviousNotesCorrect();
-        }
+//        if (noteLinearLa
+//        }
 
     }
 

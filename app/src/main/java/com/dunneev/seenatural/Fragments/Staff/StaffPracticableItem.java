@@ -167,7 +167,6 @@ public class StaffPracticableItem extends ViewGroup {
 
 
             if (PianoNote.isAccidental(note, keySignature)) {
-//            setAccidentalSymbol();
                 noteDrawable = new TextDrawable(note.symbol + getResources().getString(R.string.char_quarter_note), TextDrawable.PositioningInBounds.DEFAULT);
             }
 

@@ -22,7 +22,7 @@ public class StaffLine extends View {
 
     protected Paint staffLinePaint = new Paint();
 
-    protected static int staffLineCount = 0;
+    public static int lineCount = 0;
 
 
     public Paint getStaffLinePaint() {
@@ -49,23 +49,6 @@ public class StaffLine extends View {
 
     private void init() {
         assignVisibility();
-        staffLineCount++;
-    }
-
-    public static int getDesiredWidth() {
-        return desiredWidth;
-    }
-
-    public static void setDesiredWidth(int desiredWidth) {
-        StaffLine.desiredWidth = desiredWidth;
-    }
-
-    public static int getDesiredHeight() {
-        return desiredHeight;
-    }
-
-    public static void setDesiredHeight(int desiredHeight) {
-        StaffLine.desiredHeight = desiredHeight;
     }
 
     private void assignVisibility() {
@@ -94,58 +77,17 @@ public class StaffLine extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        Log.i(LOG_TAG, "\nonMeasure Width: " + MeasureSpec.toString(widthMeasureSpec) +
-//                "\nonMeasure Height: " + MeasureSpec.toString(heightMeasureSpec));
-//
-//        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-//        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-//        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-//        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-//
-//        heightSize = heightSize / staffLineCount;
-//        heightMeasureSpec = MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.EXACTLY);
-//
-//        Log.i(LOG_TAG, "\nMeasured Width: " + MeasureSpec.toString(widthMeasureSpec) +
-//                "\nMeasured Height: " + MeasureSpec.toString(heightMeasureSpec));
-//        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
 
 
-//
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        int width;
-        int height;
-//
-//
-//        //Measure Width
-        if (widthMode == MeasureSpec.EXACTLY) {
-            //Must be this size
-            width = widthSize;
-        } else if (widthMode == MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            width = Math.min(desiredWidth, widthSize);
-        } else {
-            //Be whatever you want
-            width = desiredWidth;
-        }
+        desiredHeight = heightSize / lineCount;
 
-        //Measure Height
-        if (heightMode == MeasureSpec.EXACTLY) {
-            //Must be this size
-            height = heightSize;
-        } else if (heightMode == MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            height = Math.min(desiredHeight, heightSize);
-        } else {
-            //Be whatever you want
-            height = desiredHeight;
-        }
-//
 
-        setMeasuredDimension(width, height);
+        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(desiredHeight, MeasureSpec.EXACTLY));
     }
 
     @Override

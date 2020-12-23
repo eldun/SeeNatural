@@ -2,7 +2,6 @@ package com.dunneev.seenatural.Fragments.Staff;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +50,7 @@ public class StaffView extends ViewGroup {
     int clefWidth;
 
     // The distance between natural notes e.g. A4 to B4
-    static int staffLineSpacing;
+    public static int staffLineSpacing;
     int staffNoteHorizontalMargins = 100;
     static int visibleStaffHeight;
     static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
@@ -200,6 +199,8 @@ public class StaffView extends ViewGroup {
             if (note.isWhiteKey)
                 staffLines.add(note);
         }
+        StaffLine.lineCount = staffLines.size();
+
     }
 
     private void addStaffLinesToView() {
@@ -290,13 +291,13 @@ public class StaffView extends ViewGroup {
 //        notes.add(PianoNote.E4);
 //        notes.add(PianoNote.G5);
 
-        StaffPracticableItem item = new StaffPracticableItem(getContext(), keySignature, note);
+        StaffPracticeItem item = new StaffPracticeItem(getContext(), keySignature, note);
 //        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
 
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.
-        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT/*visibleStaffHeight*/);
+        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         item.setLayoutParams(itemParams);
 
         itemParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
@@ -373,18 +374,16 @@ public class StaffView extends ViewGroup {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        staffLineSpacing = height / staffLines.size();
-        staffNoteHorizontalMargins = staffLineSpacing * 4;
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
+        staffLineSpacing = heightSize / staffLines.size();
         visibleStaffHeight = staffLineSpacing * 8;
-
-        StaffLine.setDesiredHeight(staffLineSpacing);
-        StaffClef.setDesiredHeight(visibleStaffHeight);
-//        StaffNote.setDesiredHeight(visibleStaffHeight);
+        staffNoteHorizontalMargins = staffLineSpacing * 4;
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 

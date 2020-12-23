@@ -17,23 +17,23 @@ import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.TextDrawable;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-public class StaffPracticableItem extends ViewGroup {
+public class StaffPracticeItem extends ViewGroup {
 
-    private static final String LOG_TAG = StaffPracticableItem.class.getSimpleName();
+    private static final String LOG_TAG = StaffPracticeItem.class.getSimpleName();
 
     private KeySignature keySignature;
     private ArrayList<PianoNote> notes = new ArrayList<>();
 
-    public StaffPracticableItem(Context context, KeySignature keySignature, PianoNote note) {
+
+    public StaffPracticeItem(Context context, KeySignature keySignature, PianoNote note) {
         super(context);
         this.keySignature = keySignature;
         this.notes.add(note);
         init();
     }
 
-    public StaffPracticableItem(Context context, KeySignature keySignature, ArrayList<PianoNote> notes) {
+    public StaffPracticeItem(Context context, KeySignature keySignature, ArrayList<PianoNote> notes) {
         super(context);
         this.keySignature = keySignature;
         this.notes = notes;
@@ -46,7 +46,7 @@ public class StaffPracticableItem extends ViewGroup {
 
         for (PianoNote pianoNote:notes) {
             StaffNote staffNote = new StaffNote(getContext(), keySignature, pianoNote);
-            LayoutParams staffNoteParams = new LayoutParams(LayoutParams.WRAP_CONTENT, StaffView.visibleStaffHeight);
+            LayoutParams staffNoteParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             staffNote.setLayoutParams(staffNoteParams);
 
             this.addView(staffNote);
@@ -56,39 +56,28 @@ public class StaffPracticableItem extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        measureChildren(widthMeasureSpec, heightMeasureSpec);
+
+        measureChildren(widthMeasureSpec, StaffView.visibleStaffHeight);
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        // Default value, just in case something goes wrong
-        int desiredWidth = 100;
+
 
 
         // We wish to be as wide as the widest child view
+        int desiredWidth = 0;
+
         final int childCount = getChildCount();
         for (int i=0; i<childCount; i++) {
             desiredWidth = Math.max(desiredWidth, getChildAt(i).getMeasuredWidth());
         }
 
-        int width;
-
-        //Measure Width
-        if (widthMode == MeasureSpec.EXACTLY) {
-            //Must be this size
-            width = widthSize;
-        } else if (widthMode == MeasureSpec.AT_MOST) {
-            //Can't be bigger than...
-            width = Math.min(desiredWidth, widthSize);
-        } else {
-            //Be whatever you want
-            width = desiredWidth;
-        }
 
 
-        setMeasuredDimension(width, heightSize);
+        setMeasuredDimension(desiredWidth, heightSize);
     }
 
     @Override
@@ -120,8 +109,6 @@ public class StaffPracticableItem extends ViewGroup {
         public int color = Color.WHITE;
         public boolean isIncorrect;
 
-        private boolean isAccidental;
-        private String accidentalSymbol;
         private TextDrawable noteDrawable;
 
         private Rect noteBoundsRect = new Rect();
@@ -184,35 +171,10 @@ public class StaffPracticableItem extends ViewGroup {
             int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
             int width;
-            int height;
-
-            // Staff notes should always be passed visibleStaffHeight.EXACTLY for height.
-            //Measure Height
-            if (heightMode == MeasureSpec.EXACTLY) {
-                //Must be this size
-                height = heightSize;
-            } else if (heightMode == MeasureSpec.AT_MOST) {
-                //Can't be bigger than...
-                height = Math.min(desiredHeight, heightSize);
-            } else {
-                //Be whatever you want
-                height = desiredHeight;
-            }
+            int height = heightSize;
 
             // Width is be dependent on the length of text, type of note, and height of text.
-            desiredWidth = (int) (height * noteDrawable.getAspectRatio());
-
-            //Measure Width
-            if (widthMode == MeasureSpec.EXACTLY) {
-                //Must be this size
-                width = widthSize;
-            } else if (widthMode == MeasureSpec.AT_MOST) {
-                //Can't be bigger than...
-                width = Math.min(desiredWidth, widthSize);
-            } else {
-                //Be whatever you want
-                width = desiredWidth;
-            }
+            width = (int) (height * noteDrawable.getAspectRatio());
 
             setMeasuredDimension(width, height);
         }

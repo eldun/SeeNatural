@@ -43,7 +43,6 @@ public class StaffViewModel extends ViewModel {
     private MutableLiveData<Boolean> hideBassClef = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideBassClefLines = new MutableLiveData<>();
 
-    public ArrayList<PianoNote> staffLines = new ArrayList<>();
     public MutableLiveData<ArrayList<PianoNote>> notesOnStaff = new MutableLiveData<>();
 
     public int getCurrentNoteIndex() {

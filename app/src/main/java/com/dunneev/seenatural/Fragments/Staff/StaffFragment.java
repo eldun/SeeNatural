@@ -390,7 +390,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
         binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
 
-        binding.staffView.setStaffLines(viewModel.staffLines);
         binding.staffView.setNotesOnStaff(viewModel.getNotesOnStaff());
         binding.staffView.addNotesOnStaffToView();
         binding.staffView.setCurrentNoteIndex(viewModel.getCurrentNoteIndex());

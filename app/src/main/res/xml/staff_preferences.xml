@@ -4,7 +4,7 @@
     <com.dunneev.seenatural.Utilities.KeySignaturePreference
         android:id="@+id/StaffKeySignaturePreference"
         android:defaultValue="@string/StaffKeySignatureDefault"
-        android:key="@string/staff_low_practice_note_key"
+        android:key="@string/staff_key_signature_key"
         android:summary="%s"
         android:title="Key Signature" />
 

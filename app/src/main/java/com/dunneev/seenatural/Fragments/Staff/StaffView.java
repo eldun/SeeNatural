@@ -202,8 +202,8 @@ public class StaffView extends ViewGroup {
 
     private void addStaffLinesToView() {
         StaffLine line;
-        StaffLine.hideTrebleClefLines = hideTrebleClefLines;
-        StaffLine.hideBassClefLines = hideBassClefLines;
+//        StaffLine.hideTrebleClefLines = hideTrebleClefLines;
+//        StaffLine.hideBassClefLines = hideBassClefLines;
 
 
         for (PianoNote note: staffLines) {

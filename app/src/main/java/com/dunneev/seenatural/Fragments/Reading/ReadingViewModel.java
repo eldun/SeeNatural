@@ -8,6 +8,7 @@ import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.Fragments.Piano.PianoKey;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ReadingViewModel extends ViewModel {
@@ -26,7 +27,7 @@ public class ReadingViewModel extends ViewModel {
         return incorrectKeyPressed;
     }
 
-    public boolean isCorrectPress(PianoNote notePressed, ArrayList<PianoNote> notesOnStaff, int currentNoteIndex) {
+    public boolean isCorrectPress(PianoNote notePressed, List<PianoNote> notesOnStaff, int currentNoteIndex) {
 
         if (notesOnStaff.size() == 0) {
             return false;

@@ -7,12 +7,14 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.collection.ArraySet;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.TextDrawable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StaffClef extends View {
     private static final String LOG_TAG = StaffClef.class.getSimpleName();
@@ -20,7 +22,7 @@ public class StaffClef extends View {
     private String clef;
     private TextDrawable clefDrawable;
     private KeySignature keySignature;
-    private ArrayList<TextDrawable> symbolList;
+    private List<TextDrawable> symbolList = new ArrayList<>();
     int clefWidth;
     private static int desiredWidth = 500;
     private static int desiredHeight = 500;
@@ -62,7 +64,6 @@ public class StaffClef extends View {
     }
 
     private void populateSymbolList() {
-        symbolList = new ArrayList<>();
 
         if (keySignature.hasSharps) {
             for (int i=0;i< keySignature.sharpCount;i++){
@@ -193,7 +194,7 @@ public class StaffClef extends View {
             symbolHeight = getMeasuredHeight();
 
         int staffLineSpacing = getMeasuredHeight() / 4;
-        ArrayList<Integer> staffLineCoords = new ArrayList<Integer>();
+        List<Integer> staffLineCoords = new ArrayList<Integer>();
         staffLineCoords.add(0);
         staffLineCoords.add(staffLineSpacing);
         staffLineCoords.add(staffLineSpacing * 2);

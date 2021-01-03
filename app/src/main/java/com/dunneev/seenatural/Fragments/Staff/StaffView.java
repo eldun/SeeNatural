@@ -12,6 +12,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.collection.ArraySet;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
@@ -19,7 +20,9 @@ import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class StaffView extends ViewGroup {
@@ -35,8 +38,8 @@ public class StaffView extends ViewGroup {
     private KeySignature keySignature;
     private PianoNote lowestPracticeNote;
     private PianoNote highestPracticeNote;
-    private ArrayList<PianoNote> notesOnStaff = new ArrayList<>();
-    private ArrayList<PianoNote> staffLines = new ArrayList<>();
+    private List<PianoNote> notesOnStaff = new ArrayList<>();
+    private Set<PianoNote> staffLines = new ArraySet<>();
     private int currentNoteIndex;
 
     private boolean hideKeySignature;
@@ -83,11 +86,11 @@ public class StaffView extends ViewGroup {
         this.highestPracticeNote = highestPracticeNote;
     }
 
-    public void setNotesOnStaff(ArrayList<PianoNote> notesOnStaff) {
+    public void setNotesOnStaff(List<PianoNote> notesOnStaff) {
         this.notesOnStaff = notesOnStaff;
     }
 
-    public void setStaffLines(ArrayList<PianoNote> staffLines) {
+    public void setStaffLines(ArraySet<PianoNote> staffLines) {
         this.staffLines = staffLines;
     }
 

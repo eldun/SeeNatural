@@ -8,6 +8,7 @@ import com.dunneev.seenatural.Enums.PianoNote;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class StaffViewModel extends ViewModel {
@@ -181,7 +182,7 @@ public class StaffViewModel extends ViewModel {
     public MutableLiveData<ArrayList<PianoNote>> getMutableLiveDataNotesOnStaff() {
         return notesOnStaff;
     }
-    public ArrayList<PianoNote> getNotesOnStaff() {
+    public List<PianoNote> getNotesOnStaff() {
         if (this.notesOnStaff.getValue() == null) {
             return new ArrayList<PianoNote>();
         }
@@ -251,8 +252,8 @@ public class StaffViewModel extends ViewModel {
 
     public void addNoteToStaff(PianoNote note) {
 
-        ArrayList tempNotesOnStaff = new ArrayList();
-        tempNotesOnStaff = getNotesOnStaff();
+        ArrayList tempNotesOnStaff;
+        tempNotesOnStaff = (ArrayList) getNotesOnStaff();
         tempNotesOnStaff.add(note);
         notesOnStaff.setValue(tempNotesOnStaff);
     }

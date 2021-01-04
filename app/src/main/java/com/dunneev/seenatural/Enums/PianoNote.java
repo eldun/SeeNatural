@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum PianoNote {
@@ -274,8 +275,8 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
-    public static ArrayList<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
-        ArrayList<PianoNote> notes = new ArrayList<>();
+    public static List<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+        List<PianoNote> notes = new ArrayList<>();
         for (int i = lowNote.storedOrdinal; i <= highNote.storedOrdinal; i++) {
             notes.add(valueOfStoredOrdinal(i));
         }

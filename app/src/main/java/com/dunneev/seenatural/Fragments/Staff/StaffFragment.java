@@ -325,9 +325,14 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(LOG_TAG, "addNoteButton clicked");
-//                viewModel.addRandomPracticableNoteToStaff();
                 viewModel.addNoteToStaff(PianoNote.G4);
+            }
+        });
+
+        binding.addChordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.addChordToStaff(new ArrayList(Arrays.asList(PianoNote.G4, PianoNote.B5, PianoNote.D5)));
             }
         });
 ////

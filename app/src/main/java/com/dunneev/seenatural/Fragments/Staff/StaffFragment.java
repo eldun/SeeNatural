@@ -42,7 +42,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         super.onCreate(savedInstanceState);
 
         readingViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingViewModel.class);
-        viewModel = new ViewModelProvider(requireParentFragment()).get(StaffViewModel.class);
+        viewModel = new ViewModelProvider(this).get(StaffViewModel.class);
         pianoViewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
 
         setViewModelFieldsFromPreferences();

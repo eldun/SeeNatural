@@ -46,7 +46,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
         readingViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingViewModel.class);
         staffViewModel = new ViewModelProvider(requireParentFragment()).get(StaffViewModel.class);
-        viewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
+        viewModel = new ViewModelProvider(this).get(PianoViewModel.class);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 

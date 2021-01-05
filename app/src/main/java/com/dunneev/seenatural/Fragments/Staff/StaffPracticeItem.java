@@ -17,6 +17,7 @@ import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.TextDrawable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StaffPracticeItem extends ViewGroup {
 
@@ -33,10 +34,10 @@ public class StaffPracticeItem extends ViewGroup {
         init();
     }
 
-    public StaffPracticeItem(Context context, KeySignature keySignature, ArrayList<PianoNote> notes) {
+    public StaffPracticeItem(Context context, KeySignature keySignature, List<PianoNote> notes) {
         super(context);
         this.keySignature = keySignature;
-        this.notes = notes;
+        this.notes = (ArrayList<PianoNote>) notes;
         init();
     }
 

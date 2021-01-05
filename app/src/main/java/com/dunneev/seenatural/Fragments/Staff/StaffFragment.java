@@ -23,6 +23,8 @@ import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.FragmentStaffBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOutListener*/{
 
@@ -46,7 +48,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         pianoViewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
 
         setViewModelFieldsFromPreferences();
-        viewModel.generatePracticableNoteArray();
+        viewModel.generatePracticableNoteList();
         setUpObservables();
 
     }
@@ -247,7 +249,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 //
 //
 //
-        final Observer<ArrayList<PianoNote>> notesOnStaffObserver = new Observer<ArrayList<PianoNote>>() {
+        final Observer<List<List<PianoNote>>> practiceItemsOnStaffObserver = new Observer<List<List<PianoNote>>>() {
             @Override
             public void onChanged(ArrayList<PianoNote> notesOnStaff) {
                 binding.staffView.setNotesOnStaff(notesOnStaff);
@@ -299,7 +301,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             }
         };
 
-        viewModel.getMutableLiveDataNotesOnStaff().observe(requireParentFragment(), notesOnStaffObserver);
+        viewModel.getMutableLiveDataPracticeItemsOnStaff().observe(requireParentFragment(), practiceItemsOnStaffObserver);
         pianoViewModel.getMutableLiveDataKeyPressed().observe(requireParentFragment(), keyPressedObserver);
         pianoViewModel.getMutableLiveDataKeyReleased().observe(requireParentFragment(), keyReleasedObserver);
         readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(requireParentFragment(), correctKeyPressedObserver);
@@ -395,8 +397,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
         binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
 
-        binding.staffView.setNotesOnStaff(viewModel.getNotesOnStaff());
-        binding.staffView.addNotesOnStaffToView();
+        binding.staffView.setPracticeItemsOnStaff(viewModel.getPracticeItemsOnStaff());
+        binding.staffView.addPracticeItemsOnStaffToView();
         binding.staffView.setCurrentNoteIndex(viewModel.getCurrentNoteIndex());
 //        if (!viewModel.getNotesOnStaff().isEmpty()) {
 //            binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());

@@ -8,6 +8,10 @@
         android:summary="%s"
         android:title="Key Signature" />
 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/staff_hide_key_signature_key"
+        android:title="Hide Key Signature" />
     <com.dunneev.seenatural.Utilities.NotePreference
         android:id="@+id/StaffLowPracticeNotePreference"
         android:defaultValue="@string/StaffLowPracticeNoteDefault"

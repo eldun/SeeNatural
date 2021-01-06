@@ -42,7 +42,7 @@ public class StaffViewModel extends ViewModel {
     private MutableLiveData<Boolean> hideBassClef = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideBassClefLines = new MutableLiveData<>();
 
-    public MutableLiveData<ArrayList<PianoNote>> notesOnStaff = new MutableLiveData<>();
+    public MutableLiveData<List<List<PianoNote>>> practiceItemsOnStaff = new MutableLiveData<>();
 
     public int getCurrentNoteIndex() {
         return currentNoteIndex;
@@ -177,19 +177,19 @@ public class StaffViewModel extends ViewModel {
         this.highestStaffPracticeNote.setValue(highestPracticeNote);
     }
 
-    public MutableLiveData<ArrayList<PianoNote>> getMutableLiveDataNotesOnStaff() {
-        return notesOnStaff;
+    public MutableLiveData<List<List<PianoNote>>> getMutableLiveDataPracticeItemsOnStaff() {
+        return practiceItemsOnStaff;
     }
-    public List<PianoNote> getNotesOnStaff() {
-        if (this.notesOnStaff.getValue() == null) {
-            return new ArrayList<PianoNote>();
+    public List<List<PianoNote>> getPracticeItemsOnStaff() {
+        if (this.practiceItemsOnStaff.getValue() == null) {
+            return new ArrayList<>();
         }
         else {
-            return this.notesOnStaff.getValue();
+            return this.practiceItemsOnStaff.getValue();
         }
     }
-    public void setNotesOnStaff(ArrayList<PianoNote> notesOnStaff) {
-        this.notesOnStaff.setValue(notesOnStaff);
+    public void setPracticeItemsOnStaff(List<List<PianoNote>> practiceItemsOnStaff) {
+        this.practiceItemsOnStaff.setValue(practiceItemsOnStaff);
     }
 
 //    public void populateStaffLines() {

@@ -22,6 +22,7 @@ public class StaffClef extends View {
     private String clef;
     private TextDrawable clefDrawable;
     private KeySignature keySignature;
+    private boolean hideKeySignature;
     private List<TextDrawable> symbolList = new ArrayList<>();
     int clefWidth;
     private static int desiredWidth = 500;
@@ -37,10 +38,11 @@ public class StaffClef extends View {
         return clef;
     }
 
-    public StaffClef(Context context, String clef, KeySignature keySignature) {
+    public StaffClef(Context context, String clef, KeySignature keySignature, boolean hideKeySignature) {
         super(context);
         this.clef = clef;
         this.keySignature = keySignature;
+        this.hideKeySignature = hideKeySignature;
 
         init();
     }
@@ -60,6 +62,8 @@ public class StaffClef extends View {
 
     private void init() {
         setClefDrawable();
+
+        if (!hideKeySignature)
         populateSymbolList();
     }
 

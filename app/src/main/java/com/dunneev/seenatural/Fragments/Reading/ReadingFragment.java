@@ -9,22 +9,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.dunneev.seenatural.Enums.PianoNote;
-import com.dunneev.seenatural.Fragments.Piano.PianoKey;
 import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
 import com.dunneev.seenatural.Fragments.Staff.StaffViewModel;
-import com.dunneev.seenatural.R;
-import com.dunneev.seenatural.databinding.FragmentPianoBinding;
 import com.dunneev.seenatural.databinding.FragmentReadingBinding;
-import com.dunneev.seenatural.databinding.FragmentStaffBinding;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 public class ReadingFragment extends Fragment {
 

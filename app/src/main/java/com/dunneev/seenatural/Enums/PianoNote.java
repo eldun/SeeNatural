@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum PianoNote {
@@ -148,7 +149,7 @@ public enum PianoNote {
     public final boolean isFlat;
     public final boolean isNatural;
     public final boolean isSharp;
-    public final char symbol;
+    public final String symbol;
     public final String pitch;
     public final int octave;
     public final String naturalNoteLabel;
@@ -170,8 +171,10 @@ public enum PianoNote {
 
 
         this.isFlat = checkIfFlat();
-        this.isNatural = checkIfNatural();
         this.isSharp = checkIfSharp();
+        this.isNatural = checkIfNatural();
+
+
 
         this.symbol = getSymbol();
 
@@ -187,16 +190,17 @@ public enum PianoNote {
 
     }
 
-    private char getSymbol() {
+    private String getSymbol() {
         if (isFlat)
-            return '♭';
+            return "♭";
         else if (isNatural)
-            return '♮';
+            return "♮";
         else if (isSharp)
-            return '♯';
+            return "♯";
 
-        return ' ';
+        return "";
     }
+
 
     private boolean checkIfSharp() {
         if (this.label.contains("♯")){
@@ -205,15 +209,15 @@ public enum PianoNote {
         return false;
     }
 
-    private boolean checkIfNatural() {
-        if (this.label.contains("♮")){
+    private boolean checkIfFlat() {
+        if (this.label.contains("♭")){
             return true;
         }
         return false;
     }
 
-    private boolean checkIfFlat() {
-        if (this.label.contains("♭")){
+    private boolean checkIfNatural() {
+        if (!this.isFlat && !this.isSharp) {
             return true;
         }
         return false;
@@ -271,8 +275,8 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
-    public static ArrayList<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
-        ArrayList<PianoNote> notes = new ArrayList<>();
+    public static List<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+        List<PianoNote> notes = new ArrayList<>();
         for (int i = lowNote.storedOrdinal; i <= highNote.storedOrdinal; i++) {
             notes.add(valueOfStoredOrdinal(i));
         }
@@ -283,7 +287,7 @@ public enum PianoNote {
         int keyCount = 0;
 
         for (int i = lowNote.absoluteKeyIndex; i <= highNote.absoluteKeyIndex; i++) {
-                keyCount++;
+            keyCount++;
         }
         return keyCount;
     }

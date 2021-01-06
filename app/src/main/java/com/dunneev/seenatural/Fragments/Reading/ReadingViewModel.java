@@ -27,16 +27,23 @@ public class ReadingViewModel extends ViewModel {
         return incorrectKeyPressed;
     }
 
-    public boolean isCorrectPress(PianoNote notePressed, List<PianoNote> notesOnStaff, int currentNoteIndex) {
+    public boolean isCorrectPress(PianoNote notePressed, List<List<PianoNote>> itemsOnStaff, int currentItemIndex) {
 
-        if (notesOnStaff.size() == 0) {
+        if (itemsOnStaff.size() == 0) {
             return false;
         }
 
-        if (notePressed.equals(notesOnStaff.get(currentNoteIndex), isSingleOctaveMode)) {
+        if (currentItemIndex >= itemsOnStaff.size()) {
+            return false;
+        }
+
+        // todo: adapt to chords
+        if (notePressed.equals(itemsOnStaff.get(currentItemIndex).get(0), isSingleOctaveMode)) {
             return true;
         }
+
         return false;
+//        if (itemsOnStaff.get(currentItemIndex).contains(notePressed))
 
     }
 

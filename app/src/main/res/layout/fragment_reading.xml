@@ -21,8 +21,8 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/pianoFragmentContainerView"
         android:name="com.dunneev.seenatural.Fragments.Piano.PianoFragment"
-        android:layout_width="369dp"
-        android:layout_height="241dp"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -16,13 +16,14 @@ import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
-import com.dunneev.seenatural.Fragments.Piano.PianoView;
 import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
 import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.FragmentStaffBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOutListener*/{
 
@@ -46,7 +47,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         pianoViewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
 
         setViewModelFieldsFromPreferences();
-        viewModel.generatePracticableNoteArray();
+        viewModel.generatePracticableNoteList();
         setUpObservables();
 
     }
@@ -247,11 +248,13 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 //
 //
 //
-        final Observer<ArrayList<PianoNote>> notesOnStaffObserver = new Observer<ArrayList<PianoNote>>() {
+        final Observer<List<List<PianoNote>>> practiceItemsOnStaffObserver = new Observer<List<List<PianoNote>>>() {
             @Override
-            public void onChanged(ArrayList<PianoNote> notesOnStaff) {
-                binding.staffView.setNotesOnStaff(notesOnStaff);
-                binding.staffView.addNotesOnStaffToView();
+            public void onChanged(List<List<PianoNote>> practiceItemsOnStaff) {
+                if (binding != null) {
+                    binding.staffView.setPracticeItemsOnStaff(practiceItemsOnStaff);
+                    binding.staffView.addPracticeItemsOnStaffToView();
+                }
             }
         };
 
@@ -299,7 +302,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             }
         };
 
-        viewModel.getMutableLiveDataNotesOnStaff().observe(requireParentFragment(), notesOnStaffObserver);
+        viewModel.getMutableLiveDataPracticeItemsOnStaff().observe(requireParentFragment(), practiceItemsOnStaffObserver);
         pianoViewModel.getMutableLiveDataKeyPressed().observe(requireParentFragment(), keyPressedObserver);
         pianoViewModel.getMutableLiveDataKeyReleased().observe(requireParentFragment(), keyReleasedObserver);
         readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(requireParentFragment(), correctKeyPressedObserver);
@@ -311,6 +314,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(LOG_TAG, "createView");
+
+        super.onCreate(savedInstanceState);
 
         binding = FragmentStaffBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -325,9 +330,14 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(LOG_TAG, "addNoteButton clicked");
-//                viewModel.addRandomPracticableNoteToStaff();
                 viewModel.addNoteToStaff(PianoNote.G4);
+            }
+        });
+
+        binding.addChordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.addChordToStaff(new ArrayList(Arrays.asList(PianoNote.G4, PianoNote.B5, PianoNote.D5)));
             }
         });
 ////
@@ -390,8 +400,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
         binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
 
-        binding.staffView.setNotesOnStaff(viewModel.getNotesOnStaff());
-        binding.staffView.addNotesOnStaffToView();
+        binding.staffView.setPracticeItemsOnStaff(viewModel.getPracticeItemsOnStaff());
+        binding.staffView.addPracticeItemsOnStaffToView();
         binding.staffView.setCurrentNoteIndex(viewModel.getCurrentNoteIndex());
 //        if (!viewModel.getNotesOnStaff().isEmpty()) {
 //            binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());

@@ -97,24 +97,6 @@ public class StaffClef extends View {
         }
     }
 
-
-
-    public static int getDesiredWidth() {
-        return desiredWidth;
-    }
-
-    public static void setDesiredWidth(int desiredWidth) {
-        StaffClef.desiredWidth = desiredWidth;
-    }
-
-    public static int getDesiredHeight() {
-        return desiredHeight;
-    }
-
-    public static void setDesiredHeight(int desiredHeight) {
-        StaffClef.desiredHeight = desiredHeight;
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
@@ -125,6 +107,8 @@ public class StaffClef extends View {
         }
         else
             desiredWidth = clefWidth;
+
+        desiredHeight = StaffView.visibleStaffHeight;
 
 
 

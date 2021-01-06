@@ -20,8 +20,7 @@ public class StaffViewModel extends ViewModel {
     public boolean incorrectKeyDown;
     public boolean correctKeyDown;
 
-    private ArrayList<PianoNote> incorrectNoteEntries = new ArrayList<>();
-
+    private List<PianoNote> incorrectNoteEntries = new ArrayList<>();
 
     private MutableLiveData<KeySignature> selectedKeySignature = new MutableLiveData<>();
     private MutableLiveData<Boolean>  hideKeySignature = new MutableLiveData<>();
@@ -33,18 +32,17 @@ public class StaffViewModel extends ViewModel {
 
     private MutableLiveData<PianoNote> lowestStaffPracticeNote = new MutableLiveData<>();
     private MutableLiveData<PianoNote> highestStaffPracticeNote = new MutableLiveData<>();
-    private ArrayList<PianoNote> allNotesInStaffPracticeRangeDescending = new ArrayList<>();
+    private List<PianoNote> allNotesInStaffPracticeRangeDescending = new ArrayList<>();
 
     // Allow users the ability to limit which notes/accidentals are to be practiced
-    private ArrayList<PianoNote> practicableNotes = new ArrayList<>();
+    private List<PianoNote> practicableNotes = new ArrayList<>();
 
     private MutableLiveData<Boolean> hideTrebleClef = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideTrebleClefLines = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideBassClef = new MutableLiveData<>();
     private MutableLiveData<Boolean> hideBassClefLines = new MutableLiveData<>();
 
-    public ArrayList<PianoNote> staffLines = new ArrayList<>();
-    public MutableLiveData<ArrayList<PianoNote>> notesOnStaff = new MutableLiveData<>();
+    public MutableLiveData<List<List<PianoNote>>> practiceItemsOnStaff = new MutableLiveData<>();
 
     public int getCurrentNoteIndex() {
         return currentNoteIndex;
@@ -53,7 +51,7 @@ public class StaffViewModel extends ViewModel {
         this.currentNoteIndex = currentNoteIndex;
     }
 
-    public ArrayList<PianoNote> getIncorrectNoteEntries() {
+    public List<PianoNote> getIncorrectNoteEntries() {
         return incorrectNoteEntries;
     }
 
@@ -179,19 +177,19 @@ public class StaffViewModel extends ViewModel {
         this.highestStaffPracticeNote.setValue(highestPracticeNote);
     }
 
-    public MutableLiveData<ArrayList<PianoNote>> getMutableLiveDataNotesOnStaff() {
-        return notesOnStaff;
+    public MutableLiveData<List<List<PianoNote>>> getMutableLiveDataPracticeItemsOnStaff() {
+        return practiceItemsOnStaff;
     }
-    public List<PianoNote> getNotesOnStaff() {
-        if (this.notesOnStaff.getValue() == null) {
-            return new ArrayList<PianoNote>();
+    public List<List<PianoNote>> getPracticeItemsOnStaff() {
+        if (this.practiceItemsOnStaff.getValue() == null) {
+            return new ArrayList<>();
         }
         else {
-            return this.notesOnStaff.getValue();
+            return this.practiceItemsOnStaff.getValue();
         }
     }
-    public void setNotesOnStaff(ArrayList<PianoNote> notesOnStaff) {
-        this.notesOnStaff.setValue(notesOnStaff);
+    public void setPracticeItemsOnStaff(List<List<PianoNote>> practiceItemsOnStaff) {
+        this.practiceItemsOnStaff.setValue(practiceItemsOnStaff);
     }
 
 //    public void populateStaffLines() {
@@ -208,17 +206,17 @@ public class StaffViewModel extends ViewModel {
 //        }
 //    }
 
-    public ArrayList<PianoNote> getAllNotesInStaffPracticeRangeDescending() {
+    public List<PianoNote> getAllNotesInStaffPracticeRangeDescending() {
 
             allNotesInStaffPracticeRangeDescending = PianoNote.NotesInRangeInclusive(getLowestStaffPracticeNote(), getHighestStaffPracticeNote());
             Collections.reverse(allNotesInStaffPracticeRangeDescending);
             return allNotesInStaffPracticeRangeDescending;
     }
 
-    public void generatePracticableNoteArray() {
+    public void generatePracticableNoteList() {
         practicableNotes.clear();
 
-        ArrayList<PianoNote> allNotes = getAllNotesInStaffPracticeRangeDescending();
+        List<PianoNote> allNotes = getAllNotesInStaffPracticeRangeDescending();
 
         for (int i=0;i<allNotes.size();i++) {
             boolean isAccidentalNote = PianoNote.isAccidental(allNotes.get(i), getSelectedKeySignature());
@@ -250,17 +248,24 @@ public class StaffViewModel extends ViewModel {
         return practicableNotes.get(randomInt);
     }
 
+    public void addChordToStaff(List chordNotes) {
+        List tempPracticeItemsOnStaff = new ArrayList();
+        tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
+        tempPracticeItemsOnStaff.add(chordNotes);
+        practiceItemsOnStaff.setValue(tempPracticeItemsOnStaff);
+    }
+
+    // Notes are treated as one-note chords
     public void addNoteToStaff(PianoNote note) {
 
-        ArrayList tempNotesOnStaff;
-        tempNotesOnStaff = (ArrayList) getNotesOnStaff();
-        tempNotesOnStaff.add(note);
-        notesOnStaff.setValue(tempNotesOnStaff);
+        List practiceItem = new ArrayList();
+        practiceItem.add(note);
+        addChordToStaff(practiceItem);
     }
 
-    public void addAllPracticableNotesToStaff() {
-        setNotesOnStaff(practicableNotes);
-    }
+//    public void addAllPracticableNotesToStaff() {
+//        setPracticeItemsOnStaff(practicableNotes);
+//    }
 
     public void onCorrectNote(){
         currentNoteIndex ++;

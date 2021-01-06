@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ToggleButton
-        android:id="@+id/toggleHighNoteButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:textOff="toggle high note"
-        android:textOn="toggle high note"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/addNoteButton"
@@ -41,6 +32,14 @@
 <!--        app:layout_constraintBottom_toBottomOf="parent"-->
 <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
+    <Button
+        android:id="@+id/addChordButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add chord"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.dunneev.seenatural.Fragments.Staff.StaffView
         android:id="@+id/staffView"
         android:layout_width="0dp"
@@ -50,5 +49,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:staffHighPracticeNote="C8"
-        app:staffLowPracticeNote="A0" />
+        app:staffLowPracticeNote="A0" >
+
+    </com.dunneev.seenatural.Fragments.Staff.StaffView>
 </androidx.constraintlayout.widget.ConstraintLayout>

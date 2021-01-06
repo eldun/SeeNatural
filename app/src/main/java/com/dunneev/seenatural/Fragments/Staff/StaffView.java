@@ -2,7 +2,6 @@ package com.dunneev.seenatural.Fragments.Staff;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -32,14 +31,15 @@ public class StaffView extends ViewGroup {
 //    public static final int TYPE_BASS_CLEF = 1;
 //    public static final int TYPE_BOTH_CLEF = 2;
 
+
     HorizontalScrollView scrollView;
     public LinearLayout noteLinearLayout;
 
     private KeySignature keySignature;
     private PianoNote lowestPracticeNote;
     private PianoNote highestPracticeNote;
-    private List<PianoNote> notesOnStaff = new ArrayList<>();
-    private Set<PianoNote> staffLines = new ArraySet<>();
+    private List<StaffPracticeItem> practiceItemsOnStaff = new ArrayList<>();
+    private List<PianoNote> staffLines = new ArrayList<>();
     private int currentNoteIndex;
 
     private boolean hideKeySignature;
@@ -50,12 +50,10 @@ public class StaffView extends ViewGroup {
     int clefWidth;
 
     // The distance between natural notes e.g. A4 to B4
-    int staffLineSpacing;
+    public static int staffLineSpacing;
     int staffNoteHorizontalMargins = 100;
-    int visibleStaffHeight;
-    int totalStaffHeight;
-    int noteWidth;
-    private static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
+    static int visibleStaffHeight;
+    static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
 
 
 
@@ -86,11 +84,15 @@ public class StaffView extends ViewGroup {
         this.highestPracticeNote = highestPracticeNote;
     }
 
-    public void setNotesOnStaff(List<PianoNote> notesOnStaff) {
-        this.notesOnStaff = notesOnStaff;
+    public void setPracticeItemsOnStaff(List<List<PianoNote>> practiceItemsOnStaff) {
+        this.practiceItemsOnStaff.clear();
+
+        for (List itemNotes : practiceItemsOnStaff) {
+            this.practiceItemsOnStaff.add(new StaffPracticeItem(getContext(), keySignature, itemNotes));
+        }
     }
 
-    public void setStaffLines(ArraySet<PianoNote> staffLines) {
+    public void setStaffLines(List<PianoNote> staffLines) {
         this.staffLines = staffLines;
     }
 
@@ -187,7 +189,7 @@ public class StaffView extends ViewGroup {
         addStaffLinesToView();
         addClefsToView();
         addNoteScrollerToView();
-        addNotesOnStaffToView();
+        addPracticeItemsOnStaffToView();
 
         // The treble clef is taller than the staff, but the clipped parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
@@ -201,6 +203,8 @@ public class StaffView extends ViewGroup {
             if (note.isWhiteKey)
                 staffLines.add(note);
         }
+        StaffLine.lineCount = staffLines.size();
+
     }
 
     private void addStaffLinesToView() {
@@ -265,18 +269,23 @@ public class StaffView extends ViewGroup {
         addView(scrollView);
     }
 
-    public void addNotesOnStaffToView() {
+    public void addPracticeItemsOnStaffToView() {
         noteLinearLayout.removeAllViews();
-        for (PianoNote note:notesOnStaff) {
-            addNote(note);
+        for (StaffPracticeItem item: practiceItemsOnStaff) {
+            addStaffPracticeItem(item);
         }
     }
 
+    private void addStaffPracticeItem(StaffPracticeItem item) {
+        if (item.type.equals(StaffPracticeItem.ItemType.NOTE)) {
+            addNote(item.notes.get(0));
 
+        }
+        else if (item.type.equals(StaffPracticeItem.ItemType.CHORD)){
+            addChord(item.notes);
+        }
 
-
-
-
+    }
 
 
     // TODO: 11/24/2020
@@ -285,22 +294,42 @@ public class StaffView extends ViewGroup {
 
     }
 
-    public void addNote(PianoNote note) {
-        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
+    private void addChord(ArrayList<PianoNote> notesInChord){
+        StaffPracticeItem chordItem = new StaffPracticeItem(getContext(), keySignature, notesInChord);
+
+        LinearLayout.LayoutParams chordItemParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        chordItem.setLayoutParams(chordItemParams);
+
+        chordItemParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
+
+        noteLinearLayout.addView(chordItem);
+
+    }
+
+    private void addNote(PianoNote note) {
+//        ArrayList notes = new ArrayList<PianoNote>();
+//        notes.add(PianoNote.C4);
+//        notes.add(PianoNote.E4);
+//        notes.add(PianoNote.G5);
+
+        StaffPracticeItem noteItem = new StaffPracticeItem(getContext(), keySignature, note);
+//        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
 
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.
-        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT/*visibleStaffHeight*/);
-        staffNote.setLayoutParams(staffNoteParams);
+        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        noteItem.setLayoutParams(itemParams);
 
-        staffNoteParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
+        itemParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
 
 //        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
 
 
-        noteLinearLayout.addView(staffNote);
+        noteLinearLayout.addView(noteItem);
     }
+
+
 
     protected void removeNote(PianoNote note) {
 
@@ -313,10 +342,10 @@ public class StaffView extends ViewGroup {
     }
 
     public void markNoteCorrect(int index) {
-        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
-        note.setColor(Color.GREEN);
-//        note.setAlpha(.5f);
-        note.invalidate();
+//        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
+//        note.setColor(Color.GREEN);
+////        note.setAlpha(.5f);
+//        note.invalidate();
     }
 
     public void markNoteIncorrect(int index, PianoNote incorrectNote) {
@@ -368,20 +397,16 @@ public class StaffView extends ViewGroup {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        staffLineSpacing = height / staffLines.size();
-        staffNoteHorizontalMargins = staffLineSpacing * 4;
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
+        staffLineSpacing = heightSize / staffLines.size();
         visibleStaffHeight = staffLineSpacing * 8;
-        totalStaffHeight = staffLineSpacing * PianoNote.numberOfKeysInRangeInclusive(lowestPracticeNote, highestPracticeNote);
-        noteWidth = staffLineSpacing * 3;
-
-        StaffLine.setDesiredHeight(staffLineSpacing);
-        StaffClef.setDesiredHeight(visibleStaffHeight);
-        StaffNote.setDesiredHeight(visibleStaffHeight);
+        staffNoteHorizontalMargins = staffLineSpacing * 4;
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
@@ -479,11 +504,12 @@ public class StaffView extends ViewGroup {
 
         // Adjust everything that was originally set in addNote because when using fragments,
         // there's no (intuitive) way to find the dimensions of a view within that fragment
-        for (int i=0;i<noteLinearLayout.getChildCount();i++) {
-            StaffNote staffNote = (StaffNote) noteLinearLayout.getChildAt(i);
-
-            staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(staffNote.note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
-        }
+//        for (int i=0;i<noteLinearLayout.getChildCount();i++) {
+//            StaffPracticableItem practicableItem = (StaffPracticableItem) noteLinearLayout.getChildAt(i);
+//
+//            practicableItem.layout(left, top, right, bottom);
+//            practicableItem.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(practicableItem.note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
+//        }
 
         // Again, not sure if this is the right place for it, but on rotation,
         // no dimensions for notes are set, so the ScrollView always returns to the beginning
@@ -491,10 +517,8 @@ public class StaffView extends ViewGroup {
         // Apparently if you set an id for noteLinearLayout and set the data before layout,
         // it will retain the scroll position. Didn't have immediate success, so I'm not going to
         // waste time on this right now.
-        if (noteLinearLayout.getChildCount()!=0) {
-            scrollToNote(currentNoteIndex);
-            markPreviousNotesCorrect();
-        }
+//        if (noteLinearLa
+//        }
 
     }
 

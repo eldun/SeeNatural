@@ -248,6 +248,14 @@ public class StaffViewModel extends ViewModel {
         return practicableNotes.get(randomInt);
     }
 
+    public void addChordToStaff(List chordNotes) {
+        List tempPracticeItemsOnStaff = new ArrayList();
+        tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
+        tempPracticeItemsOnStaff.add(chordNotes);
+        practiceItemsOnStaff.setValue(tempPracticeItemsOnStaff);
+    }
+
+    // Notes are treated as one-note chords
     public void addNoteToStaff(PianoNote note) {
 
         List practiceItem = new ArrayList();
@@ -255,9 +263,9 @@ public class StaffViewModel extends ViewModel {
         addChordToStaff(practiceItem);
     }
 
-    public void addAllPracticableNotesToStaff() {
-        setNotesOnStaff(practicableNotes);
-    }
+//    public void addAllPracticableNotesToStaff() {
+//        setPracticeItemsOnStaff(practicableNotes);
+//    }
 
     public void onCorrectNote(){
         currentNoteIndex ++;

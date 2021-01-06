@@ -44,7 +44,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         super.onCreate(savedInstanceState);
 
         readingViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingViewModel.class);
-        viewModel = new ViewModelProvider(this).get(StaffViewModel.class);
+        viewModel = new ViewModelProvider(requireParentFragment()).get(StaffViewModel.class);
         pianoViewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
 
         setViewModelFieldsFromPreferences();
@@ -313,6 +313,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(LOG_TAG, "createView");
+
+        super.onCreate(savedInstanceState);
 
         binding = FragmentStaffBinding.inflate(inflater, container, false);
         return binding.getRoot();

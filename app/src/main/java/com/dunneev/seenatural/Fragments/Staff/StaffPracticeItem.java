@@ -20,15 +20,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StaffPracticeItem extends ViewGroup {
-
     private static final String LOG_TAG = StaffPracticeItem.class.getSimpleName();
 
+    public enum ItemType {
+        NOTE,
+        CHORD
+    }
+
+    public final ItemType type;
     private KeySignature keySignature;
-    private ArrayList<PianoNote> notes = new ArrayList<>();
+    public ArrayList<PianoNote> notes = new ArrayList<>();
+
+
 
 
     public StaffPracticeItem(Context context, KeySignature keySignature, PianoNote note) {
         super(context);
+        type = ItemType.NOTE;
         this.keySignature = keySignature;
         this.notes.add(note);
         init();
@@ -36,6 +44,7 @@ public class StaffPracticeItem extends ViewGroup {
 
     public StaffPracticeItem(Context context, KeySignature keySignature, List<PianoNote> notes) {
         super(context);
+        type = ItemType.CHORD;
         this.keySignature = keySignature;
         this.notes = (ArrayList<PianoNote>) notes;
         init();

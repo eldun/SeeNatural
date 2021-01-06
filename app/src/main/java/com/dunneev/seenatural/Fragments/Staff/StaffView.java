@@ -38,8 +38,8 @@ public class StaffView extends ViewGroup {
     private KeySignature keySignature;
     private PianoNote lowestPracticeNote;
     private PianoNote highestPracticeNote;
-    private List<PianoNote> notesOnStaff = new ArrayList<>();
-    private Set<PianoNote> staffLines = new ArraySet<>();
+    private List<StaffPracticeItem> practiceItemsOnStaff = new ArrayList<>();
+    private List<PianoNote> staffLines = new ArrayList<>();
     private int currentNoteIndex;
 
     private boolean hideKeySignature;
@@ -84,11 +84,15 @@ public class StaffView extends ViewGroup {
         this.highestPracticeNote = highestPracticeNote;
     }
 
-    public void setNotesOnStaff(List<PianoNote> notesOnStaff) {
-        this.notesOnStaff = notesOnStaff;
+    public void setPracticeItemsOnStaff(List<List<PianoNote>> practiceItemsOnStaff) {
+        this.practiceItemsOnStaff.clear();
+
+        for (List itemNotes : practiceItemsOnStaff) {
+            this.practiceItemsOnStaff.add(new StaffPracticeItem(getContext(), keySignature, itemNotes));
+        }
     }
 
-    public void setStaffLines(ArraySet<PianoNote> staffLines) {
+    public void setStaffLines(List<PianoNote> staffLines) {
         this.staffLines = staffLines;
     }
 
@@ -185,7 +189,7 @@ public class StaffView extends ViewGroup {
         addStaffLinesToView();
         addClefsToView();
         addNoteScrollerToView();
-        addNotesOnStaffToView();
+        addPracticeItemsOnStaffToView();
 
         // The treble clef is taller than the staff, but the clipped parts should still be visible.
         // The bounding box (which sets the font size) is only as tall as the staff.
@@ -265,18 +269,23 @@ public class StaffView extends ViewGroup {
         addView(scrollView);
     }
 
-    public void addNotesOnStaffToView() {
+    public void addPracticeItemsOnStaffToView() {
         noteLinearLayout.removeAllViews();
-        for (PianoNote note:notesOnStaff) {
-            addNote(note);
+        for (StaffPracticeItem item: practiceItemsOnStaff) {
+            addStaffPracticeItem(item);
         }
     }
 
+    private void addStaffPracticeItem(StaffPracticeItem item) {
+        if (item.type.equals(StaffPracticeItem.ItemType.NOTE)) {
+            addNote(item.notes.get(0));
 
+        }
+        else if (item.type.equals(StaffPracticeItem.ItemType.CHORD)){
+            addChord(item.notes);
+        }
 
-
-
-
+    }
 
 
     // TODO: 11/24/2020
@@ -285,28 +294,42 @@ public class StaffView extends ViewGroup {
 
     }
 
-    public void addNote(PianoNote note) {
+    private void addChord(ArrayList<PianoNote> notesInChord){
+        StaffPracticeItem chordItem = new StaffPracticeItem(getContext(), keySignature, notesInChord);
+
+        LinearLayout.LayoutParams chordItemParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        chordItem.setLayoutParams(chordItemParams);
+
+        chordItemParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
+
+        noteLinearLayout.addView(chordItem);
+
+    }
+
+    private void addNote(PianoNote note) {
 //        ArrayList notes = new ArrayList<PianoNote>();
 //        notes.add(PianoNote.C4);
 //        notes.add(PianoNote.E4);
 //        notes.add(PianoNote.G5);
 
-        StaffPracticeItem item = new StaffPracticeItem(getContext(), keySignature, note);
+        StaffPracticeItem noteItem = new StaffPracticeItem(getContext(), keySignature, note);
 //        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
 
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.
         LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        item.setLayoutParams(itemParams);
+        noteItem.setLayoutParams(itemParams);
 
         itemParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
 
 //        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
 
 
-        noteLinearLayout.addView(item);
+        noteLinearLayout.addView(noteItem);
     }
+
+
 
     protected void removeNote(PianoNote note) {
 

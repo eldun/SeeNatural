@@ -41,7 +41,9 @@ public class ReadingViewModel extends ViewModel {
         if (notePressed.equals(itemsOnStaff.get(currentItemIndex).get(0), isSingleOctaveMode)) {
             return true;
         }
+
         return false;
+//        if (itemsOnStaff.get(currentItemIndex).contains(notePressed))
 
     }
 

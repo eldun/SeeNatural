@@ -16,7 +16,6 @@ import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
-import com.dunneev.seenatural.Fragments.Piano.PianoView;
 import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
 import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.R;
@@ -251,9 +250,11 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 //
         final Observer<List<List<PianoNote>>> practiceItemsOnStaffObserver = new Observer<List<List<PianoNote>>>() {
             @Override
-            public void onChanged(ArrayList<PianoNote> notesOnStaff) {
-                binding.staffView.setNotesOnStaff(notesOnStaff);
-                binding.staffView.addNotesOnStaffToView();
+            public void onChanged(List<List<PianoNote>> practiceItemsOnStaff) {
+                if (binding != null) {
+                    binding.staffView.setPracticeItemsOnStaff(practiceItemsOnStaff);
+                    binding.staffView.addPracticeItemsOnStaffToView();
+                }
             }
         };
 

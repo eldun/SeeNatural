@@ -25,5 +25,21 @@
         android:key="@string/staff_high_practice_note_key"
         android:summary="%s"
         android:title="High practice note" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/hide_treble_clef_key"
+        android:title="Hide Treble Clef" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/hide_treble_clef_lines_key"
+        android:title="Hide Treble Clef Lines" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/hide_bass_clef_key"
+        android:title="Hide Bass Clef" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/hide_bass_clef_lines_key"
+        android:title="Hide Bass Clef Lines" />
 
 </PreferenceScreen>

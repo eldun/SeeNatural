@@ -56,7 +56,6 @@ public class StaffView extends ViewGroup {
     static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
 
 
-
     public KeySignature getKeySignature() {
         return keySignature;
     }
@@ -209,8 +208,8 @@ public class StaffView extends ViewGroup {
 
     private void addStaffLinesToView() {
         StaffLine line;
-//        StaffLine.hideTrebleClefLines = hideTrebleClefLines;
-//        StaffLine.hideBassClefLines = hideBassClefLines;
+        StaffLine.hideTrebleClefLines = hideTrebleClefLines;
+        StaffLine.hideBassClefLines = hideBassClefLines;
 
 
         for (PianoNote note: staffLines) {
@@ -230,10 +229,8 @@ public class StaffView extends ViewGroup {
         Log.i(LOG_TAG, "keySignature: " + keySignature);
 
 
-
-        StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.treble), keySignature, hideKeySignature);
-
-        StaffClef bassClef = new StaffClef(getContext(), getResources().getString(R.string.bass), keySignature, hideKeySignature);
+        StaffClef trebleClef = new StaffClef(getContext(), getResources().getString(R.string.treble), keySignature, hideTrebleClef, hideKeySignature);
+        StaffClef bassClef = new StaffClef(getContext(), getResources().getString(R.string.bass), keySignature, hideBassClef, hideKeySignature);
 
         trebleClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         bassClef.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));

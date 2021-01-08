@@ -182,7 +182,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private void setUpSoundPlayer() {
 
 
-        soundPlayer.loadPianoNoteWavAssets(assetManager, viewModel.getLowestPracticeNote(), viewModel.numberOfKeys);
+        soundPlayer.loadPianoNoteWavAssets(assetManager, viewModel.getLowNote(), viewModel.getHighNote());
         soundPlayer.setUpAudioStream();
 
     }

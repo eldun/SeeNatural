@@ -296,7 +296,7 @@ public enum PianoNote {
 
         int whiteKeyCount = 0;
 
-        for (int i = lowNote.absoluteKeyIndex; i < highNote.absoluteKeyIndex; i++) {
+        for (int i = lowNote.absoluteKeyIndex; i <= highNote.absoluteKeyIndex; i++) {
             if (PianoNote.valueOfAbsoluteKeyIndex(i).isWhiteKey) {
                 whiteKeyCount++;
             }

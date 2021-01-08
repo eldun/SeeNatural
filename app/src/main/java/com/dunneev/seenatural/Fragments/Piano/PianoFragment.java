@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.Fragments.Reading.ReadingFragment;
 import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.Fragments.Staff.StaffViewModel;
 import com.dunneev.seenatural.R;
@@ -40,8 +41,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Create a ViewModel the first time the system calls an activity's onCreate() method.
-        // Re-created activities receive the same MyViewModel instance created by the first activity.
+
 
 
         readingViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingViewModel.class);
@@ -69,7 +69,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     }
 
     private void setUpObservables() {
-
 
 
         final Observer<PianoNote> correctKeyPressedObserver = new Observer<PianoNote>() {
@@ -140,9 +139,9 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
             @Override
             public void onClick(View v) {
                 if (!binding.toggleHighNoteButton.isChecked())
-                    viewModel.setHighestPracticeNote(PianoNote.C6);
+                    viewModel.setHighNote(PianoNote.C6);
                 else
-                    viewModel.setHighestPracticeNote(PianoNote.C8);
+                    viewModel.setHighNote(PianoNote.C8);
             }
         });
 
@@ -155,9 +154,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         PianoView.setBlackKeyUpColor(viewModel.blackKeyUpColor);
         PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
 
-        binding.pianoview.setLowestPracticeNote(viewModel.getLowestPracticeNote());
-        binding.pianoview.setHighestPracticeNote(viewModel.getHighestPracticeNote());
-        viewModel.populatePianoNoteArrays();
+        binding.pianoview.setLowestPracticeNote(viewModel.getLowNote());
+        binding.pianoview.setHighestPracticeNote(viewModel.getHighNote());
 
 
 
@@ -204,7 +202,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
         viewModel.keyDown(note);
 
-        int relativePianoKeyIndex = note.absoluteKeyIndex - viewModel.getLowestPracticeNote().absoluteKeyIndex;
+        int relativePianoKeyIndex = note.absoluteKeyIndex - viewModel.getLowNote().absoluteKeyIndex;
 
 
         // TODO: 11/23/2020 Play note depending on StaffNote, not PianoKey (especially if in single octave mode)

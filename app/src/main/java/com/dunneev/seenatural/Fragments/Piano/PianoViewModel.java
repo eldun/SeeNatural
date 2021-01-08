@@ -19,15 +19,13 @@ public class PianoViewModel extends ViewModel {
 
 
     // todo: set piano note range based on options selected
-    private MutableLiveData<PianoNote> lowestPracticeNote = new MutableLiveData<PianoNote>();
-    private MutableLiveData<PianoNote> highestPracticeNote  = new MutableLiveData<PianoNote>();
+    private PianoNote lowNote;
+    private PianoNote highNote;
 
     private MutableLiveData<Boolean> isSingleOctaveMode = new MutableLiveData<Boolean>();
 
     private MutableLiveData<PianoNote> keyPressed = new MutableLiveData<>();
     private MutableLiveData<PianoNote> keyReleased = new MutableLiveData<>();
-
-    public int numberOfKeys;
 
     public ArrayList<PianoNote> pianoNotes = new ArrayList<>();
     public ArrayList<PianoNote> whitePianoNotes = new ArrayList<>();
@@ -121,5 +119,21 @@ public class PianoViewModel extends ViewModel {
 
     public void onIncorrectKeyPressed() {
         correctKeyPressed.setValue(false);
+    }
+
+    public void setLowNote(PianoNote lowNote) {
+        this.lowNote = lowNote;
+    }
+
+    public void setHighNote(PianoNote highNote) {
+        this.highNote = highNote;
+    }
+
+    public PianoNote getLowNote() {
+        return this.lowNote;
+    }
+
+    public PianoNote getHighNote() {
+        return this.highNote;
     }
 }

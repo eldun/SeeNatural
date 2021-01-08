@@ -275,7 +275,10 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
+    // This includes every possible *note* in the specified range. That includes enharmonic notes,
+    // e.g. D_Sharp_4 and E_Flat_4. While these have same pitch and key, they are discrete notes.
     public static List<PianoNote> notesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+
         List<PianoNote> notes = new ArrayList<>();
         for (int i = lowNote.storedOrdinal; i <= highNote.storedOrdinal; i++) {
             notes.add(valueOfStoredOrdinal(i));

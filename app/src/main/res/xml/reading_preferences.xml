@@ -3,6 +3,30 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="@string/single_octave_mode_key"
+        android:key="@string/reading_single_octave_mode_key"
         android:title="Single-octave mode" />
+    <com.dunneev.seenatural.Utilities.KeySignaturePreference
+        android:id="@+id/readingKeySignaturePreference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:defaultValue="@string/ReadingKeySignatureDefault"
+        android:key="@string/reading_key_signature_key"
+        android:summary="%s"
+        android:title="Key Signature" />
+    <com.dunneev.seenatural.Utilities.NotePreference
+        android:id="@+id/readingLowPracticeNotePreference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:defaultValue="@string/PianoLowNoteDefault"
+        android:key="@string/staff_low_note_key"
+        android:summary="%s"
+        android:title="Low practice note" />
+    <com.dunneev.seenatural.Utilities.NotePreference
+        android:id="@+id/readingHighPracticeNotePreference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:defaultValue="@string/PianoHighNoteDefault"
+        android:key="@string/staff_high_note_key"
+        android:summary="%s"
+        android:title="High practice note" />
 </PreferenceScreen>

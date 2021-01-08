@@ -60,7 +60,7 @@ public class ReadingViewModel extends ViewModel {
         }
 
         // todo: adapt to chords
-        if (notePressed.equals(itemsOnStaff.get(currentItemIndex).get(0), isSingleOctaveMode)) {
+        if (notePressed.isEquivalentTo(itemsOnStaff.get(currentItemIndex).get(0), isSingleOctaveMode)) {
             return true;
         }
 

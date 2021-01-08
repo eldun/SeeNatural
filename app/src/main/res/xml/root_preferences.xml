@@ -3,6 +3,11 @@
 
 
     <Preference
+        android:id="@+id/ReadingSettingsPreference"
+        android:fragment="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
+        android:key="@string/reading_settings_key"
+        android:title="Sight Reading Settings"></Preference>
+    <Preference
         android:id="@+id/PianoSettingsPreference"
         android:fragment="com.dunneev.seenatural.Fragments.Piano.PianoSettingsFragment"
         android:key="@string/piano_settings_key"
@@ -12,11 +17,5 @@
         android:fragment="com.dunneev.seenatural.Fragments.Staff.StaffSettingsFragment"
         android:key="@string/staff_settings_key"
         android:title="Staff Settings"></Preference>
-
-    <Preference
-        android:id="@+id/ReadingSettingsPreference"
-        android:fragment="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
-        android:key="@string/reading_settings_key"
-        android:title="Sight Reading Settings"></Preference>
 
 </PreferenceScreen>

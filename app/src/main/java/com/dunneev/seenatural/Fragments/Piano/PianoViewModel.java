@@ -1,14 +1,12 @@
 package com.dunneev.seenatural.Fragments.Piano;
 
 import android.graphics.Color;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.dunneev.seenatural.Enums.PianoNote;
 
-import java.net.HttpCookie;
 import java.util.ArrayList;
 
 public class PianoViewModel extends ViewModel {

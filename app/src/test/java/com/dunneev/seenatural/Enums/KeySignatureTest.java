@@ -1,4 +1,4 @@
-package com.dunneev.seenatural;
+package com.dunneev.seenatural.Enums;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;

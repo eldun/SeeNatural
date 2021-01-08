@@ -1,4 +1,4 @@
-package com.dunneev.seenatural.Activities.SightReading;
+package com.dunneev.seenatural;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
@@ -10,21 +10,10 @@ import static org.junit.Assert.assertThat;
 
 public class KeySignatureTest {
 
-    @Test
-    public void getRelativeKey() {
-        for (KeySignature keySig : KeySignature.values()) {
-            if (keySig.isMajor) {
-                assertThat(keySig.scaleNotes[5], is(keySig.getRelativeKey().label));
-            }
 
-            else if (keySig.isMinor) {
-                assertThat(keySig.scaleNotes[2], is(keySig.getRelativeKey().label));
-            }
-        }
-    }
 
     @Test
-    public void containsNote() {
+    public void ContainsNote_CMajorScale_ContainsCMajorScaleNotes() {
         assertThat(KeySignature.C_MAJOR.containsNote(PianoNote.C4), is(true));
         assertThat(KeySignature.C_MAJOR.containsNote(PianoNote.C_SHARP_5), is(false));
         assertThat(KeySignature.C_MAJOR.containsNote(PianoNote.D5), is(true));
@@ -36,9 +25,6 @@ public class KeySignatureTest {
         assertThat(KeySignature.C_MAJOR.containsNote(PianoNote.A5), is(true));
         assertThat(KeySignature.C_MAJOR.containsNote(PianoNote.A_SHARP_0), is(false));
         assertThat(KeySignature.C_MAJOR.containsNote(PianoNote.B_FLAT_0), is(false));
-
-
     }
-
 
 }

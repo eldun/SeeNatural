@@ -30,37 +30,29 @@
 
     <!-- Settings -->
     <string name="piano_settings_key">PianoSettings</string>
-    <string name="piano_low_practice_note_key">PianoLowPracticeNote</string>
-    <string name="piano_high_practice_note_key">PianoHighPracticeNote</string>
+    <string name="piano_low_note_key">PianoLowNote</string>
+    <string name="piano_high_note_key">PianoHighNote</string>
 
 
 
     <string name="staff_settings_key">StaffSettings</string>
-    <string name="staff_key_signature_key">StaffKeySignature</string>
+    <string name="staff_low_note_key">StaffLowNote</string>
+    <string name="staff_high_note_key">StaffHighNote</string>
     <string name="staff_hide_key_signature_key">StaffHideKeySignature</string>
-    <string name="hide_bass_clef_key">HideBassClef</string>
-    <string name="hide_bass_clef_lines_key">HideBassClefLines</string>
-    <string name="hide_treble_clef_key">HideTrebleClef</string>
-    <string name="hide_treble_clef_lines_key">HideTrebleClefLines</string>
-    <string name="generate_accidentals_key">GenerateAccidentals</string>
-    <string name="generate_flats_key">GenerateFlats</string>
-    <string name="generate_naturals_key">GenerateNaturals</string>
-    <string name="generate_sharps_key">GenerateSharps</string>
-    <string name="staff_low_practice_note_key">StaffLowPracticeNote</string>
-    <string name="staff_high_practice_note_key">StaffHighPracticeNote</string>
+    <string name="staff_hide_bass_clef_key">HideBassClef</string>
+    <string name="staff_hide_bass_clef_lines_key">HideBassClefLines</string>
+    <string name="staff_hide_treble_clef_key">HideTrebleClef</string>
+    <string name="staff_hide_treble_clef_lines_key">HideTrebleClefLines</string>
+
+
 
     <string name="reading_settings_key">ReadingSettings</string>
-    <string name="single_octave_mode_key">SingleOctaveMode</string>
-
-
-
-
-
-
-
-
-
-
+    <string name="reading_single_octave_mode_key">SingleOctaveMode</string>
+    <string name="reading_key_signature_key">ReadingKeySignature</string>
+    <string name="reading_generate_accidentals_key">GenerateAccidentals</string>
+    <string name="reading_generate_flats_key">GenerateFlats</string>
+    <string name="reading_generate_naturals_key">GenerateNaturals</string>
+    <string name="reading_generate_sharps_key">GenerateSharps</string>
 
 
 
@@ -83,12 +75,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <bool name="ReadingSingleOctaveModeDefault">true</bool>
+    <string name="ReadingKeySignatureDefault">Cmaj / Amin</string>
 
-  <string name="PianoLowPracticeNoteDefault">C4</string>
-    <string name="PianoHighPracticeNoteDefault">C6</string>
-    <string name="StaffKeySignatureDefault">Cmaj / Amin</string>
-    <string name="StaffLowPracticeNoteDefault">A0</string>
-    <string name="StaffhighPracticeNoteDefault">C8</string>
+
+    <string name="PianoLowNoteDefault">C4</string>
+    <string name="PianoHighNoteDefault">C6</string>
+
+    <string name="StaffLowNoteDefault">A0</string>
+    <string name="StaffHighNoteDefault">C8</string>
+
+
 
 
 </resources>

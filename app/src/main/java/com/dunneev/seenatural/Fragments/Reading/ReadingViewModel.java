@@ -44,7 +44,7 @@ public class ReadingViewModel extends ViewModel {
 
     public List<PianoNote> getAllNotesInStaffPracticeRangeDescending() {
 
-        List<PianoNote> allNotesInStaffRangeDescending = PianoNote.NotesInRangeInclusive(lowPracticeNote, highPracticeNote);
+        List<PianoNote> allNotesInStaffRangeDescending = PianoNote.notesInRangeInclusive(lowPracticeNote, highPracticeNote);
         Collections.reverse(allNotesInStaffRangeDescending);
         return allNotesInStaffRangeDescending;
     }

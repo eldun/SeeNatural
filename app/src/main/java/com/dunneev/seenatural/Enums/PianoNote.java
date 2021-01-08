@@ -275,7 +275,7 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
-    public static List<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+    public static List<PianoNote> notesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
         List<PianoNote> notes = new ArrayList<>();
         for (int i = lowNote.storedOrdinal; i <= highNote.storedOrdinal; i++) {
             notes.add(valueOfStoredOrdinal(i));

@@ -106,26 +106,6 @@ public class PianoViewModel extends ViewModel {
     }
 
 
-    // TODO: 12/15/2020 Move this to PianoView or something
-    public void populatePianoNoteArrays() {
-        numberOfKeys = PianoNote.numberOfKeysInRangeInclusive(getLowestPracticeNote(), getHighestPracticeNote());
-
-        PianoNote note;
-        for (int i = 0; i < numberOfKeys; i++) {
-
-            note = PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.getValue().absoluteKeyIndex+i);
-
-            pianoNotes.add(note);
-            if (note.isWhiteKey) {
-                whitePianoNotes.add(note);
-            }
-            else
-                blackPianoNotes.add(note);
-        }
-        PianoKey.whiteCount = whitePianoNotes.size();
-        PianoKey.blackCount = blackPianoNotes.size();
-    }
-
     // Do processing of data here in the ViewModel, UI management in the fragment.
     public void keyDown(PianoNote note) {
         setKeyPressed(note);

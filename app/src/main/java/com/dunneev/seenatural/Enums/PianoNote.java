@@ -325,13 +325,13 @@ public enum PianoNote {
                 return false;
             }
         else {
-            if (this.pitch == note.pitch) {
+            if (this.pitch.equals(note.pitch)) {
                 return true;
             }
             if (this.enharmonicEquivalentOrdinal > 0)
             {
-                return valueOfStoredOrdinal(this.enharmonicEquivalentOrdinal).pitch ==
-                        valueOfStoredOrdinal(note.storedOrdinal).pitch;
+                return valueOfStoredOrdinal(this.enharmonicEquivalentOrdinal).pitch.equals(
+                        valueOfStoredOrdinal(note.storedOrdinal).pitch);
 
             }
             else

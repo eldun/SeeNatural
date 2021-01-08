@@ -34,7 +34,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
     private StaffViewModel viewModel;
     private PianoViewModel pianoViewModel;
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor sharedPreferencesEditor;
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -47,44 +46,29 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         pianoViewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
 
         setViewModelFieldsFromPreferences();
-        viewModel.generatePracticableNoteList();
         setUpObservables();
 
     }
 
     private void setViewModelFieldsFromPreferences() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        sharedPreferencesEditor = sharedPreferences.edit();
 
-        KeySignature keySignature = KeySignature.valueOfString(sharedPreferences.getString(getResources().getString(R.string.staff_key_signature_key), KeySignature.C_MAJOR.toString()));
+
+        // Key signature is more of a sight-reading option than an aesthetic staff option
+        // which is why the pref itself is under sight reading options
+        KeySignature keySignature = KeySignature.valueOfString(sharedPreferences.getString(getResources().getString(R.string.reading_key_signature_key), KeySignature.C_MAJOR.toString()));
+
         boolean hideKeySignature = sharedPreferences.getBoolean(getResources().getString(R.string.staff_hide_key_signature_key), false);
 
-        boolean hideTrebleClef = sharedPreferences.getBoolean(getResources().getString(R.string.hide_treble_clef_key), false);
-        boolean hideTrebleClefLines = sharedPreferences.getBoolean(getResources().getString(R.string.hide_treble_clef_lines_key), false);
-        boolean hideBassClef = sharedPreferences.getBoolean(getResources().getString(R.string.hide_bass_clef_key), false);
-        boolean hideBassClefLines = sharedPreferences.getBoolean(getResources().getString(R.string.hide_bass_clef_lines_key), false);
+        boolean hideTrebleClef = sharedPreferences.getBoolean(getResources().getString(R.string.staff_hide_treble_clef_key), false);
+        boolean hideTrebleClefLines = sharedPreferences.getBoolean(getResources().getString(R.string.staff_hide_treble_clef_lines_key), false);
+        boolean hideBassClef = sharedPreferences.getBoolean(getResources().getString(R.string.staff_hide_bass_clef_key), false);
+        boolean hideBassClefLines = sharedPreferences.getBoolean(getResources().getString(R.string.staff_hide_bass_clef_lines_key), false);
 
-        // Staff preferences are set up so that the flats, naturals, and sharps preferences are grayed out when generateAccidentals is false.
-        // However, this does not change their value in sharedPrefs. That's the reason for the conditionals here. I could change them to false in
-        // StaffSettingsFragment, but I think the persistence of what was selected is more user friendly.
-        boolean generateAccidentals = sharedPreferences.getBoolean(getResources().getString(R.string.generate_accidentals_key), true);
-        boolean generateFlats;
-        boolean generateNaturals;
-        boolean generateSharps;
-        if (generateAccidentals) {
-            generateFlats = sharedPreferences.getBoolean(getResources().getString(R.string.generate_flats_key), true);
-            generateNaturals = sharedPreferences.getBoolean(getResources().getString(R.string.generate_naturals_key), true);
-            generateSharps = sharedPreferences.getBoolean(getResources().getString(R.string.generate_sharps_key), true);
-        }
-        else {
-            generateFlats = generateNaturals = generateSharps = false;
-        }
+        PianoNote lowNote =  PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_low_note_key), getResources().getString(R.string.StaffLowNoteDefault)));
+        PianoNote highNote = PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_high_note_key), getResources().getString(R.string.PianoHighNoteDefault)));
 
-
-        PianoNote lowNote =  PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_low_practice_note_key), ""));
-        PianoNote highNote = PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_high_practice_note_key), ""));
-        
-        viewModel.setSelectedKeySignature(keySignature);
+        viewModel.setKeySignature(keySignature);
         viewModel.setHideKeySignature(hideKeySignature);
         
         viewModel.setHideTrebleClef(hideTrebleClef);
@@ -92,13 +76,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         viewModel.setHideBassClef(hideBassClef);
         viewModel.setHideBassClefLines(hideBassClefLines);
         
-        viewModel.setGenerateAccidentals(generateAccidentals);
-        viewModel.setGenerateFlats(generateFlats);
-        viewModel.setGenerateNaturals(generateNaturals);
-        viewModel.setGenerateSharps(generateSharps);
-        
-        viewModel.setLowestStaffPracticeNote(lowNote);
-        viewModel.setHighestStaffPracticeNote(highNote);
+        viewModel.setLowStaffNote(lowNote);
+        viewModel.setHighStaffNote(highNote);
 
     }
 
@@ -313,7 +292,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(LOG_TAG, "createView");
+        Log.i(LOG_TAG, "onCreateView");
 
         super.onCreate(savedInstanceState);
 
@@ -381,15 +360,13 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 //            }
 //        });
         regenerateStaff();
-
-
     }
 
 
     private void setUpStaff() {
         Log.i(LOG_TAG, "setUpStaff()");
 
-        binding.staffView.setKeySignature(viewModel.getSelectedKeySignature());
+        binding.staffView.setKeySignature(viewModel.getKeySignature());
         binding.staffView.setHideKeySignature(viewModel.getHideKeySignature());
 
         binding.staffView.setHideTrebleClef(viewModel.getHideTrebleClef());
@@ -397,8 +374,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.staffView.setHideBassClef(viewModel.getHideBassClef());
         binding.staffView.setHideBassClefLines(viewModel.getHideBassClefLines());
 
-        binding.staffView.setLowestPracticeNote(viewModel.getLowestStaffPracticeNote());
-        binding.staffView.setHighestPracticeNote(viewModel.getHighestStaffPracticeNote());
+        binding.staffView.setLowestPracticeNote(viewModel.getLowStaffNote());
+        binding.staffView.setHighestPracticeNote(viewModel.getHighStaffNote());
 
         binding.staffView.setPracticeItemsOnStaff(viewModel.getPracticeItemsOnStaff());
         binding.staffView.addPracticeItemsOnStaffToView();

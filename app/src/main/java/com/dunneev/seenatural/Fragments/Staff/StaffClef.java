@@ -20,8 +20,10 @@ public class StaffClef extends View {
     private static final String LOG_TAG = StaffClef.class.getSimpleName();
 
     private String clef;
+    private boolean hideClef;
     private TextDrawable clefDrawable;
     private KeySignature keySignature;
+    private boolean hideKeySignature;
     private List<TextDrawable> symbolList = new ArrayList<>();
     int clefWidth;
     private static int desiredWidth = 500;
@@ -37,10 +39,12 @@ public class StaffClef extends View {
         return clef;
     }
 
-    public StaffClef(Context context, String clef, KeySignature keySignature) {
+    public StaffClef(Context context, String clef, KeySignature keySignature, boolean hideClef, boolean hideKeySignature) {
         super(context);
         this.clef = clef;
         this.keySignature = keySignature;
+        this.hideClef = hideClef;
+        this.hideKeySignature = hideKeySignature;
 
         init();
     }
@@ -59,8 +63,18 @@ public class StaffClef extends View {
     }
 
     private void init() {
-        setClefDrawable();
-        populateSymbolList();
+        if (hideClef) {
+            this.clefDrawable = new TextDrawable("", TextDrawable.PositioningInBounds.DEFAULT);
+        }
+
+        else
+            setClefDrawable();
+
+        if (!hideKeySignature)
+            populateSymbolList();
+    }
+
+    private void setEmptyClefDrawable() {
     }
 
     private void populateSymbolList() {
@@ -100,7 +114,9 @@ public class StaffClef extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        clefWidth = (int) (desiredHeight * clefDrawable.getAspectRatio());
+        if (clefDrawable != null)
+            clefWidth = (int) (desiredHeight * clefDrawable.getAspectRatio());
+
         if (!symbolList.isEmpty()) {
             symbolWidth = desiredHeight/4;
             desiredWidth = clefWidth + (symbolWidth * (symbolList.size()));

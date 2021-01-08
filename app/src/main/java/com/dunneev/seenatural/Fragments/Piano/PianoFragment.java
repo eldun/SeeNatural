@@ -13,9 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.Fragments.Reading.ReadingFragment;
 import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.Fragments.Staff.StaffViewModel;
 import com.dunneev.seenatural.R;
@@ -40,25 +42,14 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Create a ViewModel the first time the system calls an activity's onCreate() method.
-        // Re-created activities receive the same MyViewModel instance created by the first activity.
+
 
 
         readingViewModel = new ViewModelProvider(requireParentFragment()).get(ReadingViewModel.class);
         staffViewModel = new ViewModelProvider(requireParentFragment()).get(StaffViewModel.class);
         viewModel = new ViewModelProvider(requireParentFragment()).get(PianoViewModel.class);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-
-        String lowNoteLabel = sharedPreferences.getString(getResources().getString(R.string.piano_low_practice_note_key), "");
-        String highNoteLabel = sharedPreferences.getString(getResources().getString(R.string.piano_high_practice_note_key), "");
-
-        viewModel.setLowestPracticeNote(PianoNote.valueOfLabel(lowNoteLabel));
-        viewModel.setHighestPracticeNote(PianoNote.valueOfLabel(highNoteLabel));
-
-        // todo: use shared prefs
-        viewModel.setIsSingleOctaveMode(false);
-        viewModel.populatePianoNoteArrays();
+        setViewModelFieldsFromPreferences();
 
         soundPlayer = new SoundPlayer();
         assetManager = getResources().getAssets();
@@ -68,8 +59,33 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     }
 
-    private void setUpObservables() {
+    private void setViewModelFieldsFromPreferences() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 
+        // This feels hacky, but I want to only use single octave mode if PianoFragment is contained
+        // in ReadingFragment because of how I've organized the settings menu.
+        boolean hostedByReadingFragment = getParentFragment().getClass() == ReadingFragment.class;
+
+        boolean singleOctaveMode = sharedPreferences.getBoolean(getResources().getString(R.string.reading_single_octave_mode_key), true);
+
+        String lowNoteLabel = sharedPreferences.getString(getResources().getString(R.string.piano_low_note_key), getResources().getString(R.string.PianoLowNoteDefault));
+        String highNoteLabel = sharedPreferences.getString(getResources().getString(R.string.piano_high_note_key), getResources().getString(R.string.PianoHighNoteDefault));
+
+
+        if (singleOctaveMode && hostedByReadingFragment) {
+            viewModel.setIsSingleOctaveMode(singleOctaveMode);
+        }
+
+        else
+        {
+            viewModel.setLowNote(PianoNote.valueOfLabel(lowNoteLabel));
+            viewModel.setHighNote(PianoNote.valueOfLabel(highNoteLabel));
+        }
+
+
+    }
+
+    private void setUpObservables() {
 
 
         final Observer<PianoNote> correctKeyPressedObserver = new Observer<PianoNote>() {
@@ -140,9 +156,9 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
             @Override
             public void onClick(View v) {
                 if (!binding.toggleHighNoteButton.isChecked())
-                    viewModel.setHighestPracticeNote(PianoNote.C6);
+                    viewModel.setHighNote(PianoNote.C6);
                 else
-                    viewModel.setHighestPracticeNote(PianoNote.C8);
+                    viewModel.setHighNote(PianoNote.C8);
             }
         });
 
@@ -155,9 +171,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         PianoView.setBlackKeyUpColor(viewModel.blackKeyUpColor);
         PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
 
-        binding.pianoview.setLowestPracticeNote(viewModel.getLowestPracticeNote());
-        binding.pianoview.setHighestPracticeNote(viewModel.getHighestPracticeNote());
-        viewModel.populatePianoNoteArrays();
+        binding.pianoview.setLowestPracticeNote(viewModel.getLowNote());
+        binding.pianoview.setHighestPracticeNote(viewModel.getHighNote());
 
 
 
@@ -182,7 +197,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private void setUpSoundPlayer() {
 
 
-        soundPlayer.loadPianoNoteWavAssets(assetManager, viewModel.getLowestPracticeNote(), viewModel.numberOfKeys);
+        soundPlayer.loadPianoNoteWavAssets(assetManager, viewModel.getLowNote(), viewModel.getHighNote());
         soundPlayer.setUpAudioStream();
 
     }
@@ -204,7 +219,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
         viewModel.keyDown(note);
 
-        int relativePianoKeyIndex = note.absoluteKeyIndex - viewModel.getLowestPracticeNote().absoluteKeyIndex;
+        int relativePianoKeyIndex = note.absoluteKeyIndex - viewModel.getLowNote().absoluteKeyIndex;
 
 
         // TODO: 11/23/2020 Play note depending on StaffNote, not PianoKey (especially if in single octave mode)

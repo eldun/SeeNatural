@@ -14,6 +14,8 @@ import com.dunneev.seenatural.Enums.PianoNote;
 public class StaffLine extends View {
 
     private static final String LOG_TAG = StaffLine.class.getSimpleName();
+    public static boolean hideTrebleClefLines;
+    public static boolean hideBassClefLines;
 
     private static int desiredWidth = 100;
     private static int desiredHeight = 100;
@@ -53,6 +55,8 @@ public class StaffLine extends View {
 
     private void assignVisibility() {
 
+
+        if (!hideBassClefLines) {
             if (note == PianoNote.G2 ||
                     note == PianoNote.B2 ||
                     note == PianoNote.D3 ||
@@ -62,7 +66,10 @@ public class StaffLine extends View {
                 setVisibility(VISIBLE);
                 return;
             }
-            else if (note == PianoNote.E4 ||
+        }
+
+        if (!hideTrebleClefLines) {
+            if (note == PianoNote.E4 ||
                     note == PianoNote.G4 ||
                     note == PianoNote.B4 ||
                     note == PianoNote.D5 ||
@@ -71,6 +78,7 @@ public class StaffLine extends View {
                 setVisibility(VISIBLE);
                 return;
             }
+        }
 
         setVisibility(INVISIBLE);
     }

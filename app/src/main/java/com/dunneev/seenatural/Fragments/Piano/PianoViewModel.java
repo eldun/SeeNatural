@@ -1,14 +1,12 @@
 package com.dunneev.seenatural.Fragments.Piano;
 
 import android.graphics.Color;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.dunneev.seenatural.Enums.PianoNote;
 
-import java.net.HttpCookie;
 import java.util.ArrayList;
 
 public class PianoViewModel extends ViewModel {
@@ -21,15 +19,13 @@ public class PianoViewModel extends ViewModel {
 
 
     // todo: set piano note range based on options selected
-    private MutableLiveData<PianoNote> lowestPracticeNote = new MutableLiveData<PianoNote>();
-    private MutableLiveData<PianoNote> highestPracticeNote  = new MutableLiveData<PianoNote>();
+    private PianoNote lowNote;
+    private PianoNote highNote;
 
-    private MutableLiveData<Boolean> isSingleOctaveMode = new MutableLiveData<Boolean>();
+    private boolean isSingleOctaveMode;
 
     private MutableLiveData<PianoNote> keyPressed = new MutableLiveData<>();
     private MutableLiveData<PianoNote> keyReleased = new MutableLiveData<>();
-
-    public int numberOfKeys;
 
     public ArrayList<PianoNote> pianoNotes = new ArrayList<>();
     public ArrayList<PianoNote> whitePianoNotes = new ArrayList<>();
@@ -55,34 +51,15 @@ public class PianoViewModel extends ViewModel {
         this.correctKeyPressed.setValue(correctKeyPressed);
     }
 
-    public MutableLiveData<PianoNote> getMutableLiveDataLowestPracticeNote() {
-        return lowestPracticeNote;
-    }
-    public PianoNote getLowestPracticeNote() {
-        return lowestPracticeNote.getValue();
-    }
-    public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
-        this.lowestPracticeNote.setValue(lowestPracticeNote);
-    }
-
-    public MutableLiveData<PianoNote> getMutableLiveDataHighestPracticeNote() {
-        return highestPracticeNote;
-    }
-    public PianoNote getHighestPracticeNote() {
-        return highestPracticeNote.getValue();
-    }
-    public void setHighestPracticeNote(PianoNote highestPracticeNote) {
-        this.highestPracticeNote.setValue(highestPracticeNote);
-    }
-
-    public MutableLiveData<Boolean> getMutableLiveDataIsSingleOctaveMode() {
+    public boolean getIsSingleOctaveMode() {
         return isSingleOctaveMode;
     }
-    public boolean getIsSingleOctaveMode() {
-        return isSingleOctaveMode.getValue();
-    }
     public void setIsSingleOctaveMode(boolean isSingleOctaveMode) {
-        this.isSingleOctaveMode.setValue(isSingleOctaveMode);
+        this.isSingleOctaveMode = isSingleOctaveMode;
+        if (isSingleOctaveMode) {
+            this.lowNote = PianoNote.C4;
+            this.highNote = PianoNote.B4;
+        }
     }
 
     public MutableLiveData<PianoNote> getMutableLiveDataKeyPressed() {
@@ -106,26 +83,6 @@ public class PianoViewModel extends ViewModel {
     }
 
 
-    // TODO: 12/15/2020 Move this to PianoView or something
-    public void populatePianoNoteArrays() {
-        numberOfKeys = PianoNote.numberOfKeysInRangeInclusive(getLowestPracticeNote(), getHighestPracticeNote());
-
-        PianoNote note;
-        for (int i = 0; i < numberOfKeys; i++) {
-
-            note = PianoNote.valueOfAbsoluteKeyIndex(lowestPracticeNote.getValue().absoluteKeyIndex+i);
-
-            pianoNotes.add(note);
-            if (note.isWhiteKey) {
-                whitePianoNotes.add(note);
-            }
-            else
-                blackPianoNotes.add(note);
-        }
-        PianoKey.whiteCount = whitePianoNotes.size();
-        PianoKey.blackCount = blackPianoNotes.size();
-    }
-
     // Do processing of data here in the ViewModel, UI management in the fragment.
     public void keyDown(PianoNote note) {
         setKeyPressed(note);
@@ -143,5 +100,21 @@ public class PianoViewModel extends ViewModel {
 
     public void onIncorrectKeyPressed() {
         correctKeyPressed.setValue(false);
+    }
+
+    public void setLowNote(PianoNote lowNote) {
+        this.lowNote = lowNote;
+    }
+
+    public void setHighNote(PianoNote highNote) {
+        this.highNote = highNote;
+    }
+
+    public PianoNote getLowNote() {
+        return this.lowNote;
+    }
+
+    public PianoNote getHighNote() {
+        return this.highNote;
     }
 }

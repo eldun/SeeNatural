@@ -47,9 +47,9 @@ public class SoundPlayer {
     public void teardownAudioStream() { teardownAudioStreamNative(); }
 
 
-    public void loadPianoNoteWavAssets(AssetManager assetManager, PianoNote startingNote, int numberOfKeys) {
+    public void loadPianoNoteWavAssets(AssetManager assetManager, PianoNote startingNote, PianoNote endingNote) {
         PianoNote note;
-        for (int i=startingNote.absoluteKeyIndex; i<startingNote.absoluteKeyIndex+numberOfKeys; i++) {
+        for (int i=startingNote.absoluteKeyIndex; i<=endingNote.absoluteKeyIndex; i++) {
             note = PianoNote.valueOfAbsoluteKeyIndex(i);
 
             if (loadedNotes.contains(note))

@@ -4,15 +4,15 @@
 
     <com.dunneev.seenatural.Utilities.NotePreference
         android:id="@+id/PianoLowPracticeNotePreference"
-        android:defaultValue="@string/PianoLowPracticeNoteDefault"
-        android:key="@string/piano_low_practice_note_key"
+        android:defaultValue="@string/PianoLowNoteDefault"
+        android:key="@string/piano_low_note_key"
         android:summary="%s"
         android:title="Low practice note" />
 
     <com.dunneev.seenatural.Utilities.NotePreference
         android:id="@+id/PianoHighPracticeNotePreference"
-        android:defaultValue="@string/PianoHighPracticeNoteDefault"
-        android:key="@string/piano_high_practice_note_key"
+        android:defaultValue="@string/PianoHighNoteDefault"
+        android:key="@string/piano_high_note_key"
         android:summary="%s"
         android:title="High practice note" />
 

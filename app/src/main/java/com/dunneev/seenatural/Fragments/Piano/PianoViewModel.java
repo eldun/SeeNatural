@@ -22,7 +22,7 @@ public class PianoViewModel extends ViewModel {
     private PianoNote lowNote;
     private PianoNote highNote;
 
-    private MutableLiveData<Boolean> isSingleOctaveMode = new MutableLiveData<Boolean>();
+    private boolean isSingleOctaveMode;
 
     private MutableLiveData<PianoNote> keyPressed = new MutableLiveData<>();
     private MutableLiveData<PianoNote> keyReleased = new MutableLiveData<>();
@@ -51,34 +51,15 @@ public class PianoViewModel extends ViewModel {
         this.correctKeyPressed.setValue(correctKeyPressed);
     }
 
-    public MutableLiveData<PianoNote> getMutableLiveDataLowestPracticeNote() {
-        return lowestPracticeNote;
-    }
-    public PianoNote getLowestPracticeNote() {
-        return lowestPracticeNote.getValue();
-    }
-    public void setLowestPracticeNote(PianoNote lowestPracticeNote) {
-        this.lowestPracticeNote.setValue(lowestPracticeNote);
-    }
-
-    public MutableLiveData<PianoNote> getMutableLiveDataHighestPracticeNote() {
-        return highestPracticeNote;
-    }
-    public PianoNote getHighestPracticeNote() {
-        return highestPracticeNote.getValue();
-    }
-    public void setHighestPracticeNote(PianoNote highestPracticeNote) {
-        this.highestPracticeNote.setValue(highestPracticeNote);
-    }
-
-    public MutableLiveData<Boolean> getMutableLiveDataIsSingleOctaveMode() {
+    public boolean getIsSingleOctaveMode() {
         return isSingleOctaveMode;
     }
-    public boolean getIsSingleOctaveMode() {
-        return isSingleOctaveMode.getValue();
-    }
     public void setIsSingleOctaveMode(boolean isSingleOctaveMode) {
-        this.isSingleOctaveMode.setValue(isSingleOctaveMode);
+        this.isSingleOctaveMode = isSingleOctaveMode;
+        if (isSingleOctaveMode) {
+            this.lowNote = PianoNote.C4;
+            this.highNote = PianoNote.B4;
+        }
     }
 
     public MutableLiveData<PianoNote> getMutableLiveDataKeyPressed() {

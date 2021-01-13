@@ -27,10 +27,6 @@ public class PianoViewModel extends ViewModel {
     private MutableLiveData<PianoNote> keyPressed = new MutableLiveData<>();
     private MutableLiveData<PianoNote> keyReleased = new MutableLiveData<>();
 
-    public ArrayList<PianoNote> pianoNotes = new ArrayList<>();
-    public ArrayList<PianoNote> whitePianoNotes = new ArrayList<>();
-    public ArrayList<PianoNote> blackPianoNotes = new ArrayList<>();
-
     // TODO: Change colors to facilitate correct/incorrect when sight-reading
     public int whiteKeyUpColor = Color.WHITE;
     public int whiteKeyDownColor = Color.GRAY;
@@ -40,16 +36,6 @@ public class PianoViewModel extends ViewModel {
     public int blackKeyDownColor = Color.LTGRAY;
     public int blackKeyDownCorrectColor = Color.GREEN;
     public int blackKeyDownIncorrectColor = Color.RED;
-
-    public MutableLiveData<Boolean> getMutableLiveDataCorrectKeyPressed() {
-        return correctKeyPressed;
-    }
-    public boolean getCorrectKeyPressed() {
-        return correctKeyPressed.getValue();
-    }
-    public void setCorrectKeyPressed(boolean correctKeyPressed) {
-        this.correctKeyPressed.setValue(correctKeyPressed);
-    }
 
     public boolean getIsSingleOctaveMode() {
         return isSingleOctaveMode;
@@ -90,16 +76,6 @@ public class PianoViewModel extends ViewModel {
 
     public void keyUp(PianoNote note) {
         setKeyReleased(note);
-    }
-
-
-
-    public void onCorrectKeyPressed() {
-        correctKeyPressed.setValue(true);
-    }
-
-    public void onIncorrectKeyPressed() {
-        correctKeyPressed.setValue(false);
     }
 
     public void setLowNote(PianoNote lowNote) {

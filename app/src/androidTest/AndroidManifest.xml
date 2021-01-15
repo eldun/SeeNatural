@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Configure uiautomator to run in instrumented unit tests-->
+<manifest
+    package="com.dunneev.seenatural"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<!--    build.gradle minSdkVersion and this minSdkVersion are merged into
+        build/intermediates/manifest/androidTest/debug/AndroidManifest.xml-->
+    <uses-sdk
+        android:minSdkVersion="18"
+        tools:overrideLibrary="android_libs.ub_uiautomator"
+        />
+</manifest>

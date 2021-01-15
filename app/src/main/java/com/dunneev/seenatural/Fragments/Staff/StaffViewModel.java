@@ -110,7 +110,7 @@ public class StaffViewModel extends ViewModel {
 
     public List<PianoNote> getAllNotesInStaffRangeDescending() {
 
-            allNotesInStaffRangeDescending = PianoNote.NotesInRangeInclusive(getLowStaffNote(), getHighStaffNote());
+            allNotesInStaffRangeDescending = PianoNote.notesInRangeInclusive(getLowStaffNote(), getHighStaffNote());
             Collections.reverse(allNotesInStaffRangeDescending);
             return allNotesInStaffRangeDescending;
     }

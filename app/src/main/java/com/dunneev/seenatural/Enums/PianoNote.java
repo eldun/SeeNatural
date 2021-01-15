@@ -275,7 +275,10 @@ public enum PianoNote {
         return BY_FILENAME.get(filename);
     }
 
-    public static List<PianoNote> NotesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+    // This includes every possible *note* in the specified range. That includes enharmonic notes,
+    // e.g. D_Sharp_4 and E_Flat_4. While these have same pitch and key, they are discrete notes.
+    public static List<PianoNote> notesInRangeInclusive(PianoNote lowNote, PianoNote highNote) {
+
         List<PianoNote> notes = new ArrayList<>();
         for (int i = lowNote.storedOrdinal; i <= highNote.storedOrdinal; i++) {
             notes.add(valueOfStoredOrdinal(i));
@@ -296,7 +299,7 @@ public enum PianoNote {
 
         int whiteKeyCount = 0;
 
-        for (int i = lowNote.absoluteKeyIndex; i < highNote.absoluteKeyIndex; i++) {
+        for (int i = lowNote.absoluteKeyIndex; i <= highNote.absoluteKeyIndex; i++) {
             if (PianoNote.valueOfAbsoluteKeyIndex(i).isWhiteKey) {
                 whiteKeyCount++;
             }
@@ -312,7 +315,7 @@ public enum PianoNote {
     }
 
 
-    public boolean equals(PianoNote note, boolean singleOctavePractice) {
+    public boolean isEquivalentTo(PianoNote note, boolean singleOctavePractice) {
         if (!singleOctavePractice)
             if (this.storedOrdinal == note.enharmonicEquivalentOrdinal ||
                     this.absoluteKeyIndex == note.absoluteKeyIndex) {
@@ -322,13 +325,13 @@ public enum PianoNote {
                 return false;
             }
         else {
-            if (this.pitch == note.pitch) {
+            if (this.pitch.equals(note.pitch)) {
                 return true;
             }
             if (this.enharmonicEquivalentOrdinal > 0)
             {
-                return valueOfStoredOrdinal(this.enharmonicEquivalentOrdinal).pitch ==
-                        valueOfStoredOrdinal(note.storedOrdinal).pitch;
+                return valueOfStoredOrdinal(this.enharmonicEquivalentOrdinal).pitch.equals(
+                        valueOfStoredOrdinal(note.storedOrdinal).pitch);
 
             }
             else

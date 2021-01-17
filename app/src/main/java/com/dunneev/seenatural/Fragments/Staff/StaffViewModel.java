@@ -7,6 +7,7 @@ import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class StaffViewModel extends ViewModel {
     private boolean hideBassClef;
     private boolean hideBassClefLines;
 
-    public MutableLiveData<List<List<PianoNote>>> practiceItemsOnStaff = new MutableLiveData<>();
+    public MutableLiveData<List<StaffPracticeItem>> practiceItemsOnStaff = new MutableLiveData<>();
 
     public int getCurrentNoteIndex() {
         return currentNoteIndex;
@@ -93,10 +94,10 @@ public class StaffViewModel extends ViewModel {
         this.highStaffNote = highStaffNote;
     }
 
-    public MutableLiveData<List<List<PianoNote>>> getMutableLiveDataPracticeItemsOnStaff() {
+    public MutableLiveData<List<StaffPracticeItem>> getMutableLiveDataPracticeItemsOnStaff() {
         return practiceItemsOnStaff;
     }
-    public List<List<PianoNote>> getPracticeItemsOnStaff() {
+    public List<StaffPracticeItem> getPracticeItemsOnStaff() {
         if (this.practiceItemsOnStaff.getValue() == null) {
             return new ArrayList<>();
         }
@@ -104,7 +105,7 @@ public class StaffViewModel extends ViewModel {
             return this.practiceItemsOnStaff.getValue();
         }
     }
-    public void setPracticeItemsOnStaff(List<List<PianoNote>> practiceItemsOnStaff) {
+    public void setPracticeItemsOnStaff(List<StaffPracticeItem> practiceItemsOnStaff) {
         this.practiceItemsOnStaff.setValue(practiceItemsOnStaff);
     }
 
@@ -121,19 +122,20 @@ public class StaffViewModel extends ViewModel {
 //    }
 
 
-    public void addChordToStaff(List chordNotes) {
-        List tempPracticeItemsOnStaff = new ArrayList();
-        tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
-        tempPracticeItemsOnStaff.add(chordNotes);
+    public void addChordToStaff(Collection<PianoNote> chordNotes) {
+        StaffPracticeItem chordItem = new StaffPracticeItem(keySignature, chordNotes);
+        List<StaffPracticeItem> tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
+        tempPracticeItemsOnStaff.add(chordItem);
         practiceItemsOnStaff.setValue(tempPracticeItemsOnStaff);
     }
 
     // Notes are treated as one-note chords
     public void addNoteToStaff(PianoNote note) {
+        StaffPracticeItem noteItem = new StaffPracticeItem(keySignature, note);
 
-        List practiceItem = new ArrayList();
-        practiceItem.add(note);
-        addChordToStaff(practiceItem);
+        List<StaffPracticeItem> tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
+        tempPracticeItemsOnStaff.add(noteItem);
+        practiceItemsOnStaff.setValue(tempPracticeItemsOnStaff);
     }
 
 //    public void addAllPracticableNotesToStaff() {

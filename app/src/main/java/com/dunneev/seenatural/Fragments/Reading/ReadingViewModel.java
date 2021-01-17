@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.Fragments.Staff.StaffPracticeItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class ReadingViewModel extends ViewModel {
         return allNotesInStaffRangeDescending;
     }
 
-    public boolean isCorrectPress(PianoNote notePressed, List<List<PianoNote>> itemsOnStaff, int currentItemIndex) {
+    public boolean isCorrectPress(PianoNote notePressed, List<StaffPracticeItem> itemsOnStaff, int currentItemIndex) {
 
         if (itemsOnStaff.size() == 0) {
             return false;
@@ -60,7 +61,7 @@ public class ReadingViewModel extends ViewModel {
         }
 
         // todo: adapt to chords
-        if (notePressed.isEquivalentTo(itemsOnStaff.get(currentItemIndex).get(0), isSingleOctaveMode)) {
+        if (notePressed.isEquivalentTo(itemsOnStaff.get(currentItemIndex).notes.get(0), isSingleOctaveMode)) {
             return true;
         }
 

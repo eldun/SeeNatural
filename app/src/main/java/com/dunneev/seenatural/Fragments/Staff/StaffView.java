@@ -270,12 +270,6 @@ public class StaffView extends ViewGroup {
         }
     }
 
-    private void addStaffPracticeItem(StaffPracticeItem item) {
-
-
-
-    }
-
 
     // TODO: 11/24/2020
     public void highlightCurrentNote() {
@@ -289,17 +283,16 @@ public class StaffView extends ViewGroup {
 //        notes.add(PianoNote.E4);
 //        notes.add(PianoNote.G5);
 
-        // Using the view's key sig instead of the item's... I definitely don't want any key sig glitches
-        StaffPracticeItemView itemView = new StaffPracticeItemView(getContext(), this.keySignature, item);
+        StaffPracticeItemView itemView = new StaffPracticeItemView(getContext(), item);
 //        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
 
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,
         // which is why we use the natural note field to determine the position.
-        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        itemView.setLayoutParams(itemParams);
+        LinearLayout.LayoutParams itemViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        itemView.setLayoutParams(itemViewParams);
 
-        itemParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
+        itemViewParams.setMargins(0, 0, staffNoteHorizontalMargins, 0);
 
 //        staffNote.setTranslationY(noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.naturalNoteLabel)) - visibleStaffHeight + staffLineSpacing);
 
@@ -308,10 +301,6 @@ public class StaffView extends ViewGroup {
     }
 
 
-
-    protected void removeNote(PianoNote note) {
-
-    }
 
     private void markPreviousNotesCorrect() {
         for (int i=0;i<currentNoteIndex;i++){

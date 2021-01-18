@@ -20,12 +20,10 @@ public class StaffPracticeItemView extends ViewGroup {
     private static final String LOG_TAG = StaffPracticeItemView.class.getSimpleName();
 
 
-    KeySignature keySignature;
     StaffPracticeItem practiceItem;
 
-    public StaffPracticeItemView(Context context, KeySignature keySignature, StaffPracticeItem practiceItem) {
+    public StaffPracticeItemView(Context context, StaffPracticeItem practiceItem) {
         super(context);
-        this.keySignature = keySignature;
         this.practiceItem = practiceItem;
         init();
     }
@@ -35,7 +33,7 @@ public class StaffPracticeItemView extends ViewGroup {
         setClipChildren(false);
 
         for (PianoNote note : practiceItem) {
-            StaffNote staffNote = new StaffNote(getContext(), this.keySignature, note);
+            StaffNote staffNote = new StaffNote(getContext(), practiceItem.keySignature, note);
             LayoutParams staffNoteParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             staffNote.setLayoutParams(staffNoteParams);
 

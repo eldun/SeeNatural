@@ -227,12 +227,12 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 //
 //
 //
-        final Observer<List<List<PianoNote>>> practiceItemsOnStaffObserver = new Observer<List<List<PianoNote>>>() {
+        final Observer<List<StaffPracticeItem>> practiceItemsOnStaffObserver = new Observer<List<StaffPracticeItem>>() {
             @Override
-            public void onChanged(List<List<PianoNote>> practiceItemsOnStaff) {
+            public void onChanged(List<StaffPracticeItem> practiceItemsOnStaff) {
                 if (binding != null) {
                     binding.staffView.setPracticeItemsOnStaff(practiceItemsOnStaff);
-                    binding.staffView.addPracticeItemsOnStaffToView();
+//                    binding.staffView.addPracticeItemsOnStaffToView();
                 }
             }
         };
@@ -378,7 +378,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.staffView.setHighestPracticeNote(viewModel.getHighStaffNote());
 
         binding.staffView.setPracticeItemsOnStaff(viewModel.getPracticeItemsOnStaff());
-        binding.staffView.addPracticeItemsOnStaffToView();
+//        binding.staffView.addPracticeItemsOnStaffToView();
         binding.staffView.setCurrentNoteIndex(viewModel.getCurrentNoteIndex());
 //        if (!viewModel.getNotesOnStaff().isEmpty()) {
 //            binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());

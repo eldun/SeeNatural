@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.collection.ArraySet;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.R;
@@ -82,7 +81,7 @@ public class StaffClef extends View {
         if (keySignature.hasSharps) {
             for (int i=0;i< keySignature.sharpCount;i++){
                 symbolList.add(new TextDrawable(getResources().getString(R.string.char_sharp_symbol),
-                        TextDrawable.PositioningInBounds.CENTERED));
+                        TextDrawable.PositioningInBounds.CENTER));
             }
 
         }

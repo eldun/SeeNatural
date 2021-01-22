@@ -13,7 +13,7 @@ public class TextDrawable extends Drawable {
 
     public enum PositioningInBounds {
         DEFAULT,
-        CENTERED,
+        CENTER,
         LEFT,
         TOP,
         RIGHT,
@@ -81,7 +81,7 @@ public class TextDrawable extends Drawable {
                 y = drawableBounds.bottom;
                 canvas.drawText((String) text, x, y, textPaint);
                 break;
-            case CENTERED:
+            case CENTER:
 
                 textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
 //                x = drawableBounds.left + (drawableBounds.width() / 2f)  - (textBounds.width() / 2f) - textBounds.left;

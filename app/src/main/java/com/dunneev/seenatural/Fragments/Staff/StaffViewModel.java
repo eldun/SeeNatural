@@ -14,7 +14,7 @@ import java.util.List;
 public class StaffViewModel extends ViewModel {
 
 
-    private int currentNoteIndex = 0;
+    private int currentPracticeItemIndex = 0;
     public boolean incorrectKeyDown;
     public boolean correctKeyDown;
 
@@ -35,12 +35,15 @@ public class StaffViewModel extends ViewModel {
 
     public MutableLiveData<List<StaffPracticeItem>> practiceItemsOnStaff = new MutableLiveData<>();
 
-    public int getCurrentNoteIndex() {
-        return currentNoteIndex;
+    public int getCurrentPracticeItemIndex() {
+        if (getCurrentPracticeItem() == null){
+            return 0;
+        }
+
+        else
+            return getCurrentPracticeItem().index;
     }
-    public void setCurrentNoteIndex(int currentNoteIndex) {
-        this.currentNoteIndex = currentNoteIndex;
-    }
+
 
 
     public boolean getHideKeySignature() {
@@ -121,19 +124,34 @@ public class StaffViewModel extends ViewModel {
 //        addNoteToStaff(generateRandomNoteFromPracticableNotes());
 //    }
 
+    public StaffPracticeItem getPreviousPracticeItem(){
+        return getPracticeItemAt(currentPracticeItemIndex-1);
+    }
+
+    public StaffPracticeItem getNextPracticeItem() {
+        return getPracticeItemAt(currentPracticeItemIndex+1);
+    }
+
+    public StaffPracticeItem getCurrentPracticeItem() {
+        return getPracticeItemAt(currentPracticeItemIndex);
+    }
+
+    public StaffPracticeItem getPracticeItemAt(int index) {
+        return getPracticeItemsOnStaff().get(index);
+    }
 
     public void addChordToStaff(Collection<PianoNote> chordNotes) {
-        StaffPracticeItem chordItem = new StaffPracticeItem(keySignature, chordNotes);
         List<StaffPracticeItem> tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
+        StaffPracticeItem chordItem = new StaffPracticeItem(keySignature, chordNotes, tempPracticeItemsOnStaff.size());
         tempPracticeItemsOnStaff.add(chordItem);
         practiceItemsOnStaff.setValue(tempPracticeItemsOnStaff);
     }
 
     // Notes are treated as one-note chords
     public void addNoteToStaff(PianoNote note) {
-        StaffPracticeItem noteItem = new StaffPracticeItem(keySignature, note);
-
         List<StaffPracticeItem> tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
+        StaffPracticeItem noteItem = new StaffPracticeItem(keySignature, note, tempPracticeItemsOnStaff.size());
+
         tempPracticeItemsOnStaff.add(noteItem);
         practiceItemsOnStaff.setValue(tempPracticeItemsOnStaff);
     }
@@ -142,12 +160,75 @@ public class StaffViewModel extends ViewModel {
 //        setPracticeItemsOnStaff(practicableNotes);
 //    }
 
-    public void onCorrectNote(){
-        currentNoteIndex ++;
+    /**
+     * Increments the current practice item index
+     * (if item is complete AND is not the last practice item),
+     * and returns the original StaffPracticeItem & index on which the correct note was pressed.
+     * @param note Correct note pressed
+     * @return Practice item
+     */
+    public StaffPracticeItem onCorrectNote(PianoNote note){
+        StaffPracticeItem currentItem = getCurrentPracticeItem();
+        StaffPracticeItem.StaffNote staffNote = currentItem.getExactStaffNote(note);
+        currentItem.markNoteCorrect(staffNote);
+
+
+        if (currentItem.type == StaffPracticeItem.Type.NOTE && !isLastItem(currentItem)) {
+            currentItem.isComplete = true;
+            currentPracticeItemIndex++;
+            return getPreviousPracticeItem();
+        }
+
+        else if (currentItem.type == StaffPracticeItem.Type.CHORD) {
+
+            if (currentItem.isComplete &&
+            !isLastItem(currentItem)) {
+                currentItem.isComplete = true;
+                currentPracticeItemIndex++;
+                return getPreviousPracticeItem();
+            }
+        }
+
+        return currentItem;
+
     }
 
-    public void onIncorrectNote(PianoNote note) {
+    public StaffPracticeItem onIncorrectNote(PianoNote note) {
+        StaffPracticeItem currentItem = getCurrentPracticeItem();
 
+        currentItem.addIncorrectNote(note);
+
+        return currentItem;
+
+
+    }
+
+    /**
+     * Set staff note back to default colors and remove incorrect ghost notes.
+     *
+     * Note: the current item index is incremented when a correct key is *pressed* AND the item is *complete*.
+     * This new current note will be "fresh", and marking it default will have no effect.
+     * (The previous complete notes stay green)
+     *
+     * @param note Note Released
+     * @return Current practice item
+     */
+    public StaffPracticeItem onKeyReleased(PianoNote note) {
+
+
+        StaffPracticeItem currentItem = getCurrentPracticeItem();
+        StaffPracticeItem.StaffNote staffNote = currentItem.getExactStaffNote(note);
+
+        if (staffNote.state == StaffPracticeItem.NoteState.DEFAULT)
+            return currentItem;
+
+        else if (staffNote.state == StaffPracticeItem.NoteState.INCORRECT)
+            currentItem.removeIncorrectNote(staffNote);
+
+        else if (staffNote.state == StaffPracticeItem.NoteState.CORRECT)
+            currentItem.markNoteDefault(staffNote);
+
+        return currentItem;
     }
 
     public KeySignature getKeySignature() {
@@ -157,5 +238,24 @@ public class StaffViewModel extends ViewModel {
     public void setKeySignature(KeySignature keySignature) {
         this.keySignature = keySignature;
     }
+
+    public boolean isFirstItem(StaffPracticeItem item) {
+        return !getPracticeItemsOnStaff().listIterator(item.index).hasPrevious();
+    }
+
+    public boolean isLastItem(StaffPracticeItem item) {
+        // Iterator starts before first element:
+        /*
+
+          b u n g i o r n o
+         ^
+      iterator
+
+         */
+        // So I use item index + 1
+        return ! (getPracticeItemsOnStaff().listIterator(item.index + 1).hasNext());
+    }
+
+
 }
 

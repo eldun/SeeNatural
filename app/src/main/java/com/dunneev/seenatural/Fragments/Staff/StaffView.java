@@ -18,6 +18,7 @@ import com.dunneev.seenatural.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public class StaffView extends ViewGroup {
     private PianoNote highestPracticeNote;
     private List<StaffPracticeItem> practiceItemsOnStaff = new ArrayList<>();
     private List<PianoNote> staffLines = new ArrayList<>();
-    private int currentNoteIndex;
+    private int currentPracticeItemIndex;
 
     private boolean hideKeySignature;
     private boolean hideTrebleClef;
@@ -91,8 +92,8 @@ public class StaffView extends ViewGroup {
         this.staffLines = staffLines;
     }
 
-    public void setCurrentNoteIndex(int currentNoteIndex) {
-        this.currentNoteIndex = currentNoteIndex;
+    public void setCurrentPracticeItem(StaffPracticeItem currentPracticeItem) {
+        this.currentPracticeItemIndex = currentPracticeItem.index;
     }
 
 
@@ -266,7 +267,7 @@ public class StaffView extends ViewGroup {
     public void addPracticeItemsOnStaffToView() {
         noteLinearLayout.removeAllViews();
         for (StaffPracticeItem item: practiceItemsOnStaff) {
-                addItemToView(item);
+            addItemToView(item);
         }
     }
 
@@ -298,24 +299,31 @@ public class StaffView extends ViewGroup {
 
 
         noteLinearLayout.addView(itemView);
+
+        decoratePracticeItem(item);
+
     }
 
 
 
-    private void markPreviousNotesCorrect() {
-        for (int i=0;i<currentNoteIndex;i++){
-            markNoteCorrect(i);
+    private void markPreviousPracticeItemsCorrect() {
+        for (int i = 0; i< currentPracticeItemIndex; i++){
+//            markNoteInPracticeItemCorrect(i);
         }
     }
 
-    public void markNoteCorrect(int index) {
-//        StaffNote note = (StaffNote) noteLinearLayout.getChildAt(index);
-//        note.setColor(Color.GREEN);
-////        note.setAlpha(.5f);
-//        note.invalidate();
+
+    public void decoratePracticeItem(StaffPracticeItem item) {
+
+        StaffPracticeItemView practiceItemView = (StaffPracticeItemView) noteLinearLayout.getChildAt(item.index);
+
+        practiceItemView.decorate(item);
+
     }
 
-    public void markNoteIncorrect(int index, PianoNote incorrectNote) {
+
+    public void drawIncorrectNote(StaffPracticeItem item, PianoNote incorrectNote) {
+
 
 //        StaffNote ghostNote = new StaffNote(getContext(), keySignature, incorrectNote);
 //        LinearLayout.LayoutParams staffNoteParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT/*visibleStaffHeight*/);
@@ -345,12 +353,12 @@ public class StaffView extends ViewGroup {
 //        scrollToNote(++noteScrollCounter);
 //    }
 
-    public void scrollToNote(int index) {
+    public void scrollToPracticeItem(StaffPracticeItem item) {
 
         // Keep the previous note in sight
 //        View child = noteLinearLayout.getChildAt(index - 1);
 
-        View child = noteLinearLayout.getChildAt(index);
+        View child = noteLinearLayout.getChildAt(item.index);
         if (child != null) {
             scrollView.smoothScrollTo(child.getLeft(), 0);
         }
@@ -488,6 +496,7 @@ public class StaffView extends ViewGroup {
 //        }
 
     }
+
 
 
 }

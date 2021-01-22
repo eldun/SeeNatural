@@ -107,7 +107,7 @@ public class ReadingFragment extends Fragment {
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, note.toString() + " pressed");
-                if (viewModel.isCorrectPress(note, staffViewModel.getPracticeItemsOnStaff(), staffViewModel.getCurrentNoteIndex())) {
+                if (viewModel.isCorrectPress(note, staffViewModel.getCurrentPracticeItem())) {
                     viewModel.onCorrectKeyPressed(note);
                 }
                 else {

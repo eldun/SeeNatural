@@ -50,20 +50,23 @@ public class ReadingViewModel extends ViewModel {
         return allNotesInStaffRangeDescending;
     }
 
-    public boolean isCorrectPress(PianoNote notePressed, List<StaffPracticeItem> itemsOnStaff, int currentItemIndex) {
+    public boolean isCorrectPress(PianoNote notePressed, StaffPracticeItem currentPracticeItem) {
 
-        if (itemsOnStaff.size() == 0) {
-            return false;
-        }
+//        if (itemsOnStaff.size() == 0) {
+//            return false;
+//        }
+//
+//        if (currentPracticeItemIndex >= itemsOnStaff.size()) {
+//            return false;
+//        }
+//
+//        StaffPracticeItem currentPracticeItem = itemsOnStaff.get(currentPracticeItemIndex);
 
-        if (currentItemIndex >= itemsOnStaff.size()) {
-            return false;
-        }
 
-        // todo: adapt to chords
-        if (notePressed.isEquivalentTo(itemsOnStaff.get(currentItemIndex).notes.get(0), isSingleOctaveMode)) {
+        if (currentPracticeItem.contains(notePressed, isSingleOctaveMode)) {
             return true;
         }
+
 
         return false;
 //        if (itemsOnStaff.get(currentItemIndex).contains(notePressed))
@@ -77,6 +80,7 @@ public class ReadingViewModel extends ViewModel {
     public void onIncorrectKeyPressed(PianoNote note) {
         incorrectKeyPressed.setValue(note);
     }
+
 
     public void generatePracticableNoteList() {
         practicableNotes.clear();

@@ -70,12 +70,12 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
         viewModel.setKeySignature(keySignature);
         viewModel.setHideKeySignature(hideKeySignature);
-        
+
         viewModel.setHideTrebleClef(hideTrebleClef);
         viewModel.setHideTrebleClefLines(hideTrebleClefLines);
         viewModel.setHideBassClef(hideBassClef);
         viewModel.setHideBassClefLines(hideBassClefLines);
-        
+
         viewModel.setLowStaffNote(lowNote);
         viewModel.setHighStaffNote(highNote);
 
@@ -238,24 +238,28 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         };
 
 
-        final Observer<PianoNote> keyPressedObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote note) {
-                Log.i(LOG_TAG, note.toString() + " pressed");
-
-                }
-            };
+//        final Observer<PianoNote> keyPressedObserver = new Observer<PianoNote>() {
+//            @Override
+//            public void onChanged(PianoNote note) {
+//                Log.i(LOG_TAG, note.toString() + " pressed");
+//
+//            }
+//        };
 
 
         final Observer<PianoNote> keyReleasedObserver = new Observer<PianoNote>() {
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, note.toString() + " released");
-                if (viewModel.incorrectKeyDown) {
-                    binding.staffView.removeIncorrectGhostNote(viewModel.getCurrentNoteIndex());
-                }
-                viewModel.correctKeyDown = false;
-                viewModel.incorrectKeyDown = false;
+
+
+                StaffPracticeItem item = viewModel.onKeyReleased(note);
+                binding.staffView.decoratePracticeItem(item);
+//                if (viewModel.incorrectKeyDown) {
+//                    binding.staffView.removeIncorrectGhostNote(viewModel.getCurrentPracticeItemIndex());
+//                }
+
+
             }
         };
 
@@ -263,10 +267,10 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, "correct key pressed");
-                viewModel.correctKeyDown = true;
-                binding.staffView.markNoteCorrect(viewModel.getCurrentNoteIndex());
-                viewModel.onCorrectNote();
-                binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
+
+                StaffPracticeItem item = viewModel.onCorrectNote(note);
+                binding.staffView.decoratePracticeItem(item);
+                binding.staffView.scrollToPracticeItem(item);
 
             }
         };
@@ -275,14 +279,17 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, "wrong key pressed");
-                viewModel.incorrectKeyDown = true;
-                binding.staffView.markNoteIncorrect(viewModel.getCurrentNoteIndex(), note);
+
+                StaffPracticeItem item = viewModel.onIncorrectNote(note);
+                binding.staffView.decoratePracticeItem(item);
+//                viewModel.incorrectKeyDown = true;
+//                binding.staffView.drawIncorrectNote(viewModel.getCurrentPracticeItemIndex(), note);
 
             }
         };
 
         viewModel.getMutableLiveDataPracticeItemsOnStaff().observe(requireParentFragment(), practiceItemsOnStaffObserver);
-        pianoViewModel.getMutableLiveDataKeyPressed().observe(requireParentFragment(), keyPressedObserver);
+//        pianoViewModel.getMutableLiveDataKeyPressed().observe(requireParentFragment(), keyPressedObserver);
         pianoViewModel.getMutableLiveDataKeyReleased().observe(requireParentFragment(), keyReleasedObserver);
         readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(requireParentFragment(), correctKeyPressedObserver);
         readingViewModel.getMutableLiveDataIncorrectKeyPressed().observe(requireParentFragment(), incorrectKeyPressedObserver);
@@ -379,7 +386,8 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
         binding.staffView.setPracticeItemsOnStaff(viewModel.getPracticeItemsOnStaff());
 //        binding.staffView.addPracticeItemsOnStaffToView();
-        binding.staffView.setCurrentNoteIndex(viewModel.getCurrentNoteIndex());
+        if (viewModel.getPracticeItemsOnStaff().size() > 0)
+            binding.staffView.setCurrentPracticeItem(viewModel.getCurrentPracticeItem());
 //        if (!viewModel.getNotesOnStaff().isEmpty()) {
 //            binding.staffView.scrollToNote(viewModel.getCurrentNoteIndex());
 //        }

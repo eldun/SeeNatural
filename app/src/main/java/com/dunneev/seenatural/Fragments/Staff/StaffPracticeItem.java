@@ -169,27 +169,35 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
 
     public void markNoteCorrect(StaffNote note) {
 
-        note.state = NoteState.CORRECT;
-        note.color = correctNoteColor;
+        if (note != null) {
 
-        if (areAllNotesCorrect())
-            this.isComplete = true;
+            note.state = NoteState.CORRECT;
+            note.color = correctNoteColor;
+
+            if (areAllNotesCorrect())
+                this.isComplete = true;
+        }
 
     }
 
     public void markNoteDefault(StaffNote note) {
 
-        if (note.state == NoteState.CORRECT) {
-            note.state = NoteState.DEFAULT;
-            this.isComplete = false;
-            note.color = neutralNoteColor;
+        if (note != null) {
+
+            if (note.state == NoteState.CORRECT) {
+                note.state = NoteState.NEUTRAL;
+                this.isComplete = false;
+                note.color = neutralNoteColor;
+            }
         }
     }
 
     public void removeIncorrectNote(StaffNote note) {
+        if (note != null) {
 
-        if (note.state == NoteState.INCORRECT) {
-            this.remove(note);
+            if (note.state == NoteState.INCORRECT) {
+                this.remove(note);
+            }
         }
     }
 

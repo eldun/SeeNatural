@@ -137,6 +137,8 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
 
     }
 
+    // todo: allow equivalent notes in separate octaves depending on practice mode
+    // todo: move this logic up??? Create helper class?
     @Override
     public boolean add(StaffNote staffNote) {
 

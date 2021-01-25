@@ -317,8 +317,7 @@ public enum PianoNote {
 
     public boolean isEquivalentTo(PianoNote note, boolean singleOctavePractice) {
         if (!singleOctavePractice)
-            if (this.storedOrdinal == note.enharmonicEquivalentOrdinal ||
-                    this.absoluteKeyIndex == note.absoluteKeyIndex) {
+            if (this.absoluteKeyIndex == note.absoluteKeyIndex) {
                 return true;
             }
             else {

@@ -94,16 +94,26 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     }
 
 
-    /**
-     * Check if the StaffPracticeItem contains an equivalent note. Use getExactStaffNote
-     * to retrieve a specific note. Calling this this method beforehand is not necessary.
-     * @param note The note to check exists
-     * @param isSingleOctaveMode Qualifier for determining if note exists
-     * @return
-     */
-    public boolean contains(PianoNote note, boolean isSingleOctaveMode) {
+    public boolean containsExactPianoNote(PianoNote note) {
+        Iterator<StaffNote> noteIterator = this.iterator();
+        while (noteIterator.hasNext()) {
+            if (noteIterator.next().note.equals(note)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        PianoNote practiceNote;
+    /**
+     * @param note The note to check for - enharmonics included. (e.g. an item with C Sharp 4 would
+     *             "contain" D Flat 4. Use containsExactNote for a more exclusive search.
+     * @param isSingleOctaveMode Qualifier for note checking. If true, pitches are the only aspect
+     *                           of a note compared. If false, the key index is what matters.
+     * @return true if this contains the PianoNote specified.
+     */
+    public boolean containsEquivalentPianoNote(PianoNote note, boolean isSingleOctaveMode) {
+
+
         Iterator<StaffNote> noteIterator = this.iterator();
         while (noteIterator.hasNext()) {
             if (note.isEquivalentTo(noteIterator.next().note, isSingleOctaveMode)) {

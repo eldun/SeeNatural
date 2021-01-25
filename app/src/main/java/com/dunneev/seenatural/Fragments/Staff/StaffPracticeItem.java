@@ -65,7 +65,12 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     }
 
     public StaffPracticeItem(KeySignature keySignature, Collection<PianoNote> notes, int index) {
-        this.type = Type.CHORD;
+        if (notes.size()>1) {
+            this.type = Type.CHORD;
+        }
+        else
+            this.type = Type.NOTE;
+
         this.keySignature = keySignature;
         this.index = index;
 

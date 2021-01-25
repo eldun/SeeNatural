@@ -128,6 +128,7 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     }
 
     private boolean addAllPianoNotes(Collection<PianoNote> pianoNotes) {
+
         boolean modified = false;
         for (PianoNote note : pianoNotes)
             if (add(note))
@@ -137,15 +138,24 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     }
 
     @Override
-    public boolean add(StaffNote note) {
+    public boolean add(StaffNote staffNote) {
 
-        if (this.practiceNotes.contains(note)) {
-            return false;
+        PianoNote enharmonicEquivalent = staffNote.note.getEnharmonicEquivalent();
+
+
+        if(!containsEquivalentPianoNote(staffNote.note, false)) {
+
+            // Add non-accidentals first
+            if (keySignature.containsNote(staffNote.note))
+                return this.practiceNotes.add(staffNote);
+
+            else if (keySignature.containsNote(enharmonicEquivalent))
+                return this.practiceNotes.add(new StaffNote(enharmonicEquivalent));
+
+            else return this.practiceNotes.add(staffNote);
         }
-        else {
-            this.practiceNotes.add(note);
-            return true;
-        }
+
+        return false;
     }
 
     public boolean addIncorrectNote(PianoNote note) {

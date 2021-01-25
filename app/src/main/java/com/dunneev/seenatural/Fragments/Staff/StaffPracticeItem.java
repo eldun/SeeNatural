@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.StaffNote> {
@@ -210,8 +209,8 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     }
 
     /**
-     * Return the StaffNote with the exact value of note. There are no duplicates, as the StaffNotes are
-     * stored in a Set.
+     * Return the StaffNote with the exact value of note. If the note doesn't exist, null is returned.
+     * There are no duplicates, as the StaffNotes are stored in a Set.
      *
      * @param note
      */
@@ -245,9 +244,9 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
         private PianoNote note;
         public boolean isAccidental;
 
-        public NoteState state = NoteState.DEFAULT;
+        public NoteState state = NoteState.NEUTRAL;
         private int color;
-        
+
 
         public PianoNote getNote() {
             return note;

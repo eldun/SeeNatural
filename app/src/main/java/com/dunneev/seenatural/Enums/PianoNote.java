@@ -339,6 +339,10 @@ public enum PianoNote {
 
     }
 
+    public PianoNote getEnharmonicEquivalent() {
+        return valueOfStoredOrdinal(this.enharmonicEquivalentOrdinal);
+    }
+
     @Override
     public String toString() {
         if (enharmonicEquivalentOrdinal>0)

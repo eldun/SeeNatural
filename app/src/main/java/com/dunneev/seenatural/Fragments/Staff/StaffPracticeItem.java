@@ -32,7 +32,7 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
 
     public enum NoteState {
         CORRECT,
-        DEFAULT,
+        NEUTRAL,
         INCORRECT;
     }
 

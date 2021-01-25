@@ -169,8 +169,7 @@ public class StaffViewModel extends ViewModel {
      */
     public StaffPracticeItem onCorrectNote(PianoNote note){
         StaffPracticeItem currentItem = getCurrentPracticeItem();
-        StaffPracticeItem.StaffNote staffNote = currentItem.getExactStaffNote(note);
-        currentItem.markNoteCorrect(staffNote);
+        currentItem.markNoteCorrect(currentItem.getExactStaffNote(note));
 
 
         if (currentItem.type == StaffPracticeItem.Type.NOTE && !isLastItem(currentItem)) {
@@ -219,7 +218,7 @@ public class StaffViewModel extends ViewModel {
         StaffPracticeItem currentItem = getCurrentPracticeItem();
         StaffPracticeItem.StaffNote staffNote = currentItem.getExactStaffNote(note);
 
-        if (staffNote.state == StaffPracticeItem.NoteState.DEFAULT)
+        if (staffNote.state == StaffPracticeItem.NoteState.NEUTRAL)
             return currentItem;
 
         else if (staffNote.state == StaffPracticeItem.NoteState.INCORRECT)

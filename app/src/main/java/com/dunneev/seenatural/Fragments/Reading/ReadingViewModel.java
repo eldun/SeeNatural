@@ -63,7 +63,7 @@ public class ReadingViewModel extends ViewModel {
 //        StaffPracticeItem currentPracticeItem = itemsOnStaff.get(currentPracticeItemIndex);
 
 
-        if (currentPracticeItem.contains(notePressed, isSingleOctaveMode)) {
+        if (currentPracticeItem.containsEquivalentPianoNote(notePressed, isSingleOctaveMode)) {
             return true;
         }
 

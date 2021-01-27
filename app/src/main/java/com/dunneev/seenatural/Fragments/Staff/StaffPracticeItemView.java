@@ -70,6 +70,7 @@ public class StaffPracticeItemView extends ViewGroup {
         }
 
 
+        // todo: invert note if conditions are right
         for (int i = 0; i < childCount; i++) {
             StaffNoteView note = (StaffNoteView) getChildAt(i);
 //            note.setBackgroundColor(Color.BLACK);

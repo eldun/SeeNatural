@@ -143,6 +143,11 @@ public enum KeySignature {
 
 
     public boolean containsNote(PianoNote note) {
+
+        if (note == null) {
+            return false;
+        }
+
         return Arrays.asList(scaleNotes).contains(note.pitch);
     }
 

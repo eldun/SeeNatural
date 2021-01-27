@@ -48,7 +48,7 @@ public class PianoViewModelTest {
     }
 
     @Test
-    public void setIsSingleOctaveMode_True_SetsLowAndHighNotes() {
+    public void SetIsSingleOctaveMode_True_SetsLowAndHighNotes() {
 
         assertNull(pianoViewModel.getLowNote());
         assertNull(pianoViewModel.getHighNote());

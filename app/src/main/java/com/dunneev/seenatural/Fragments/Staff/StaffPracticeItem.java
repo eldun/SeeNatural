@@ -10,6 +10,7 @@ import com.dunneev.seenatural.Enums.PianoNote;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -64,6 +65,7 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     }
 
     public StaffPracticeItem(KeySignature keySignature, Collection<PianoNote> notes, int index) {
+
         if (notes.size()>1) {
             this.type = Type.CHORD;
         }
@@ -73,7 +75,7 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
         this.keySignature = keySignature;
         this.index = index;
 
-        this.addAllPianoNotes(notes);
+        this.addPianoNoteCollection(notes);
 
 
     }
@@ -126,7 +128,16 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
         return add(new StaffNote(note));
     }
 
-    private boolean addAllPianoNotes(Collection<PianoNote> pianoNotes) {
+    public boolean add(PianoNote... notes) {
+        Collection<PianoNote> noteCollection = new ArrayList<>();
+        for (PianoNote note : notes) {
+            noteCollection.add(note);
+        }
+
+        return addPianoNoteCollection(noteCollection);
+    }
+
+    public boolean addPianoNoteCollection(Collection<PianoNote> pianoNotes) {
 
         boolean modified = false;
         for (PianoNote note : pianoNotes)
@@ -236,6 +247,8 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
             stringBuilder.append(staffNote.note + " ,");
         };
 
+        // remove comma from end of list
+        stringBuilder.delete(stringBuilder.length()-2, stringBuilder.length());
         return stringBuilder.toString();
     }
 

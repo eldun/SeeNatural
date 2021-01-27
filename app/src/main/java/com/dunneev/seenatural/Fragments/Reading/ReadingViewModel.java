@@ -8,7 +8,6 @@ import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.Fragments.Staff.StaffPracticeItem;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -16,7 +15,7 @@ public class ReadingViewModel extends ViewModel {
 
     Random random = new Random();
 
-    public boolean isSingleOctaveMode;
+    private boolean isSingleOctaveMode;
 
     private MutableLiveData<PianoNote> correctKeyPressed = new MutableLiveData<>();
     private MutableLiveData<PianoNote> incorrectKeyPressed = new MutableLiveData<>();
@@ -27,7 +26,7 @@ public class ReadingViewModel extends ViewModel {
     private PianoNote highPracticeNote;
 
     // Allow users the ability to limit which notes/accidentals are to be practiced
-    private List<PianoNote> practicableNotes = new ArrayList<>();
+    private final List<PianoNote> practicableNotes = new ArrayList<>();
 
     private boolean generateAccidentals;
     private boolean generateFlats;
@@ -43,11 +42,13 @@ public class ReadingViewModel extends ViewModel {
         return incorrectKeyPressed;
     }
 
-    public List<PianoNote> getAllNotesInStaffPracticeRangeDescending() {
 
-        List<PianoNote> allNotesInStaffRangeDescending = PianoNote.notesInRangeInclusive(lowPracticeNote, highPracticeNote);
-        Collections.reverse(allNotesInStaffRangeDescending);
-        return allNotesInStaffRangeDescending;
+    public List<PianoNote> getPracticableNotes() {
+        return practicableNotes;
+    }
+
+    public List<PianoNote> getAllNotesInStaffPracticeRangeInclusive() {
+        return PianoNote.notesInRangeInclusive(lowPracticeNote, highPracticeNote);
     }
 
     public boolean isCorrectPress(PianoNote notePressed, StaffPracticeItem currentPracticeItem) {
@@ -82,36 +83,39 @@ public class ReadingViewModel extends ViewModel {
     }
 
 
+    // todo: Ensure that every note can be completed by the piano fragment (maybe add a field - List
+    // of PianoNote? What does this mean for midi?)
     public void generatePracticableNoteList() {
         practicableNotes.clear();
 
-        List<PianoNote> allNotes = getAllNotesInStaffPracticeRangeDescending();
-
-        for (int i=0;i<allNotes.size();i++) {
-            boolean isAccidentalNote = PianoNote.isAccidental(allNotes.get(i), keySignature);
+        for (PianoNote note:getAllNotesInStaffPracticeRangeInclusive()) {
+            boolean isAccidentalNote = PianoNote.isAccidental(note, keySignature);
 
             if (!generateAccidentals && isAccidentalNote) {
                 continue;
             }
-            if (!generateFlats && isAccidentalNote && allNotes.get(i).isFlat){
+            if (!generateFlats && isAccidentalNote && note.isFlat){
                 continue;
             }
-            if (!generateNaturals && isAccidentalNote && allNotes.get(i).isNatural){
+            if (!generateNaturals && isAccidentalNote && note.isNatural){
                 continue;
             }
-            if (!generateSharps && isAccidentalNote && allNotes.get(i).isSharp){
+            if (!generateSharps && isAccidentalNote && note.isSharp){
                 continue;
             }
 
-            practicableNotes.add(allNotes.get(i));
+            practicableNotes.add(note);
         }
-
     }
 
 
     public PianoNote generateRandomNoteFromPracticableNotes(){
         int randomInt = random.nextInt(practicableNotes.size()-1);
         return practicableNotes.get(randomInt);
+    }
+
+    public KeySignature getKeySignature() {
+        return keySignature;
     }
 
     public void setKeySignature(KeySignature keySignature) {

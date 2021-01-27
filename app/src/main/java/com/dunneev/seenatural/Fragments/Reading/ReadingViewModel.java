@@ -142,7 +142,7 @@ public class ReadingViewModel extends ViewModel {
         this.highPracticeNote = highPracticeNote;
     }
 
-    public void setIsSingleOctaveMode(boolean singleOctaveMode) {
+    public void setIsSingleOctaveMode(boolean isSingleOctaveMode) {
         this.isSingleOctaveMode = isSingleOctaveMode;
     }
 }

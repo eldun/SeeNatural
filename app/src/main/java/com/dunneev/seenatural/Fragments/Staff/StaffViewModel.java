@@ -5,18 +5,19 @@ import androidx.lifecycle.ViewModel;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.CustomException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StaffViewModel extends ViewModel {
 
 
     private int currentPracticeItemIndex = 0;
-    public boolean incorrectKeyDown;
-    public boolean correctKeyDown;
 
     private KeySignature keySignature;
     private boolean  hideKeySignature;
@@ -85,15 +86,36 @@ public class StaffViewModel extends ViewModel {
     public PianoNote getLowStaffNote() {
         return lowStaffNote;
     }
-    public void setLowStaffNote(PianoNote lowestPracticeNote) {
-        this.lowStaffNote = lowestPracticeNote;
+    public void setLowStaffNote(PianoNote lowStaffNote) throws CustomException.InvalidNoteRangeException {
+        if (highStaffNote == null) {
+            this.lowStaffNote = lowStaffNote;
+            return;
+        }
+
+        else if (lowStaffNote.isEquivalentTo(highStaffNote, false) ||
+                lowStaffNote.compareTo(highStaffNote) > 0) {
+            throw new CustomException.InvalidNoteRangeException("Staff low note " + lowStaffNote + " is higher than " + highStaffNote);
+        }
+
+
+        this.lowStaffNote = lowStaffNote;
     }
 
 
     public PianoNote getHighStaffNote() {
         return highStaffNote;
     }
-    public void setHighStaffNote(PianoNote highStaffNote) {
+    public void setHighStaffNote(PianoNote highStaffNote) throws CustomException.InvalidNoteRangeException {
+        if (lowStaffNote == null) {
+            this.highStaffNote = highStaffNote;
+            return;
+        }
+
+        if (highStaffNote.compareTo(lowStaffNote) < 0) {
+            throw new CustomException.InvalidNoteRangeException("Staff high note " + highStaffNote + " is lower than " + lowStaffNote);
+        }
+
+
         this.highStaffNote = highStaffNote;
     }
 
@@ -114,9 +136,9 @@ public class StaffViewModel extends ViewModel {
 
     public List<PianoNote> getAllNotesInStaffRangeDescending() {
 
-            allNotesInStaffRangeDescending = PianoNote.notesInRangeInclusive(getLowStaffNote(), getHighStaffNote());
-            Collections.reverse(allNotesInStaffRangeDescending);
-            return allNotesInStaffRangeDescending;
+        allNotesInStaffRangeDescending = PianoNote.notesInRangeInclusive(getLowStaffNote(), getHighStaffNote());
+        Collections.reverse(allNotesInStaffRangeDescending);
+        return allNotesInStaffRangeDescending;
     }
 
 
@@ -140,25 +162,39 @@ public class StaffViewModel extends ViewModel {
         return getPracticeItemsOnStaff().get(index);
     }
 
-    public void addChordToStaff(Collection<PianoNote> chordNotes) {
+
+    /**
+     * Create a StaffPracticeItem with the supplied notes. This method will remove any notes that lie
+     * beyond the staff note range (as they wouldn't be visible to the user). If there are no notes
+     * remaining to be added to the StaffPracticeItem, null is returned.
+     *
+     * The StaffPracticeItem deals with duplicate/equivalent notes.
+     * @param itemNotes Notes to be contained in the new practice item
+     * @return StaffPracticeItem created from itemNotes argument(s)
+     */
+    public StaffPracticeItem addItemToStaff(PianoNote... itemNotes) {
+
+        List<PianoNote> noteList = new LinkedList<>(Arrays.asList(itemNotes));
+
+
+
+        for (PianoNote note:noteList) {
+            if (note.compareTo(lowStaffNote) < 0 || note.compareTo(highStaffNote) > 0)
+                noteList.remove(note);
+        }
+
+        if (noteList.isEmpty()) {
+            return null;
+        }
+
         List<StaffPracticeItem> tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
-        StaffPracticeItem chordItem = new StaffPracticeItem(keySignature, chordNotes, tempPracticeItemsOnStaff.size());
-        tempPracticeItemsOnStaff.add(chordItem);
+        StaffPracticeItem item = new StaffPracticeItem(keySignature, noteList, tempPracticeItemsOnStaff.size());
+        tempPracticeItemsOnStaff.add(item);
         practiceItemsOnStaff.setValue(tempPracticeItemsOnStaff);
+        return item;
+
     }
 
-    // Notes are treated as one-note chords
-    public void addNoteToStaff(PianoNote note) {
-        List<StaffPracticeItem> tempPracticeItemsOnStaff = getPracticeItemsOnStaff();
-        StaffPracticeItem noteItem = new StaffPracticeItem(keySignature, note, tempPracticeItemsOnStaff.size());
-
-        tempPracticeItemsOnStaff.add(noteItem);
-        practiceItemsOnStaff.setValue(tempPracticeItemsOnStaff);
-    }
-
-//    public void addAllPracticableNotesToStaff() {
-//        setPracticeItemsOnStaff(practicableNotes);
-//    }
 
     /**
      * Increments the current practice item index
@@ -181,7 +217,7 @@ public class StaffViewModel extends ViewModel {
         else if (currentItem.type == StaffPracticeItem.Type.CHORD) {
 
             if (currentItem.isComplete &&
-            !isLastItem(currentItem)) {
+                    !isLastItem(currentItem)) {
                 currentItem.isComplete = true;
                 currentPracticeItemIndex++;
                 return getPreviousPracticeItem();

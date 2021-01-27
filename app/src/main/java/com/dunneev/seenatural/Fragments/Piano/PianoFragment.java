@@ -41,6 +41,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "create");
         super.onCreate(savedInstanceState);
 
 
@@ -142,6 +143,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "onCreateView");
+
         super.onCreate(savedInstanceState);
 
         binding = FragmentPianoBinding.inflate(inflater, container, false);
@@ -150,6 +153,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "viewCreated");
+
         super.onViewCreated(view, savedInstanceState);
 
         binding.toggleHighNoteButton.setOnClickListener(new View.OnClickListener() {

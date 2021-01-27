@@ -204,6 +204,7 @@ public class StaffViewModel extends ViewModel {
      * @return Practice item
      */
     public StaffPracticeItem onCorrectNote(PianoNote note){
+        //todo: find an equivalent note to mark correct instead of the note pressed
         StaffPracticeItem currentItem = getCurrentPracticeItem();
         currentItem.markNoteCorrect(currentItem.getExactStaffNote(note));
 

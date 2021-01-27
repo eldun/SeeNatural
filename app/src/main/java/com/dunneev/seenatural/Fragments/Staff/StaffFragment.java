@@ -16,6 +16,7 @@ import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
+import com.dunneev.seenatural.CustomException;
 import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
 import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.R;
@@ -76,8 +77,13 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         viewModel.setHideBassClef(hideBassClef);
         viewModel.setHideBassClefLines(hideBassClefLines);
 
-        viewModel.setLowStaffNote(lowNote);
-        viewModel.setHighStaffNote(highNote);
+        // todo: inform user of weird note preferences
+        try {
+            viewModel.setLowStaffNote(lowNote);
+            viewModel.setHighStaffNote(highNote);
+        } catch (CustomException.InvalidNoteRangeException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -316,14 +322,14 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         binding.addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.addNoteToStaff(PianoNote.G4);
+                viewModel.addItemToStaff(PianoNote.G4);
             }
         });
 
         binding.addChordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.addChordToStaff(new ArrayList(Arrays.asList(PianoNote.G4, PianoNote.B5, PianoNote.D5)));
+                viewModel.addItemToStaff(PianoNote.G4, PianoNote.B4, PianoNote.D5);
             }
         });
 ////

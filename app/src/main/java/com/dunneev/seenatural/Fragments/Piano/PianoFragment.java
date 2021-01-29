@@ -192,7 +192,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     private void setUpPianoKeyListeners() {
 
-        // TODO: 12/7/2020 Better way to set listeners? (In terms of loose coupling)
         for (PianoKey key:binding.pianoview.getPianoKeys()) {
             key.setPianoKeyListener(this);
         }
@@ -203,6 +202,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
 
         soundPlayer.loadPianoNoteWavAssets(assetManager, viewModel.getLowNote(), viewModel.getHighNote());
+        soundPlayer.loadPianoNoteWavAssets(assetManager, staffViewModel.getLowStaffNote(), staffViewModel.getHighStaffNote());
+
         soundPlayer.setUpAudioStream();
 
     }

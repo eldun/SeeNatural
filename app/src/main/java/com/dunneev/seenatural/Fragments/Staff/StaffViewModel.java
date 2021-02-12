@@ -1,5 +1,7 @@
 package com.dunneev.seenatural.Fragments.Staff;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -16,6 +18,7 @@ import java.util.List;
 
 public class StaffViewModel extends ViewModel {
 
+    private final String LOG_TAG = this.getClass().getSimpleName();
 
     private int currentPracticeItemIndex = 0;
 
@@ -159,7 +162,14 @@ public class StaffViewModel extends ViewModel {
     }
 
     public StaffPracticeItem getPracticeItemAt(int index) {
-        return getPracticeItemsOnStaff().get(index);
+        try {
+            return getPracticeItemsOnStaff().get(index);
+        }
+        catch (IndexOutOfBoundsException e) {
+            Log.i(LOG_TAG, String.format("StaffPracticeItem at [%d] does not exist", index));
+            return null;
+        }
+
     }
 
 
@@ -253,6 +263,11 @@ public class StaffViewModel extends ViewModel {
 
 
         StaffPracticeItem currentItem = getCurrentPracticeItem();
+
+        if (currentItem == null) {
+            return null;
+        }
+
         StaffPracticeItem.StaffNote staffNote = currentItem.getExactStaffNote(note);
 
         if (staffNote.state == StaffPracticeItem.NoteState.NEUTRAL)

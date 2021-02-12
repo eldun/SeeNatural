@@ -244,14 +244,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         };
 
 
-//        final Observer<PianoNote> keyPressedObserver = new Observer<PianoNote>() {
-//            @Override
-//            public void onChanged(PianoNote note) {
-//                Log.i(LOG_TAG, note.toString() + " pressed");
-//
-//            }
-//        };
-
 
         final Observer<PianoNote> keyReleasedObserver = new Observer<PianoNote>() {
             @Override
@@ -260,12 +252,10 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
 
                 StaffPracticeItem item = viewModel.onKeyReleased(note);
-                binding.staffView.decoratePracticeItem(item);
-//                if (viewModel.incorrectKeyDown) {
-//                    binding.staffView.removeIncorrectGhostNote(viewModel.getCurrentPracticeItemIndex());
-//                }
 
 
+                if (item != null)
+                    binding.staffView.decoratePracticeItem(item);
             }
         };
 

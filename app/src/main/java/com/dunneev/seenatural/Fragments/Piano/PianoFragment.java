@@ -133,8 +133,8 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 //            }
 //        };
 //
-        readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(requireParentFragment(), correctKeyPressedObserver);
-        readingViewModel.getMutableLiveDataIncorrectKeyPressed().observe(requireParentFragment(), incorrectKeyPressedObserver);
+        readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(this, correctKeyPressedObserver);
+        readingViewModel.getMutableLiveDataIncorrectKeyPressed().observe(this, incorrectKeyPressedObserver);
 //        viewModel.getMutableLiveDataLowestPracticeNote().observe(this, lowNoteObserver);
 //        viewModel.getMutableLiveDataHighestPracticeNote().observe(this, highNoteObserver);
 //        viewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);

@@ -294,11 +294,10 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             }
         };
 
-        viewModel.getMutableLiveDataPracticeItemsOnStaff().observe(requireParentFragment(), practiceItemsOnStaffObserver);
-//        pianoViewModel.getMutableLiveDataKeyPressed().observe(requireParentFragment(), keyPressedObserver);
-        pianoViewModel.getMutableLiveDataKeyReleased().observe(requireParentFragment(), keyReleasedObserver);
-        readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(requireParentFragment(), correctKeyPressedObserver);
-        readingViewModel.getMutableLiveDataIncorrectKeyPressed().observe(requireParentFragment(), incorrectKeyPressedObserver);
+        viewModel.getMutableLiveDataPracticeItemsOnStaff().observe(this, practiceItemsOnStaffObserver);
+        pianoViewModel.getMutableLiveDataKeyReleased().observe(this, keyReleasedObserver);
+        readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(this, correctKeyPressedObserver);
+        readingViewModel.getMutableLiveDataIncorrectKeyPressed().observe(this, incorrectKeyPressedObserver);
 
 
     }

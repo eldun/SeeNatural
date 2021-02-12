@@ -201,8 +201,11 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private void setUpSoundPlayer() {
 
 
+        /* todo: load notes based on staff range to allow the correct
+            notes to be played even when in single octave mode.
+            e.g. hitting a C4 for a staff's C6 in single octave mode will play C6
+         */
         soundPlayer.loadPianoNoteWavAssets(assetManager, viewModel.getLowNote(), viewModel.getHighNote());
-        soundPlayer.loadPianoNoteWavAssets(assetManager, staffViewModel.getLowStaffNote(), staffViewModel.getHighStaffNote());
 
         soundPlayer.setUpAudioStream();
 

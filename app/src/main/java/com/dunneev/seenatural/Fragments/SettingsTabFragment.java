@@ -12,7 +12,7 @@ import androidx.preference.PreferenceScreen;
 
 import com.dunneev.seenatural.R;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsTabFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

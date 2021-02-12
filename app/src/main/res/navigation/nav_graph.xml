@@ -8,7 +8,7 @@
         app:startDestination="@id/settingsFragment">
         <fragment
             android:id="@+id/settingsFragment"
-            android:name="com.dunneev.seenatural.Fragments.SettingsFragment"
+            android:name="com.dunneev.seenatural.Fragments.SettingsTabFragment"
             android:label="SettingsFragment">
             <action
                 android:id="@+id/action_settingsFragment_to_pianoSettingsFragment"

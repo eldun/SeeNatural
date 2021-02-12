@@ -2,37 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/firstFragment">
-    <fragment
-        android:id="@+id/firstFragment"
-        android:name="com.dunneev.seenatural.Fragments.FirstFragment"
-        android:label="fragment_first"
-        tools:layout="@layout/fragment_first">
-        <action
-            android:id="@+id/action_firstFragment_to_pianoFragment"
-            app:destination="@id/pianoFragment"
-            app:enterAnim="@anim/fragment_fade_enter" />
-        <action
-            android:id="@+id/action_firstFragment_to_readingFragment"
-            app:destination="@id/readingFragment" />
-        <action
-            android:id="@+id/action_firstFragment_to_settings_nav_graph"
-            app:destination="@id/settings_nav_graph" />
-        <action
-            android:id="@+id/action_firstFragment_to_staffFragment"
-            app:destination="@id/staffFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/pianoFragment"
-        android:name="com.dunneev.seenatural.Fragments.Piano.PianoFragment"
-        android:label="PianoFragment"
-        tools:layout="@layout/fragment_piano" />
-    <fragment
-        android:id="@+id/readingFragment"
-        android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
-        android:label="fragment_reading"
-        tools:layout="@layout/fragment_reading" />
+    android:id="@+id/nav_graph">
     <navigation
         android:id="@+id/settings_nav_graph"
         app:startDestination="@id/settingsFragment">
@@ -63,9 +33,4 @@
             android:name="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
             android:label="ReadingSettingsFragment" />
     </navigation>
-    <fragment
-        android:id="@+id/staffFragment"
-        android:name="com.dunneev.seenatural.Fragments.Staff.StaffFragment"
-        android:label="StaffFragment"
-        tools:layout="@layout/fragment_staff" />
 </navigation>

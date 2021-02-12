@@ -84,8 +84,10 @@
 
     <string name="StaffLowNoteDefault">A0</string>
     <string name="StaffHighNoteDefault">C8</string>
-
-
+    <string name="bottom_navigation_reading_title">Sight-read</string>
+    <string name="bottom_navigation_play_title">Play</string>
+    <string name="bottom_navigation_theory_title">Theory</string>
+    <string name="bottom_navigation_settings_title">Settings</string>
 
 
 </resources>

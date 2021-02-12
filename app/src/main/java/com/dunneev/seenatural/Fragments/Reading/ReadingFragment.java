@@ -17,6 +17,7 @@ import androidx.preference.PreferenceManager;
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
+import com.dunneev.seenatural.Fragments.Staff.StaffPracticeItem;
 import com.dunneev.seenatural.Fragments.Staff.StaffViewModel;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.FragmentReadingBinding;
@@ -107,6 +108,11 @@ public class ReadingFragment extends Fragment {
             @Override
             public void onChanged(PianoNote note) {
                 Log.i(LOG_TAG, note.toString() + " pressed");
+                StaffPracticeItem item = staffViewModel.getCurrentPracticeItem();
+
+                if (item == null)
+                    return;
+
                 if (viewModel.isCorrectPress(note, staffViewModel.getCurrentPracticeItem())) {
                     viewModel.onCorrectKeyPressed(note);
                 }

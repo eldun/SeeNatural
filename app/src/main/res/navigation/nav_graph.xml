@@ -39,7 +39,7 @@
         app:startDestination="@id/readingSetupFragment">
         <fragment
             android:id="@+id/readingSetupFragment"
-            android:name="com.dunneev.seenatural.Fragments.ReadingSetupFragment"
+            android:name="com.dunneev.seenatural.Fragments.Reading.ReadingSetupFragment"
             android:label="Sight-reading Setup"
             tools:layout="@layout/fragment_reading_setup">
             <action
@@ -51,5 +51,21 @@
             android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
             android:label="fragment_reading"
             tools:layout="@layout/fragment_reading" />
+    </navigation>
+    <navigation
+        android:id="@+id/play_nav_graph"
+        app:startDestination="@id/pianoSetupFragment">
+        <fragment
+            android:id="@+id/pianoSetupFragment"
+            android:name="com.dunneev.seenatural.Fragments.Piano.PianoSetupFragment"
+            android:label="Piano setup">
+            <action
+                android:id="@+id/action_pianoSetupFragment_to_pianoFragment"
+                app:destination="@id/pianoFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/pianoFragment"
+            android:name="com.dunneev.seenatural.Fragments.Piano.PianoFragment"
+            android:label="PianoFragment" />
     </navigation>
 </navigation>

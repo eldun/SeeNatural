@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
         android:defaultValue="true"
+        android:icon="@drawable/ic_atom_48px"
         android:key="@string/reading_single_octave_mode_key"
-        android:title="Single-octave mode" />
+        android:title="Single-octave mode"/>
+    <SwitchPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_infinity_48px"
+        android:key="switch_preference_1"
+        android:title="Endless mode" />
     <com.dunneev.seenatural.Utilities.KeySignaturePreference
         android:id="@+id/readingKeySignaturePreference"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:defaultValue="@string/ReadingKeySignatureDefault"
+        android:icon="@drawable/ic_key_signature_48px"
         android:key="@string/reading_key_signature_key"
         android:summary="%s"
         android:title="Key Signature" />
@@ -20,12 +28,14 @@
         android:defaultValue="@string/PianoLowNoteDefault"
         android:key="@string/staff_low_note_key"
         android:summary="%s"
-        android:title="Low practice note" />
+        android:title="Low practice note"
+        app:icon="@drawable/ic_low_48px" />
     <com.dunneev.seenatural.Utilities.NotePreference
         android:id="@+id/readingHighPracticeNotePreference"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:defaultValue="@string/PianoHighNoteDefault"
+        android:icon="@drawable/ic_top_48px"
         android:key="@string/staff_high_note_key"
         android:summary="%s"
         android:title="High practice note" />

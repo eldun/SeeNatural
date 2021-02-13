@@ -157,15 +157,15 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
         super.onViewCreated(view, savedInstanceState);
 
-        binding.toggleHighNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!binding.toggleHighNoteButton.isChecked())
-                    viewModel.setHighNote(PianoNote.C6);
-                else
-                    viewModel.setHighNote(PianoNote.C8);
-            }
-        });
+//        binding.toggleHighNoteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!binding.toggleHighNoteButton.isChecked())
+//                    viewModel.setHighNote(PianoNote.C6);
+//                else
+//                    viewModel.setHighNote(PianoNote.C8);
+//            }
+//        });
 
         setUpPiano();
     }

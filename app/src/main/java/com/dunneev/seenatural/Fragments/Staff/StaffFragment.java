@@ -308,19 +308,19 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
         super.onViewCreated(view, savedInstanceState);
 
-        binding.addNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.addItemToStaff(PianoNote.G4);
-            }
-        });
-
-        binding.addChordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.addItemToStaff(PianoNote.G4, PianoNote.B4, PianoNote.D5);
-            }
-        });
+//        binding.addNoteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewModel.addItemToStaff(PianoNote.G4);
+//            }
+//        });
+//
+//        binding.addChordButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewModel.addItemToStaff(PianoNote.G4, PianoNote.B4, PianoNote.D5);
+//            }
+//        });
 ////
 //        binding.toggleHighNoteButton2.setOnClickListener(new View.OnClickListener() {
 //            @Override

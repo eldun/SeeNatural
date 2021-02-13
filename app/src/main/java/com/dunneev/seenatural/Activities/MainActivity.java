@@ -2,7 +2,9 @@ package com.dunneev.seenatural.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -13,6 +15,9 @@ import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +51,39 @@ public class MainActivity extends AppCompatActivity {
 //        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+
+        BottomNavigationView bottomNavigationView = binding.bottomNavigationBar;
+
+        bottomNavigationView.getMenu().findItem(R.id.nav_sight_read).setChecked(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+
+
+                switch (item.getItemId()) {
+                    case R.id.nav_sight_read:
+                        navController.navigate(R.id.reading_nav_graph);
+                        return true;
+
+                    case R.id.nav_play:
+                        return false;
+
+                    case R.id.nav_theory:
+                        return false;
+
+                    case R.id.nav_settings:
+                        navController.navigate(R.id.settings_nav_graph);
+                        return true;
+
+
+                }
+
+                return false;
+            }
+
+        });
 
     }
 

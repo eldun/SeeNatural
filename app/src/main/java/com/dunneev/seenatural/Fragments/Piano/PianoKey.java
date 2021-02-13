@@ -99,8 +99,8 @@ public class PianoKey extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         // Default values just in case something goes wrong
-        int desiredWidth = 100;
-        int desiredHeight = 100;
+        int desiredWidth;
+        int desiredHeight;
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -108,7 +108,8 @@ public class PianoKey extends View {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
 
-        whiteKeyWidth = widthSize / PianoKey.whiteCount;
+        double whiteKeyCount = (double) PianoKey.whiteCount;
+        whiteKeyWidth = (int) Math.round(widthSize / whiteKeyCount);
         whiteKeyHeight = heightSize;
         blackKeyWidth = (int) (whiteKeyWidth / whiteToBlackWidthRatio);
         blackKeyHeight = (int) (whiteKeyHeight / whiteToBlackHeightRatio);

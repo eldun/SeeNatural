@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.dunneev.seenatural.Activities.MainActivity;
 import com.dunneev.seenatural.Enums.KeySignature;
 import com.dunneev.seenatural.Enums.PianoNote;
 import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
@@ -24,7 +25,7 @@ import com.dunneev.seenatural.databinding.FragmentReadingBinding;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ReadingFragment extends Fragment {
+public class ReadingFragment extends Fragment implements gestur{
 
     private final String LOG_TAG = this.getClass().getSimpleName();
 
@@ -38,6 +39,8 @@ public class ReadingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         Log.i(LOG_TAG, "create");
         super.onCreate(savedInstanceState);
+
+        MainActivity activity = (MainActivity) getActivity();
 
 
         // Although each view should supposedly have one viewmodel, I couldn't find
@@ -151,7 +154,13 @@ public class ReadingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Log.i(LOG_TAG, "viewCreated");
+
+//        this.getActivity().findViewById(R.id.appBarLayout).setVisibility(View.GONE);
+//        this.getActivity().findViewById(R.id.bottomNavigationBar).setVisibility(View.GONE);
+
+
         super.onViewCreated(view, savedInstanceState);
 //        staffViewModel.addRandomNoteFromPracticableNotes();
     }
+
 }

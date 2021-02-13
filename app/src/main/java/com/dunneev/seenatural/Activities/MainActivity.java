@@ -3,6 +3,7 @@ package com.dunneev.seenatural.Activities;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
+        ConfigureBottomNavigationBar(navController);
+
+
+    }
+
+    private void ConfigureBottomNavigationBar(NavController navController) {
         BottomNavigationView bottomNavigationView = binding.bottomNavigationBar;
 
         bottomNavigationView.getMenu().findItem(R.id.nav_sight_read).setChecked(true);
@@ -86,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
     }
 
     @Override
@@ -94,5 +100,46 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void hideSystemUI(){
+        View decorView = this.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+                // Set the content to appear under the system bars so that the
+                // content doesn't resize when the system bars hide and show.
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                // Hide the nav bar and status bar
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+    }
+
+    public void showSystemUI(){
+
+        // Shows the system bars by removing all the flags
+        // except for the ones that make the content appear under the system bars.
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
+
+    public void hideAppNavigation(){
+
+    }
+
+    public void showAppNavigation(){
+
+    }
+
+    public void hideAppBar(){
+
+    }
+
+    public void showAppBar(){
+
     }
 }

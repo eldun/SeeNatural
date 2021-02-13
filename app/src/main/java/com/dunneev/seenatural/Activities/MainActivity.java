@@ -68,10 +68,12 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.nav_play:
-                        return false;
+                        navController.navigate(R.id.play_nav_graph);
+                        return true;
 
                     case R.id.nav_theory:
-                        return false;
+                        navController.navigate(R.id.theoryFragment);
+                        return true;
 
                     case R.id.nav_settings:
                         navController.navigate(R.id.settings_nav_graph);

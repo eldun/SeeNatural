@@ -216,7 +216,7 @@ public class StaffViewModel extends ViewModel {
     public StaffPracticeItem onCorrectNote(PianoNote note){
         //todo: find an equivalent note to mark correct instead of the note pressed
         StaffPracticeItem currentItem = getCurrentPracticeItem();
-        currentItem.markNoteCorrect(currentItem.getExactStaffNote(note));
+        currentItem.markNoteCorrect(currentItem.getExactNoteOrEnharmonicEquivalent(note));
 
 
         if (currentItem.type == StaffPracticeItem.Type.NOTE && !isLastItem(currentItem)) {
@@ -264,11 +264,15 @@ public class StaffViewModel extends ViewModel {
 
         StaffPracticeItem currentItem = getCurrentPracticeItem();
 
+
         if (currentItem == null) {
             return null;
         }
 
-        StaffPracticeItem.StaffNote staffNote = currentItem.getExactStaffNote(note);
+        StaffPracticeItem.StaffNote staffNote = currentItem.getExactNoteOrEnharmonicEquivalent(note);
+
+        if (staffNote == null)
+            return null;
 
         if (staffNote.state == StaffPracticeItem.NoteState.NEUTRAL)
             return currentItem;
@@ -276,6 +280,7 @@ public class StaffViewModel extends ViewModel {
         else if (staffNote.state == StaffPracticeItem.NoteState.INCORRECT)
             currentItem.removeIncorrectNote(staffNote);
 
+        // todo: finish exercise when last note completed
         else if (staffNote.state == StaffPracticeItem.NoteState.CORRECT)
             currentItem.markNoteDefault(staffNote);
 

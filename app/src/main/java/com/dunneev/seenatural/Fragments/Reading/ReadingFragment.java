@@ -11,8 +11,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHostController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.Activities.MainActivity;
@@ -30,6 +34,8 @@ public class ReadingFragment extends Fragment {
 
     private final String LOG_TAG = this.getClass().getSimpleName();
 
+    NavController navController;
+
     private FragmentReadingBinding binding;
     private ReadingViewModel viewModel;
     private StaffViewModel staffViewModel;
@@ -42,6 +48,7 @@ public class ReadingFragment extends Fragment {
         Log.i(LOG_TAG, "create");
         super.onCreate(savedInstanceState);
 
+        navController = NavHostFragment.findNavController(this);
 
         // Although each view should supposedly have one viewmodel, I couldn't find
         // anything addressing best practices regarding nested fragments.
@@ -132,9 +139,20 @@ public class ReadingFragment extends Fragment {
             }
         };
 
+        final Observer<Boolean> staffCompleteObserver = new Observer<Boolean>() {
+
+            @Override
+            public void onChanged(Boolean staffComplete) {
+                if (staffComplete){
+                    navController.navigate(R.id.action_reading_fragment_to_readingCompleteFragment);
+                }
+            }
+        };
+
 //        pianoViewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);
         pianoViewModel.getMutableLiveDataKeyPressed().observe(this, keyPressedObserver);
         pianoViewModel.getMutableLiveDataKeyReleased().observe(this, keyReleasedObserver);
+        staffViewModel.getMutableLiveDataIsComplete().observe(this, staffCompleteObserver);
 
     }
 
@@ -160,6 +178,10 @@ public class ReadingFragment extends Fragment {
 
 //        this.getActivity().findViewById(R.id.appBarLayout).setVisibility(View.GONE);
 //        this.getActivity().findViewById(R.id.bottomNavigationBar).setVisibility(View.GONE);
+
+        viewModel.generatePracticableNoteList();
+        staffViewModel.addItemToStaff(PianoNote.G4);
+        staffViewModel.addItemToStaff(PianoNote.A4);
 
 
         super.onViewCreated(view, savedInstanceState);

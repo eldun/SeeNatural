@@ -3,6 +3,7 @@ package com.dunneev.seenatural.Fragments.Reading;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ import com.dunneev.seenatural.databinding.FragmentReadingBinding;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ReadingFragment extends Fragment implements gestur{
+public class ReadingFragment extends Fragment {
 
     private final String LOG_TAG = this.getClass().getSimpleName();
 
@@ -37,10 +38,9 @@ public class ReadingFragment extends Fragment implements gestur{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         Log.i(LOG_TAG, "create");
         super.onCreate(savedInstanceState);
-
-        MainActivity activity = (MainActivity) getActivity();
 
 
         // Although each view should supposedly have one viewmodel, I couldn't find
@@ -154,6 +154,9 @@ public class ReadingFragment extends Fragment implements gestur{
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Log.i(LOG_TAG, "viewCreated");
+
+        MainActivity mainActivity = (MainActivity) this.getActivity();
+//        mainActivity.hideSystemUI();
 
 //        this.getActivity().findViewById(R.id.appBarLayout).setVisibility(View.GONE);
 //        this.getActivity().findViewById(R.id.bottomNavigationBar).setVisibility(View.GONE);

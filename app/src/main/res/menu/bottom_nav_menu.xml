@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_sight_read"
+        android:icon="@drawable/ic_eye_48px"
+        android:title="@string/bottom_navigation_reading_title" />
+    <item
+        android:id="@+id/nav_play"
+        android:icon="@drawable/ic_piano_black_48dp"
+        android:title="@string/bottom_navigation_play_title" />
+    <item
+        android:id="@+id/nav_theory"
+        android:icon="@drawable/ic_school_48px"
+        android:title="@string/bottom_navigation_theory_title" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings_48px"
+        android:title="@string/bottom_navigation_settings_title" />
+</menu>

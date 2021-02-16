@@ -7,13 +7,17 @@
         android:defaultValue="@string/PianoLowNoteDefault"
         android:key="@string/piano_low_note_key"
         android:summary="%s"
-        android:title="Low practice note" />
+        android:title="Low key"
+        app:icon="@drawable/ic_low_48px" />
 
     <com.dunneev.seenatural.Utilities.NotePreference
         android:id="@+id/PianoHighPracticeNotePreference"
         android:defaultValue="@string/PianoHighNoteDefault"
         android:key="@string/piano_high_note_key"
         android:summary="%s"
-        android:title="High practice note" />
+        android:title="High key"
+        app:icon="@drawable/ic_top_48px" />
 
+
+<!--    todo: use range slider-->
 </PreferenceScreen>

@@ -3,42 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/firstFragment">
-    <fragment
-        android:id="@+id/firstFragment"
-        android:name="com.dunneev.seenatural.Fragments.FirstFragment"
-        android:label="fragment_first"
-        tools:layout="@layout/fragment_first">
-        <action
-            android:id="@+id/action_firstFragment_to_pianoFragment"
-            app:destination="@id/pianoFragment"
-            app:enterAnim="@anim/fragment_fade_enter" />
-        <action
-            android:id="@+id/action_firstFragment_to_readingFragment"
-            app:destination="@id/readingFragment" />
-        <action
-            android:id="@+id/action_firstFragment_to_settings_nav_graph"
-            app:destination="@id/settings_nav_graph" />
-        <action
-            android:id="@+id/action_firstFragment_to_staffFragment"
-            app:destination="@id/staffFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/pianoFragment"
-        android:name="com.dunneev.seenatural.Fragments.Piano.PianoFragment"
-        android:label="PianoFragment"
-        tools:layout="@layout/fragment_piano" />
-    <fragment
-        android:id="@+id/readingFragment"
-        android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
-        android:label="fragment_reading"
-        tools:layout="@layout/fragment_reading" />
+    app:startDestination="@id/reading_nav_graph">
     <navigation
         android:id="@+id/settings_nav_graph"
         app:startDestination="@id/settingsFragment">
         <fragment
             android:id="@+id/settingsFragment"
-            android:name="com.dunneev.seenatural.Fragments.SettingsFragment"
+            android:name="com.dunneev.seenatural.Fragments.SettingsTabFragment"
             android:label="SettingsFragment">
             <action
                 android:id="@+id/action_settingsFragment_to_pianoSettingsFragment"
@@ -63,9 +34,43 @@
             android:name="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
             android:label="ReadingSettingsFragment" />
     </navigation>
+    <navigation
+        android:id="@+id/reading_nav_graph"
+        app:startDestination="@id/reading_setup_fragment">
+        <fragment
+            android:id="@+id/reading_setup_fragment"
+            android:name="com.dunneev.seenatural.Fragments.Reading.ReadingSetupFragment"
+            android:label="Sight-reading Setup"
+            tools:layout="@layout/fragment_reading_setup">
+            <action
+                android:id="@+id/action_readingSetupFragment_to_readingFragment"
+                app:destination="@id/reading_fragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/reading_fragment"
+            android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
+            android:label="fragment_reading"
+            tools:layout="@layout/fragment_reading" />
+    </navigation>
+    <navigation
+        android:id="@+id/play_nav_graph"
+        app:startDestination="@id/piano_setup_fragment">
+        <fragment
+            android:id="@+id/piano_setup_fragment"
+            android:name="com.dunneev.seenatural.Fragments.Piano.PianoSetupFragment"
+            android:label="Piano setup">
+            <action
+                android:id="@+id/action_pianoSetupFragment_to_pianoFragment"
+                app:destination="@id/piano_fragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/piano_fragment"
+            android:name="com.dunneev.seenatural.Fragments.Piano.PianoFragment"
+            android:label="PianoFragment" />
+    </navigation>
     <fragment
-        android:id="@+id/staffFragment"
-        android:name="com.dunneev.seenatural.Fragments.Staff.StaffFragment"
-        android:label="StaffFragment"
-        tools:layout="@layout/fragment_staff" />
+        android:id="@+id/theory_fragment"
+        android:name="com.dunneev.seenatural.Fragments.Theory.TheoryFragment"
+        android:label="Theory"
+        tools:layout="@layout/fragment_theory" />
 </navigation>

@@ -2,7 +2,10 @@ package com.dunneev.seenatural.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -13,8 +16,16 @@ import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+    private final String LOG_TAG = this.getClass().getSimpleName();
+
 
     public SharedPreferences sharedPreferences;
 
@@ -24,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -44,8 +56,55 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        Set<Integer> topLevelDestinations = new HashSet<>();
+        topLevelDestinations.add(R.id.reading_setup_fragment);
+        topLevelDestinations.add(R.id.piano_setup_fragment);
+        topLevelDestinations.add(R.id.theory_fragment);
+        topLevelDestinations.add(R.id.settingsFragment);
+
+        appBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+
+        ConfigureBottomNavigationBar(navController);
+
+
+    }
+
+    private void ConfigureBottomNavigationBar(NavController navController) {
+        BottomNavigationView bottomNavigationView = binding.bottomNavigationBar;
+
+        bottomNavigationView.getMenu().findItem(R.id.nav_sight_read).setChecked(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+
+
+                switch (item.getItemId()) {
+                    case R.id.nav_sight_read:
+                        navController.navigate(R.id.reading_nav_graph);
+                        return true;
+
+                    case R.id.nav_play:
+                        navController.navigate(R.id.play_nav_graph);
+                        return true;
+
+                    case R.id.nav_theory:
+                        navController.navigate(R.id.theory_fragment);
+                        return true;
+
+                    case R.id.nav_settings:
+                        navController.navigate(R.id.settings_nav_graph);
+                        return true;
+
+
+                }
+
+                return false;
+            }
+
+        });
 
     }
 
@@ -55,4 +114,55 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    // todo: configure fullscreen/swiping down
+    public void hideSystemUI(){
+        View decorView = this.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+                // Set the content to appear under the system bars so that the
+                // content doesn't resize when the system bars hide and show.
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                // Hide the nav bar and status bar
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+        hideAppBar();
+        hideAppNavigation();
+
+    }
+
+    public void showSystemUI(){
+
+        // Shows the system bars by removing all the flags
+        // except for the ones that make the content appear under the system bars.
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        showAppBar();
+        showAppNavigation();
+
+    }
+
+
+    public void hideAppNavigation(){
+        binding.bottomNavigationBar.setVisibility(View.GONE);
+    }
+
+    public void showAppNavigation(){
+        binding.bottomNavigationBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideAppBar(){
+        binding.appBarLayout.setVisibility(View.GONE);
+    }
+
+    public void showAppBar(){
+        binding.appBarLayout.setVisibility(View.VISIBLE);
+    }
+
 }

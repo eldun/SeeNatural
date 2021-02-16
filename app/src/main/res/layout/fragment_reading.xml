@@ -12,8 +12,8 @@
         android:name="com.dunneev.seenatural.Fragments.Staff.StaffFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/pianoFragmentContainerView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_staff" />
@@ -22,10 +22,11 @@
         android:id="@+id/pianoFragmentContainerView"
         android:name="com.dunneev.seenatural.Fragments.Piano.PianoFragment"
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/staffFragmentContainerView"
         tools:layout="@layout/fragment_piano" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

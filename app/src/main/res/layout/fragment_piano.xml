@@ -4,16 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ToggleButton
-        android:id="@+id/toggleHighNoteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:textOff="switch to high note c8"
-        android:textOn="switch to high note c6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.dunneev.seenatural.Fragments.Piano.PianoView
         android:id="@+id/pianoview"
         android:layout_width="0dp"

@@ -157,15 +157,15 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
         super.onViewCreated(view, savedInstanceState);
 
-        binding.toggleHighNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!binding.toggleHighNoteButton.isChecked())
-                    viewModel.setHighNote(PianoNote.C6);
-                else
-                    viewModel.setHighNote(PianoNote.C8);
-            }
-        });
+//        binding.toggleHighNoteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!binding.toggleHighNoteButton.isChecked())
+//                    viewModel.setHighNote(PianoNote.C6);
+//                else
+//                    viewModel.setHighNote(PianoNote.C8);
+//            }
+//        });
 
         setUpPiano();
     }
@@ -201,8 +201,11 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private void setUpSoundPlayer() {
 
 
+        /* todo: load notes based on staff range to allow the correct
+            notes to be played even when in single octave mode.
+            e.g. hitting a C4 for a staff's C6 in single octave mode will play C6
+         */
         soundPlayer.loadPianoNoteWavAssets(assetManager, viewModel.getLowNote(), viewModel.getHighNote());
-        soundPlayer.loadPianoNoteWavAssets(assetManager, staffViewModel.getLowStaffNote(), staffViewModel.getHighStaffNote());
 
         soundPlayer.setUpAudioStream();
 

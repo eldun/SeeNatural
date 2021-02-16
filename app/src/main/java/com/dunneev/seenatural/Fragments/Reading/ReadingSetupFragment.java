@@ -37,7 +37,7 @@ public class ReadingSetupFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(ReadingSetupFragment.this)
-                        .navigate(R.id.readingFragment);
+                        .navigate(R.id.reading_fragment);
             }
         });
 //

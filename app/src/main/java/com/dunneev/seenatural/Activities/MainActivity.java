@@ -20,7 +20,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
+    private final String LOG_TAG = this.getClass().getSimpleName();
+
 
     public SharedPreferences sharedPreferences;
 
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -50,7 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        Set<Integer> topLevelDestinations = new HashSet<>();
+        topLevelDestinations.add(R.id.reading_setup_fragment);
+        topLevelDestinations.add(R.id.piano_setup_fragment);
+        topLevelDestinations.add(R.id.theory_fragment);
+        topLevelDestinations.add(R.id.settingsFragment);
+
+        appBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
 
@@ -79,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.nav_theory:
-                        navController.navigate(R.id.theoryFragment);
+                        navController.navigate(R.id.theory_fragment);
                         return true;
 
                     case R.id.nav_settings:
@@ -93,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
     }
 
     @Override
@@ -102,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    // todo: configure fullscreen/swiping down
     public void hideSystemUI(){
         View decorView = this.getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -114,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN);
 
+        hideAppBar();
+        hideAppNavigation();
+
     }
 
     public void showSystemUI(){
@@ -125,21 +142,27 @@ public class MainActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        showAppBar();
+        showAppNavigation();
+
     }
 
-    public void hideAppNavigation(){
 
+    public void hideAppNavigation(){
+        binding.bottomNavigationBar.setVisibility(View.GONE);
     }
 
     public void showAppNavigation(){
-
+        binding.bottomNavigationBar.setVisibility(View.VISIBLE);
     }
 
     public void hideAppBar(){
-
+        binding.appBarLayout.setVisibility(View.GONE);
     }
 
     public void showAppBar(){
-
+        binding.appBarLayout.setVisibility(View.VISIBLE);
     }
+
 }

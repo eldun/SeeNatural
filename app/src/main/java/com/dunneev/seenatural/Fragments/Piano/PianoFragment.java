@@ -108,44 +108,15 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
                 PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownIncorrectColor);
             }
         };
-//
-//        // Create the observer which updates the UI.
-//        final Observer<PianoNote> lowNoteObserver = new Observer<PianoNote>() {
-//            @Override
-//            public void onChanged(PianoNote lowPianoNote) {
-//                // Update the UI
-//            }
-//        };
-//
-//        // Create the observer which updates the UI.
-//        final Observer<PianoNote> highNoteObserver = new Observer<PianoNote>() {
-//            @Override
-//            public void onChanged(PianoNote highPianoNote) {
-//                setUpPiano();
-//            }
-//        };
-//
-//        // Create the observer which updates the UI.
-//        final Observer<Boolean> singleOctaveObserver = new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(Boolean isSingleOctave) {
-//
-//            }
-//        };
-//
+
         readingViewModel.getMutableLiveDataCorrectKeyPressed().observe(this, correctKeyPressedObserver);
         readingViewModel.getMutableLiveDataIncorrectKeyPressed().observe(this, incorrectKeyPressedObserver);
-//        viewModel.getMutableLiveDataLowestPracticeNote().observe(this, lowNoteObserver);
-//        viewModel.getMutableLiveDataHighestPracticeNote().observe(this, highNoteObserver);
-//        viewModel.getMutableLiveDataIsSingleOctaveMode().observe(this, singleOctaveObserver);
+
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(LOG_TAG, "onCreateView");
-
-        super.onCreate(savedInstanceState);
 
         binding = FragmentPianoBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -156,16 +127,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         Log.i(LOG_TAG, "viewCreated");
 
         super.onViewCreated(view, savedInstanceState);
-
-//        binding.toggleHighNoteButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!binding.toggleHighNoteButton.isChecked())
-//                    viewModel.setHighNote(PianoNote.C6);
-//                else
-//                    viewModel.setHighNote(PianoNote.C8);
-//            }
-//        });
 
         setUpPiano();
     }

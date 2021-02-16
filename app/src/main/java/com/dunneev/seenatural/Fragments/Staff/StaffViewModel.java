@@ -38,6 +38,7 @@ public class StaffViewModel extends ViewModel {
     private boolean hideBassClefLines;
 
     public MutableLiveData<List<StaffPracticeItem>> practiceItemsOnStaff = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isComplete = new MutableLiveData<Boolean>();
 
     public int getCurrentPracticeItemIndex() {
         if (getCurrentPracticeItem() == null){
@@ -135,6 +136,16 @@ public class StaffViewModel extends ViewModel {
     }
     public void setPracticeItemsOnStaff(List<StaffPracticeItem> practiceItemsOnStaff) {
         this.practiceItemsOnStaff.setValue(practiceItemsOnStaff);
+    }
+
+    public MutableLiveData<Boolean> getMutableLiveDataIsComplete() {
+        return isComplete;
+    }
+    public Boolean getIsComplete() {
+            return this.isComplete.getValue();
+    }
+    public void setIsComplete(Boolean isComplete) {
+        this.isComplete.setValue(isComplete);
     }
 
     public List<PianoNote> getAllNotesInStaffRangeDescending() {
@@ -282,7 +293,7 @@ public class StaffViewModel extends ViewModel {
 
         // todo: finish exercise when last note completed
         else if (staffNote.state == StaffPracticeItem.NoteState.CORRECT)
-            currentItem.markNoteDefault(staffNote);
+            setIsComplete(true);
 
         return currentItem;
     }

@@ -50,7 +50,16 @@
             android:id="@+id/reading_fragment"
             android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
             android:label="fragment_reading"
-            tools:layout="@layout/fragment_reading" />
+            tools:layout="@layout/fragment_reading" >
+            <action
+                android:id="@+id/action_reading_fragment_to_readingCompleteFragment"
+                app:destination="@id/readingCompleteFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/readingCompleteFragment"
+            android:name="com.dunneev.seenatural.Fragments.Reading.ReadingCompleteFragment"
+            android:label="fragment_reading_complete"
+            tools:layout="@layout/fragment_reading_complete" />
     </navigation>
     <navigation
         android:id="@+id/play_nav_graph"

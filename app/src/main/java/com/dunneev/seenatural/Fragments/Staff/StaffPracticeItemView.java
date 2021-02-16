@@ -95,7 +95,13 @@ public class StaffPracticeItemView extends ViewGroup {
             staffNoteView = new StaffNoteView(getContext(), staffNote);
             staffNoteView.setColor(staffNote.getColor());
 
-            addView(staffNoteView, noteParams);
+
+            // Draw original note on bottom, incorrect note on top
+            if (staffNote.state == StaffPracticeItem.NoteState.NEUTRAL)
+                addView(staffNoteView, 0, noteParams);
+
+            else
+                addView(staffNoteView, noteParams);
 
         }
 

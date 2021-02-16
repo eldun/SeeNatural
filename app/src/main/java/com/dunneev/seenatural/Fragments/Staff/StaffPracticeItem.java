@@ -162,7 +162,7 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
                 return this.practiceNotes.add(staffNote);
 
             else if (keySignature.containsNote(enharmonicEquivalent))
-                return this.practiceNotes.add(new StaffNote(enharmonicEquivalent));
+                return this.practiceNotes.add(new StaffNote(enharmonicEquivalent, staffNote));
 
             else return this.practiceNotes.add(staffNote);
         }
@@ -240,6 +240,20 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
         return null;
     }
 
+    public StaffNote getExactNoteOrEnharmonicEquivalent(PianoNote note) {
+        StaffNote result = getExactStaffNote(note);
+
+        if(result == null) {
+            result = getExactStaffNote(note.getEnharmonicEquivalent());
+        }
+
+        if (result == null) {
+            return null;
+        }
+
+        return result;
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder(size());
@@ -273,6 +287,21 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
             this.note = note;
             this.isAccidental = PianoNote.isAccidental(note, keySignature);
             this.color = neutralNoteColor;
+        }
+
+
+        /**
+         * Construct a note with the properties of another. This is really only applicable to enharmonic notes
+         * e.g. A note is added to an item that is not in the current key, but its enharmonic is.
+         *
+         * @param note
+         * @param baseNote
+         */
+        public StaffNote(PianoNote note, StaffNote baseNote) {
+            this.note = note;
+            this.isAccidental = PianoNote.isAccidental(note, keySignature);
+            this.color = baseNote.color;
+            this.state = baseNote.state;
         }
 
 

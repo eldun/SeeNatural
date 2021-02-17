@@ -48,7 +48,6 @@ public class ReadingFragment extends Fragment {
         Log.i(LOG_TAG, "create");
         super.onCreate(savedInstanceState);
 
-        navController = NavHostFragment.findNavController(this);
 
         // Although each view should supposedly have one viewmodel, I couldn't find
         // anything addressing best practices regarding nested fragments.
@@ -173,11 +172,7 @@ public class ReadingFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Log.i(LOG_TAG, "viewCreated");
 
-        MainActivity mainActivity = (MainActivity) this.getActivity();
-//        mainActivity.hideSystemUI();
-
-//        this.getActivity().findViewById(R.id.appBarLayout).setVisibility(View.GONE);
-//        this.getActivity().findViewById(R.id.bottomNavigationBar).setVisibility(View.GONE);
+        navController = NavHostFragment.findNavController(this);
 
         viewModel.generatePracticableNoteList();
         staffViewModel.addItemToStaff(PianoNote.G4);

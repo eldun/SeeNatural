@@ -2,7 +2,11 @@ package com.dunneev.seenatural.Utilities;
 
 import org.jetbrains.annotations.Nullable;
 
-public class LiveDataEventWrapper<B> {
+/**
+ *
+ * @param <T>
+ */
+public class Event<T> {
 
     private boolean hasBeenHandled = false;
     private final Object content;
@@ -12,7 +16,7 @@ public class LiveDataEventWrapper<B> {
     }
 
 
-    public LiveDataEventWrapper(Object content) {
+    public Event(T content) {
         this.content = content;
     }
 
@@ -21,13 +25,13 @@ public class LiveDataEventWrapper<B> {
      * Returns the content and prevents its use again.
      */
     @Nullable
-    public final Object getContentIfNotHandled() {
-        Object content;
+    public final T getContentIfNotHandled() {
+        T content;
         if (this.hasBeenHandled) {
             content = null;
         } else {
             this.hasBeenHandled = true;
-            content = this.content;
+            content = (T) this.content;
         }
 
         return content;
@@ -36,8 +40,8 @@ public class LiveDataEventWrapper<B> {
     /**
      * Returns the content, even if it's already been handled.
      */
-    public final Object peekContent() {
-        return this.content;
+    public final T peekContent() {
+        return (T) this.content;
     }
 
 }

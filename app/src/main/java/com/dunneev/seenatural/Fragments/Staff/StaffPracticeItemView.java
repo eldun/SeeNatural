@@ -26,12 +26,6 @@ public class StaffPracticeItemView extends ViewGroup {
         super(context);
 
         setClipChildren(false);
-
-
-
-
-
-
     }
 
     @Override
@@ -65,16 +59,11 @@ public class StaffPracticeItemView extends ViewGroup {
         Log.i(LOG_TAG, "onLayout");
         final int childCount = getChildCount();
 
-        if (childCount == 0) {
-            return;
-        }
-
-
         // todo: invert note if conditions are right
         for (int i = 0; i < childCount; i++) {
             StaffNoteView note = (StaffNoteView) getChildAt(i);
 //            note.setBackgroundColor(Color.BLACK);
-            note.layout(0, 0, note.getMeasuredWidth(), note.getMeasuredHeight());
+//            note.layout(0, 0, note.getMeasuredWidth(), note.getMeasuredHeight());
             note.setTranslationY(StaffView.noteStaffCoordinateMap.get(PianoNote.valueOfLabel(note.staffNote.getNote().naturalNoteLabel)) - note.getMeasuredHeight() + StaffView.staffLineSpacing);
 
         }
@@ -203,13 +192,17 @@ public class StaffPracticeItemView extends ViewGroup {
         @Override
         protected void onDraw(Canvas canvas) {
 
+            // Draw the note starting with the accidental, to allow room for accidental symbols
+            // (Mainly to prevent them getting covered by the staff clef)
             if (staffNote.isAccidental) {
-                accidentalDrawable.setBounds(-accidentalWidth, 0, 0, getMeasuredHeight());
+//                accidentalDrawable.setBounds(-accidentalWidth, 0, 0, getMeasuredHeight());
+                accidentalDrawable.setBounds(0, 0, accidentalWidth, this.getMeasuredHeight());
                 accidentalDrawable.setColor(color);
                 accidentalDrawable.draw(canvas);
             }
 
-            noteDrawable.setBounds(0,0,noteWidth,getMeasuredHeight());
+//            noteDrawable.setBounds(0,0,noteWidth,getMeasuredHeight());
+            noteDrawable.setBounds(accidentalWidth, 0, accidentalWidth + noteWidth, this.getMeasuredHeight());
             noteDrawable.setColor(color);
             noteDrawable.draw(canvas);
 

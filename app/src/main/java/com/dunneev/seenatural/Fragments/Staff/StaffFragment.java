@@ -20,6 +20,7 @@ import com.dunneev.seenatural.CustomException;
 import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
 import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.Utilities.Event;
 import com.dunneev.seenatural.databinding.FragmentStaffBinding;
 
 import java.util.ArrayList;
@@ -233,21 +234,19 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 //
 //
 //
-        final Observer<List<StaffPracticeItem>> practiceItemsOnStaffObserver = new Observer<List<StaffPracticeItem>>() {
-            @Override
-            public void onChanged(List<StaffPracticeItem> practiceItemsOnStaff) {
-                if (binding != null) {
-                    binding.staffView.setPracticeItemsOnStaff(practiceItemsOnStaff);
+        final Observer<List<StaffPracticeItem>> practiceItemsOnStaffObserver = practiceItemsOnStaff -> {
+            if (binding != null) {
+                binding.staffView.setPracticeItemsOnStaff(practiceItemsOnStaff);
 //                    binding.staffView.addPracticeItemsOnStaffToView();
-                }
             }
         };
 
 
 
-        final Observer<PianoNote> keyReleasedObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote note) {
+        final Observer<Event<PianoNote>> keyReleasedObserver = pianoNoteEvent ->  {
+
+            PianoNote note = pianoNoteEvent.getContentIfNotHandled();
+            if (note != null) {
                 Log.i(LOG_TAG, note.toString() + " released");
 
 
@@ -259,21 +258,20 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             }
         };
 
-        final Observer<PianoNote> correctKeyPressedObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote note) {
+        final Observer<Event<PianoNote>> correctKeyPressedObserver = pianoNoteEvent ->  {
+            PianoNote note = pianoNoteEvent.getContentIfNotHandled();
+            if (note != null) {
                 Log.i(LOG_TAG, "correct key pressed");
 
                 StaffPracticeItem item = viewModel.onCorrectNote(note);
                 binding.staffView.decoratePracticeItem(item);
                 binding.staffView.scrollToPracticeItem(item);
-
             }
         };
 
-        final Observer<PianoNote> incorrectKeyPressedObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote note) {
+        final Observer<Event<PianoNote>> incorrectKeyPressedObserver = pianoNoteEvent ->  {
+            PianoNote note = pianoNoteEvent.getContentIfNotHandled();
+            if (note != null) {
                 Log.i(LOG_TAG, "wrong key pressed");
 
                 StaffPracticeItem item = viewModel.onIncorrectNote(note);

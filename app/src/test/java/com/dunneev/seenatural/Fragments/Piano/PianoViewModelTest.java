@@ -19,12 +19,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class PianoViewModelTest {
+
     // Used for testing LiveData
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Mock
     private Observer<PianoNote> keyDownObserverMock;
+
     @Mock
     private Observer<PianoNote> keyUpObserverMock;
 

@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.dunneev.seenatural.Enums.PianoNote;
-
-import java.util.ArrayList;
+import com.dunneev.seenatural.Utilities.Event;
 
 public class PianoViewModel extends ViewModel {
 
@@ -24,8 +23,8 @@ public class PianoViewModel extends ViewModel {
 
     private boolean isSingleOctaveMode;
 
-    private MutableLiveData<PianoNote> keyPressed = new MutableLiveData<>();
-    private MutableLiveData<PianoNote> keyReleased = new MutableLiveData<>();
+    private MutableLiveData<Event<PianoNote>> keyPressed = new MutableLiveData<>();
+    private MutableLiveData<Event<PianoNote>> keyReleased = new MutableLiveData<>();
 
     // TODO: Change colors to facilitate correct/incorrect when sight-reading
     public int whiteKeyUpColor = Color.WHITE;
@@ -48,24 +47,24 @@ public class PianoViewModel extends ViewModel {
         }
     }
 
-    public MutableLiveData<PianoNote> getMutableLiveDataKeyPressed() {
+    public MutableLiveData<Event<PianoNote>> getMutableLiveDataKeyPressed() {
         return keyPressed;
     }
     public PianoNote getKeyPressed() {
-        return keyPressed.getValue();
+        return keyPressed.getValue().peekContent();
     }
     public void setKeyPressed(PianoNote note) {
-        this.keyPressed.setValue(note);
+        this.keyPressed.setValue(new Event<>(note));
     }
 
-    public MutableLiveData<PianoNote> getMutableLiveDataKeyReleased() {
+    public MutableLiveData<Event<PianoNote>> getMutableLiveDataKeyReleased() {
         return keyReleased;
     }
     public PianoNote getKeyReleased() {
-        return keyReleased.getValue();
+        return keyReleased.getValue().peekContent();
     }
     public void setKeyReleased(PianoNote note) {
-        this.keyReleased.setValue(note);
+        this.keyReleased.setValue(new Event<>(note));
     }
 
 

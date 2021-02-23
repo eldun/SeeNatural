@@ -1,5 +1,6 @@
 package com.dunneev.seenatural.Fragments.Piano;
 
+import android.app.usage.UsageEvents;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -21,6 +23,7 @@ import com.dunneev.seenatural.Fragments.Reading.ReadingFragment;
 import com.dunneev.seenatural.Fragments.Reading.ReadingViewModel;
 import com.dunneev.seenatural.Fragments.Staff.StaffViewModel;
 import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.Utilities.Event;
 import com.dunneev.seenatural.Utilities.SoundPlayer;
 import com.dunneev.seenatural.databinding.FragmentPianoBinding;
 
@@ -57,7 +60,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
         setUpObservables();
 
-
     }
 
     private void setViewModelFieldsFromPreferences() {
@@ -89,23 +91,21 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     private void setUpObservables() {
 
 
-        final Observer<PianoNote> correctKeyPressedObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote note) {
-                Log.i(LOG_TAG, "correct key pressed");
+        final Observer<Event<PianoNote>> correctKeyPressedObserver = pianoNoteEvent -> {
+            Log.i(LOG_TAG, "correct key pressed");
+            if(pianoNoteEvent.peekContent() != null) {
 
-                PianoView.setBlackKeyDownColor(viewModel.blackKeyDownCorrectColor);
-                PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownCorrectColor);
+                binding.pianoView.setBlackKeyDownColor(viewModel.blackKeyDownCorrectColor);
+                binding.pianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownCorrectColor);
             }
         };
 
-        final Observer<PianoNote> incorrectKeyPressedObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote note) {
-                Log.i(LOG_TAG, "incorrect key pressed");
+        final Observer<Event<PianoNote>> incorrectKeyPressedObserver = pianoNoteEvent -> {
+            Log.i(LOG_TAG, "incorrect key pressed");
+            if(pianoNoteEvent.peekContent() != null) {
 
-                PianoView.setBlackKeyDownColor(viewModel.blackKeyDownIncorrectColor);
-                PianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownIncorrectColor);
+                binding.pianoView.setBlackKeyDownColor(viewModel.blackKeyDownIncorrectColor);
+                binding.pianoView.setWhiteKeyDownColor(viewModel.whiteKeyDownIncorrectColor);
             }
         };
 
@@ -137,14 +137,14 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         PianoView.setBlackKeyUpColor(viewModel.blackKeyUpColor);
         PianoView.setBlackKeyDownColor(viewModel.blackKeyDownColor);
 
-        binding.pianoview.setLowestPracticeNote(viewModel.getLowNote());
-        binding.pianoview.setHighestPracticeNote(viewModel.getHighNote());
+        binding.pianoView.setLowestPracticeNote(viewModel.getLowNote());
+        binding.pianoView.setHighestPracticeNote(viewModel.getHighNote());
 
 
 
         // Not sure if this is the best way to do it. I call init from the PianoView xml constructor
         // so I have to "refresh" it here after updating the notes based on sharedPrefs
-        binding.pianoview.init();
+        binding.pianoView.init();
 
         setUpPianoKeyListeners();
         setUpSoundPlayer();
@@ -153,7 +153,7 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
     private void setUpPianoKeyListeners() {
 
-        for (PianoKey key:binding.pianoview.getPianoKeys()) {
+        for (PianoKey key:binding.pianoView.getPianoKeys()) {
             key.setPianoKeyListener(this);
         }
     }

@@ -26,6 +26,7 @@ import com.dunneev.seenatural.Fragments.Piano.PianoViewModel;
 import com.dunneev.seenatural.Fragments.Staff.StaffPracticeItem;
 import com.dunneev.seenatural.Fragments.Staff.StaffViewModel;
 import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.Utilities.Event;
 import com.dunneev.seenatural.databinding.FragmentReadingBinding;
 
 import org.jetbrains.annotations.NotNull;
@@ -113,9 +114,10 @@ public class ReadingFragment extends Fragment {
 //            }
 //        };
 
-        final Observer<PianoNote> keyPressedObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote note) {
+        final Observer<Event<PianoNote>> keyPressedObserver = pianoNoteEvent -> {
+            PianoNote note = pianoNoteEvent.getContentIfNotHandled();
+
+            if (note != null) {
                 Log.i(LOG_TAG, note.toString() + " pressed");
                 StaffPracticeItem item = staffViewModel.getCurrentPracticeItem();
 
@@ -124,18 +126,15 @@ public class ReadingFragment extends Fragment {
 
                 if (viewModel.isCorrectPress(note, staffViewModel.getCurrentPracticeItem())) {
                     viewModel.onCorrectKeyPressed(note);
-                }
-                else {
+                } else {
                     viewModel.onIncorrectKeyPressed(note);
                 }
             }
         };
 
-        final Observer<PianoNote> keyReleasedObserver = new Observer<PianoNote>() {
-            @Override
-            public void onChanged(PianoNote note) {
-                Log.i(LOG_TAG, note.toString() + " released");
-            }
+        final Observer<Event<PianoNote>> keyReleasedObserver = pianoNoteEvent -> {
+            Log.i(LOG_TAG, pianoNoteEvent.peekContent().toString() + " released");
+
         };
 
         final Observer<Boolean> staffCompleteObserver = new Observer<Boolean>() {
@@ -174,9 +173,15 @@ public class ReadingFragment extends Fragment {
 
         navController = NavHostFragment.findNavController(this);
 
-        viewModel.generatePracticableNoteList();
-        staffViewModel.addItemToStaff(PianoNote.G4);
-        staffViewModel.addItemToStaff(PianoNote.A4);
+
+        // This conditional is to prevent the staff from repopulating on rotation
+        // todo: handle endless mode
+        if (staffViewModel.getPracticeItemsOnStaff().size()<1) {
+            viewModel.generatePracticableNoteList();
+
+            staffViewModel.addItemToStaff(PianoNote.G4);
+            staffViewModel.addItemToStaff(PianoNote.A4);
+        }
 
 
         super.onViewCreated(view, savedInstanceState);

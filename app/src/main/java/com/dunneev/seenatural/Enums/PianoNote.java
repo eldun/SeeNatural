@@ -307,6 +307,15 @@ public enum PianoNote {
         return whiteKeyCount;
     }
 
+    public static int numberOfWhiteKeysInRangeExclusive(PianoNote lowNote, PianoNote highNote) {
+
+        int result = numberOfWhiteKeysInRangeInclusive(lowNote, highNote) - 2;
+        if (result < 0){
+            return 0;
+        }
+        return 0;
+    }
+
     public static boolean isAccidental(PianoNote note, KeySignature key) {
         if (key.containsNote(note))
             return false;

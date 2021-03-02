@@ -31,7 +31,7 @@ public class StaffPracticeItemView extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        measureChildren(widthMeasureSpec, StaffView.visibleStaffHeight);
+        measureChildren(widthMeasureSpec, Math.round(StaffView.visibleStaffHeight));
 
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);

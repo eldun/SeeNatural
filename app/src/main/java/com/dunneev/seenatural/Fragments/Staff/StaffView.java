@@ -49,10 +49,10 @@ public class StaffView extends ViewGroup {
     int clefWidth;
 
     // The distance between natural notes e.g. A4 to B4
-    public static int staffLineSpacing;
+    public static float staffLineSpacing;
     int staffNoteHorizontalMargins = 100;
-    static int visibleStaffHeight;
-    static final Map<PianoNote, Integer> noteStaffCoordinateMap = new HashMap<>();
+    static float visibleStaffHeight;
+    static final Map<PianoNote, Float> noteStaffCoordinateMap = new HashMap<>();
 
 
     public KeySignature getKeySignature() {
@@ -379,9 +379,9 @@ public class StaffView extends ViewGroup {
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        staffLineSpacing = heightSize / staffLines.size();
+        staffLineSpacing = (int) Math.round(((double) heightSize) / staffLines.size());
         visibleStaffHeight = staffLineSpacing * 8;
-        staffNoteHorizontalMargins = staffLineSpacing * 4;
+        staffNoteHorizontalMargins = (int) (staffLineSpacing * 4);
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
 
@@ -400,8 +400,9 @@ public class StaffView extends ViewGroup {
         int childBottom = 300;
 
         // Only white notes take up space
-        int clippedHighStaffNoteCount= PianoNote.numberOfWhiteKeysInRangeInclusive(highestPracticeNote, PianoNote.HIGHEST_NOTE);
-        int staffLineYCoordinate = -(clippedHighStaffNoteCount * staffLineSpacing);
+        int clippedHighStaffNoteCount= PianoNote.numberOfWhiteKeysInRangeExclusive(highestPracticeNote, PianoNote.HIGHEST_NOTE);
+        float staffLineYCoordinate = -(clippedHighStaffNoteCount * staffLineSpacing) + (staffLineSpacing / 2.0f);
+        Log.i(LOG_TAG, "Starting staff line coord: " + staffLineYCoordinate);
 
 
         // I've decided to map every note instead of available practice notes.
@@ -430,7 +431,7 @@ public class StaffView extends ViewGroup {
 
                 childLeft = 0;
 //                noteStaffMap stores the actual position of the staff line, not its bounds
-                childTop = noteStaffCoordinateMap.get(((StaffLine) child).note) - (staffLineSpacing / 2);
+                childTop = Math.round(noteStaffCoordinateMap.get(((StaffLine) child).note) - (staffLineSpacing / 2.0f));
                 childRight = child.getMeasuredWidth();
                 childBottom = childTop + child.getMeasuredHeight();
             }
@@ -439,14 +440,14 @@ public class StaffView extends ViewGroup {
 
                 if (((StaffClef) child).getClef().equals(getResources().getString(R.string.treble))) {
                     childLeft = 0;
-                    childTop = noteStaffCoordinateMap.get(PianoNote.F5);
+                    childTop = Math.round(noteStaffCoordinateMap.get(PianoNote.F5));
                     childRight = child.getMeasuredWidth();
                     childBottom = childTop + child.getMeasuredHeight();
                 }
 
                 else if (((StaffClef) child).getClef().equals(getResources().getString(R.string.bass))) {
                     childLeft = 0;
-                    childTop = noteStaffCoordinateMap.get(PianoNote.A3);
+                    childTop = Math.round(noteStaffCoordinateMap.get(PianoNote.A3));
                     childRight = child.getMeasuredWidth();
                     childBottom = childTop + child.getMeasuredHeight();
                 }

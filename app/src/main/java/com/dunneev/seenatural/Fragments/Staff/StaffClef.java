@@ -123,7 +123,7 @@ public class StaffClef extends View {
         else
             desiredWidth = clefWidth;
 
-        desiredHeight = StaffView.visibleStaffHeight;
+        desiredHeight = Math.round(StaffView.visibleStaffHeight);
 
 
 

@@ -30,6 +30,10 @@ public class TextDrawable extends Drawable {
     private float intrinsicHeight;
     private float aspectRatio;
 
+    public Paint getPaint() {
+        return paint;
+    }
+
     public void setColor(int color) {
         this.color = color;
         paint.setColor(color);

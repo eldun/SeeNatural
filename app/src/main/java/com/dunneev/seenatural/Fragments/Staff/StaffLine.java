@@ -51,7 +51,7 @@ public class StaffLine extends View {
 
     private void init() {
         staffLinePaint.setColor(Color.WHITE);
-//        assignVisibility();
+        assignVisibility();
     }
 
     private void assignVisibility() {

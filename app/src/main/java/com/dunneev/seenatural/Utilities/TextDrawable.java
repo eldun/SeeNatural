@@ -23,27 +23,31 @@ public class TextDrawable extends Drawable {
 
     private int color = Color.WHITE;
     private static final int DEFAULT_TEXTSIZE = 100;
-    private Paint textPaint;
+    private Paint paint;
     private CharSequence text;
     PositioningInBounds positioningInBounds;
-    private int intrinsicWidth;
-    private int intrinsicHeight;
+    private float intrinsicWidth;
+    private float intrinsicHeight;
     private float aspectRatio;
+
+    public Paint getPaint() {
+        return paint;
+    }
 
     public void setColor(int color) {
         this.color = color;
-        textPaint.setColor(color);
+        paint.setColor(color);
     }
 
     public TextDrawable(CharSequence text, PositioningInBounds positioningInBounds) {
         this.text = text;
         this.positioningInBounds = positioningInBounds;
-        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setColor(color);
-        textPaint.setTextAlign(Paint.Align.LEFT);
-        intrinsicWidth = (int) (textPaint.measureText(text, 0, text.length()) + 1);
-        intrinsicHeight = textPaint.getFontMetricsInt(null);
-        aspectRatio = (float)intrinsicWidth/intrinsicHeight;
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(color);
+        paint.setTextAlign(Paint.Align.LEFT);
+        intrinsicWidth = (paint.measureText(text, 0, text.length()) + 1);
+        intrinsicHeight = paint.getFontMetrics(null);
+        aspectRatio = intrinsicWidth/intrinsicHeight;
     }
     @Override
     public void draw(Canvas canvas) {
@@ -57,7 +61,7 @@ public class TextDrawable extends Drawable {
         canvas.drawRect(drawableBounds, boundsPaint);
 
 
-        textPaint.setTextSize(drawableBounds.height());
+        paint.setTextSize(drawableBounds.height());
 
         Rect textBounds = new Rect();
         float x;
@@ -67,33 +71,33 @@ public class TextDrawable extends Drawable {
             case LEFT:
                 break;
             case TOP:
-                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+                paint.getTextBounds((String) text, 0, text.length(), textBounds);
                 x = drawableBounds.left;
-                y = drawableBounds.bottom - textPaint.descent() / 2;
-                canvas.drawText((String) text, x, y, textPaint);
+                y = drawableBounds.bottom - paint.descent() / 2;
+                canvas.drawText((String) text, x, y, paint);
 
                 break;
             case RIGHT:
                 break;
             case BOTTOM:
-                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+                paint.getTextBounds((String) text, 0, text.length(), textBounds);
                 x = drawableBounds.left;
                 y = drawableBounds.bottom;
-                canvas.drawText((String) text, x, y, textPaint);
+                canvas.drawText((String) text, x, y, paint);
                 break;
             case CENTER:
 
-                textPaint.getTextBounds((String) text, 0, text.length(), textBounds);
+                paint.getTextBounds((String) text, 0, text.length(), textBounds);
 //                x = drawableBounds.left + (drawableBounds.width() / 2f)  - (textBounds.width() / 2f) - textBounds.left;
                 x = drawableBounds.left;
                 y = drawableBounds.top + (drawableBounds.height() / 2f) + (textBounds.height() / 2f) - textBounds.bottom;
-                canvas.drawText((String) text, x, y, textPaint);
+                canvas.drawText((String) text, x, y, paint);
 
                 break;
 
             case DEFAULT:
                 canvas.drawText(text, 0, text.length(),
-                        drawableBounds.left, drawableBounds.bottom, textPaint);
+                        drawableBounds.left, drawableBounds.bottom, paint);
                 break;
         }
     }
@@ -103,22 +107,14 @@ public class TextDrawable extends Drawable {
     }
     @Override
     public int getOpacity() {
-        return textPaint.getAlpha();
-    }
-    @Override
-    public int getIntrinsicWidth() {
-        return intrinsicWidth;
-    }
-    @Override
-    public int getIntrinsicHeight() {
-        return intrinsicHeight;
+        return paint.getAlpha();
     }
     @Override
     public void setAlpha(int alpha) {
-        textPaint.setAlpha(alpha);
+        paint.setAlpha(alpha);
     }
     @Override
     public void setColorFilter(ColorFilter filter) {
-        textPaint.setColorFilter(filter);
+        paint.setColorFilter(filter);
     }
 }

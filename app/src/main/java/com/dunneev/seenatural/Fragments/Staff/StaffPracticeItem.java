@@ -13,6 +13,7 @@ import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.TreeSet;
 
 public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.StaffNote> {
@@ -40,6 +41,8 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     public Type type;
     public KeySignature keySignature;
     public TreeSet<StaffNote> practiceNotes = new TreeSet<>();
+    public Set<PianoNote> ledgerLineNotes = new TreeSet<>();
+
     public int index;
     public boolean isComplete = false;
 
@@ -125,7 +128,7 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     }
 
     private boolean add(PianoNote note) {
-        return add(new StaffNote(note));
+        return add(new StaffNote(note, keySignature));
     }
 
     public boolean add(PianoNote... notes) {
@@ -156,23 +159,92 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
 
 
         if(!containsEquivalentPianoNote(staffNote.note, false)) {
+            boolean result;
 
             // Add non-accidentals first
             if (keySignature.containsNote(staffNote.note))
-                return this.practiceNotes.add(staffNote);
+                result = this.practiceNotes.add(staffNote);
 
+                // Add enharmonic if it is in key
             else if (keySignature.containsNote(enharmonicEquivalent))
-                return this.practiceNotes.add(new StaffNote(enharmonicEquivalent, staffNote));
+                result = this.practiceNotes.add(new StaffNote(enharmonicEquivalent, staffNote, keySignature));
 
-            else return this.practiceNotes.add(staffNote);
+                // Add note
+            else {
+                result = this.practiceNotes.add(staffNote);
+            }
+
+            updateLedgerLinesForPracticeItem();
+
+            return result;
         }
 
         return false;
     }
 
+
+    //todo: Add ledger lines if one of the staves is hidden e.g. B3 for treble staff when bass is hidden
+    private void updateLedgerLinesForPracticeItem() {
+
+        ledgerLineNotes.clear();
+        PianoNote note;
+
+        for (StaffNote staffNote:practiceNotes) {
+            note = staffNote.getNote();
+
+
+            // Note is higher than first ledger line above treble staff
+            if (note.compareTo(PianoNote.B4) >= 0) {
+                for (PianoNote noteInRange : PianoNote.notesInRangeInclusive(PianoNote.B4, note)) {
+                    if (noteInRange.isWhiteKey &&
+                            (noteInRange.equals(PianoNote.A5) ||
+                                    noteInRange.equals(PianoNote.C6) ||
+                                    noteInRange.equals(PianoNote.E6) ||
+                                    noteInRange.equals(PianoNote.G6) ||
+                                    noteInRange.equals(PianoNote.B6) ||
+                                    noteInRange.equals(PianoNote.D7) ||
+                                    noteInRange.equals(PianoNote.F7) ||
+                                    noteInRange.equals(PianoNote.A7) ||
+                                    noteInRange.equals(PianoNote.C8))) {
+                        ledgerLineNotes.add(noteInRange);
+
+                    }
+                }
+            }
+
+            // Middle C
+            if (note.equals(PianoNote.C4)) {
+                ledgerLineNotes.add(PianoNote.C4);
+            }
+
+            // Note is lower than first ledger line below bass clef
+            if (note.compareTo(PianoNote.E2) <= 0){
+                for (PianoNote noteInRange : PianoNote.notesInRangeInclusive(note, PianoNote.E2)) {
+                    if (noteInRange.isWhiteKey &&
+                            (noteInRange.equals(PianoNote.E2) ||
+                            noteInRange.equals(PianoNote.C2) ||
+                            noteInRange.equals(PianoNote.A1) ||
+                            noteInRange.equals(PianoNote.F1) ||
+                            noteInRange.equals(PianoNote.D1) ||
+                            noteInRange.equals(PianoNote.B0))){
+                        ledgerLineNotes.add(noteInRange);
+                    }
+                }
+            }
+
+
+            // No additional space between clefs right now
+            // todo: add space between clefs
+
+
+
+        }
+
+    }
+
     public boolean addIncorrectNote(PianoNote note) {
-        StaffNote staffNote = new StaffNote(note);
-        staffNote.state = NoteState.INCORRECT;
+        StaffNote staffNote = new StaffNote(note, keySignature);
+        staffNote.state = StaffNote.State.INCORRECT;
         staffNote.color = incorrectNoteColor;
         return add(staffNote);
     }
@@ -181,7 +253,7 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
 
         if (note != null) {
 
-            note.state = NoteState.CORRECT;
+            note.state = StaffNote.State.CORRECT;
             note.color = correctNoteColor;
 
             if (areAllNotesCorrect())
@@ -194,8 +266,8 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
 
         if (note != null) {
 
-            if (note.state == NoteState.CORRECT) {
-                note.state = NoteState.NEUTRAL;
+            if (note.state == StaffNote.State.CORRECT) {
+                note.state = StaffNote.State.NEUTRAL;
                 this.isComplete = false;
                 note.color = neutralNoteColor;
             }
@@ -205,15 +277,16 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
     public void removeIncorrectNote(StaffNote note) {
         if (note != null) {
 
-            if (note.state == NoteState.INCORRECT) {
+            if (note.state == StaffNote.State.INCORRECT) {
                 this.remove(note);
+                updateLedgerLinesForPracticeItem();
             }
         }
     }
 
     private boolean areAllNotesCorrect() {
         for (StaffNote staffNote : this) {
-            if (staffNote.state != NoteState.CORRECT)
+            if (staffNote.state != StaffNote.State.CORRECT)
                 return false;
         }
         return true;
@@ -266,12 +339,30 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
         return stringBuilder.toString();
     }
 
-    class StaffNote implements Comparable<StaffNote> {
+    static class StaffNote implements Comparable<StaffNote> {
+
+        public enum State {
+            CORRECT,
+            NEUTRAL,
+            INCORRECT;
+        }
+
+        public enum GuidingLedgerLine {
+            NONE,
+            THROUGH,
+            TANGENTIAL
+        }
 
         private PianoNote note;
-        public boolean isAccidental;
 
-        public NoteState state = NoteState.NEUTRAL;
+        // I was originally just using the PracticeItem keySignature, but I might want to create
+        // one-off notes in tutorials or something.
+        private KeySignature keySignature;
+        public boolean isAccidental;
+        public GuidingLedgerLine gudingLedgerLine;
+
+
+        public State state = State.NEUTRAL;
         private int color;
 
 
@@ -283,10 +374,12 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
             return color;
         }
 
-        public StaffNote(PianoNote note) {
+        public StaffNote(PianoNote note, KeySignature keySignature) {
             this.note = note;
             this.isAccidental = PianoNote.isAccidental(note, keySignature);
             this.color = neutralNoteColor;
+//            this.gudingLedgerLine = determineLedgerLinePosition(note);
+            this.keySignature = keySignature;
         }
 
 
@@ -297,13 +390,47 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
          * @param note
          * @param baseNote
          */
-        public StaffNote(PianoNote note, StaffNote baseNote) {
+        public StaffNote(PianoNote note, StaffNote baseNote, KeySignature keySignature) {
             this.note = note;
             this.isAccidental = PianoNote.isAccidental(note, keySignature);
             this.color = baseNote.color;
             this.state = baseNote.state;
+//            this.gudingLedgerLine = determineLedgerLinePosition(note);
+            this.keySignature = keySignature;
         }
 
+//        /**
+//         * Determine the ledger line for the note. This will be used in StaffPracticeItemView.StaffNote,
+//         * and will be highlighted along with the note (default, correct, incorrect),
+//         * as opposed to the ledger lines in this outer class (StaffPracticeItem).
+//         *
+//         * @param note
+//         * @return GuidingLedgerLine enum
+//         */
+//        public static GuidingLedgerLine determineLedgerLinePosition(PianoNote note){
+//
+//            if (// Above treble staff or below bass staff
+//                    (note.compareTo(PianoNote.G_SHARP_5)>0 || note.compareTo(PianoNote.F2)<0) ||
+//                            // in between bass and treble staff
+//                            (note.compareTo(PianoNote.D_FLAT_4) < 0 && note.compareTo(PianoNote.B3) > 0)) {
+//
+//                if (note.pitch.equals(PianoNote.A4.pitch) || note.pitch.equals(PianoNote.A_FLAT_4.pitch) || note.pitch.equals(PianoNote.A_SHARP_4.pitch) ||
+//                        note.pitch.equals(PianoNote.C4.pitch) || note.pitch.equals(PianoNote.C_SHARP_4.pitch) ||
+//                        note.pitch.equals(PianoNote.E4.pitch) || note.pitch.equals(PianoNote.E_FLAT_4.pitch)){
+//                    return GuidingLedgerLine.THROUGH;
+//                }
+//
+//                if (note.pitch.equals(PianoNote.B4.pitch) || note.pitch.equals(PianoNote.B_FLAT_4.pitch) ||
+//                        note.pitch.equals(PianoNote.D4.pitch) || note.pitch.equals(PianoNote.D_FLAT_4.pitch) || note.pitch.equals(PianoNote.D_SHARP_4.pitch) ||
+//                        note.pitch.equals(PianoNote.F4.pitch) || note.pitch.equals(PianoNote.F_SHARP_4.pitch) ||
+//                        note.pitch.equals(PianoNote.G4.pitch) || note.pitch.equals(PianoNote.G_FLAT_4.pitch) || note.pitch.equals(PianoNote.G_SHARP_4.pitch)){
+//                    return GuidingLedgerLine.TANGENTIAL;
+//                }
+//
+//            }
+//
+//            return GuidingLedgerLine.NONE;
+//        }
 
         @Override
         public int compareTo(StaffNote staffNote) {

@@ -279,13 +279,9 @@ public class StaffView extends ViewGroup {
     }
 
     private void addItemToView(StaffPracticeItem item) {
-//        ArrayList notes = new ArrayList<PianoNote>();
-//        notes.add(PianoNote.C4);
-//        notes.add(PianoNote.E4);
-//        notes.add(PianoNote.G5);
 
-        StaffPracticeItemView itemView = new StaffPracticeItemView(getContext(), item);
-//        StaffNote staffNote = new StaffNote(getContext(), keySignature, note);
+
+        StaffPracticeItemView itemView = new StaffPracticeItemView(getContext(), item, noteStaffCoordinateMap);
 
 
         // noteStaffCoordinateMap only contains coordinates for non-accidental notes,

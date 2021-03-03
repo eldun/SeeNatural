@@ -73,6 +73,7 @@ public class StaffPracticeItemView extends ViewGroup {
         setMeasuredDimension(desiredWidth, heightSize);
     }
 
+    //todo: fix note inversion, multiple accidental, and half-step note logic
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 

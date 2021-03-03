@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.RotateDrawable;
+import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import com.dunneev.seenatural.Utilities.TextDrawable;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
+import java.util.SplittableRandom;
 
 public class StaffPracticeItemView extends ViewGroup {
     private static final String LOG_TAG = StaffPracticeItemView.class.getSimpleName();
@@ -72,11 +76,10 @@ public class StaffPracticeItemView extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
 
-        int accidentalWidth = 0;
-        int noteWidth = 0;
+        float accidentalWidth = 0;
+        float noteWidth = 0;
         final int childCount = getChildCount();
 
-        // todo: invert note if conditions are right
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
             if (child.getClass() == StaffNoteView.class) {
@@ -87,11 +90,12 @@ public class StaffPracticeItemView extends ViewGroup {
                 child.layout(0, 0, child.getMeasuredWidth(), child.getMeasuredHeight());
                 int yCoord = Math.round((Float) noteCoordinateMap.get(PianoNote.valueOfLabel(((StaffNoteView) child).staffNote.getNote().naturalNoteLabel)));
                 child.setTranslationY(yCoord - StaffView.visibleStaffHeight + StaffView.staffLineSpacing + 2);
+
             }
 
             else if (getChildAt(i).getClass() == GuidingLedgerLineView.class) {
 //                child.setBackgroundColor(Color.WHITE);
-                child.layout(accidentalWidth,0, accidentalWidth + noteWidth,2);
+                child.layout((Math.round(accidentalWidth)),0, Math.round(accidentalWidth + noteWidth),2);
                 int yCoord = Math.round((Float) noteCoordinateMap.get(PianoNote.valueOfLabel(((GuidingLedgerLineView) child).note.naturalNoteLabel)));
                 child.setTranslationY(yCoord);
             }
@@ -143,15 +147,13 @@ public class StaffPracticeItemView extends ViewGroup {
 
         private TextDrawable accidentalDrawable;
         private TextDrawable noteDrawable;
+        private boolean isInverted;
 
-        private int noteWidth = 0;
-        private int accidentalWidth = 0;
+        private float noteWidth = 0;
+        private float accidentalWidth = 0;
 
         private int desiredWidth = 500;
         private int desiredHeight = 500;
-
-        private int yCoord;
-
 
         public int getDesiredWidth() {
             return desiredWidth;
@@ -169,7 +171,7 @@ public class StaffPracticeItemView extends ViewGroup {
             this.desiredHeight = desiredHeight;
         }
 
-        public int getNoteWidth() {
+        public float getNoteWidth() {
             return noteWidth;
         }
 
@@ -177,11 +179,6 @@ public class StaffPracticeItemView extends ViewGroup {
             this.color = color;
         }
 
-        public void setyCoord(int yCoord) {
-            this.yCoord = yCoord;
-        }
-
-        // todo: draw a ledger line when necessary
         public StaffNoteView(Context context, StaffPracticeItem.StaffNote note) {
             super(context);
             this.staffNote = note;
@@ -200,6 +197,25 @@ public class StaffPracticeItemView extends ViewGroup {
 
             accidentalDrawable = new TextDrawable(staffNote.getNote().symbol, TextDrawable.PositioningInBounds.DEFAULT);
             noteDrawable = new TextDrawable(getResources().getString(R.string.char_quarter_note), TextDrawable.PositioningInBounds.DEFAULT);
+
+            isInverted = false;
+
+            // Note is at or above middle line of treble clef
+            if (staffNote.getNote().getNaturalNote().compareTo(PianoNote.B4) >= 0){
+                isInverted = true;
+            }
+
+            // Note is C4, switch between inverted and non-inverted to simulate left/right hand
+            if (staffNote.getNote().getNaturalNote().equals(PianoNote.C4)){
+                isInverted = new Random().nextBoolean();
+//                Log.i(LOG_TAG, String.valueOf(isInverted));
+            }
+            // Note is at or below middle line of bass clef
+            if (staffNote.getNote().getNaturalNote().compareTo(PianoNote.D3) <= 0){
+                isInverted = true;
+            }
+
+
 
 //            if (PianoNote.isAccidental(note, keySignature)) {
 //                noteDrawable = new TextDrawable(note.symbol + getResources().getString(R.string.char_quarter_note), TextDrawable.PositioningInBounds.DEFAULT);
@@ -230,7 +246,7 @@ public class StaffPracticeItemView extends ViewGroup {
             noteWidth = (int) (height * noteDrawable.getAspectRatio());
 
             // Width is dependent on the length of text, type of note, and height of text.
-            width = accidentalWidth + noteWidth;
+            width = (int) (accidentalWidth + noteWidth);
 
             setMeasuredDimension(width, height);
         }
@@ -239,20 +255,32 @@ public class StaffPracticeItemView extends ViewGroup {
         @Override
         protected void onDraw(Canvas canvas) {
 
+//            canvas.drawRect(0,0,this.getMeasuredWidth(), this.getMeasuredHeight(), noteDrawable.getPaint());
+
+
             // Draw the note starting with the accidental, to allow room for accidental symbols
             // (Mainly to prevent them getting covered by the staff clef)
             if (staffNote.isAccidental) {
 //                accidentalDrawable.setBounds(-accidentalWidth, 0, 0, getMeasuredHeight());
-                accidentalDrawable.setBounds(0, 0, accidentalWidth, this.getMeasuredHeight());
+                accidentalDrawable.setBounds(0, 0, Math.round(accidentalWidth), this.getMeasuredHeight());
                 accidentalDrawable.setColor(color);
                 accidentalDrawable.draw(canvas);
             }
 
 //            noteDrawable.setBounds(0,0,noteWidth,getMeasuredHeight());
-            noteDrawable.setBounds(accidentalWidth, 0, accidentalWidth + noteWidth, this.getMeasuredHeight());
+            noteDrawable.setBounds(Math.round(accidentalWidth), 0, Math.round(accidentalWidth + noteWidth), this.getMeasuredHeight());
             noteDrawable.setColor(color);
-            noteDrawable.draw(canvas);
 
+            if (isInverted) {
+                canvas.save();
+                canvas.rotate(180, accidentalWidth + (noteWidth/2.0f), (7.0f / 8.0f) * this.getMeasuredHeight());
+                noteDrawable.draw(canvas);
+                canvas.restore();
+            }
+
+            else {
+                noteDrawable.draw(canvas);
+            }
 
             if (staffNote.gudingLedgerLine == StaffPracticeItem.StaffNote.GuidingLedgerLine.TANGENTIAL) {
                 // note height is always 8 spaces

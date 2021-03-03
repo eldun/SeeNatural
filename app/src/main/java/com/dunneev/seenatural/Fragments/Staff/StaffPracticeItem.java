@@ -194,7 +194,7 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
 
 
             // Note is higher than first ledger line above treble staff
-            if (note.compareTo(PianoNote.B4) >= 0) {
+            if (note.getNaturalNote().compareTo(PianoNote.B4) >= 0) {
                 for (PianoNote noteInRange : PianoNote.notesInRangeInclusive(PianoNote.B4, note)) {
                     if (noteInRange.isWhiteKey &&
                             (noteInRange.equals(PianoNote.A5) ||
@@ -213,12 +213,12 @@ public class StaffPracticeItem extends AbstractCollection<StaffPracticeItem.Staf
             }
 
             // Middle C
-            if (note.equals(PianoNote.C4)) {
+            if (note.getNaturalNote().equals(PianoNote.C4)) {
                 ledgerLineNotes.add(PianoNote.C4);
             }
 
             // Note is lower than first ledger line below bass clef
-            if (note.compareTo(PianoNote.E2) <= 0){
+            if (note.getNaturalNote().compareTo(PianoNote.E2) <= 0){
                 for (PianoNote noteInRange : PianoNote.notesInRangeInclusive(note, PianoNote.E2)) {
                     if (noteInRange.isWhiteKey &&
                             (noteInRange.equals(PianoNote.E2) ||

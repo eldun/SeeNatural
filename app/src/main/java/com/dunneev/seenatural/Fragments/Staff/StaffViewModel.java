@@ -285,14 +285,14 @@ public class StaffViewModel extends ViewModel {
         if (staffNote == null)
             return null;
 
-        if (staffNote.state == StaffPracticeItem.NoteState.NEUTRAL)
+        if (staffNote.state == StaffPracticeItem.StaffNote.State.NEUTRAL)
             return currentItem;
 
-        else if (staffNote.state == StaffPracticeItem.NoteState.INCORRECT)
+        else if (staffNote.state == StaffPracticeItem.StaffNote.State.INCORRECT)
             currentItem.removeIncorrectNote(staffNote);
 
         // todo: finish exercise when last note completed
-        else if (staffNote.state == StaffPracticeItem.NoteState.CORRECT)
+        else if (staffNote.state == StaffPracticeItem.StaffNote.State.CORRECT)
             setIsComplete(true);
 
         return currentItem;

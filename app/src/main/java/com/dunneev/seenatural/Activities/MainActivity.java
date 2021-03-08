@@ -2,7 +2,10 @@ package com.dunneev.seenatural.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
 import com.dunneev.seenatural.R;
+import com.dunneev.seenatural.Utilities.ScreenManager;
 import com.dunneev.seenatural.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -23,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnSystemUiVisibilityChangeListener {
     private final String LOG_TAG = this.getClass().getSimpleName();
 
 
@@ -31,6 +35,17 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+
+
+    public interface onWindowFocusChangedListener {
+        void onWindowFocusChanged(boolean hasFocus);
+    }
+
+    private onWindowFocusChangedListener onWindowFocusChangedListener = null;
+
+    public void addOnWindowFocusChangedListener(onWindowFocusChangedListener listener) {
+        this.onWindowFocusChangedListener = listener;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 //        You should retrieve the NavController directly from the NavHostFragment instead.
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.nav_host_fragment_content_main);
+                        .findFragmentById(R.id.mainContentContainerView);
         NavController navController = navHostFragment.getNavController();
 
 
@@ -67,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         ConfigureBottomNavigationBar(navController);
+
+        binding.getRoot().setOnSystemUiVisibilityChangeListener(this);
 
 
     }
@@ -110,59 +127,60 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        NavController navController = Navigation.findNavController(this, R.id.mainContentContainerView);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
 
-    // todo: configure fullscreen/swiping down
-    public void hideSystemUI(){
-        View decorView = this.getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
-                // Set the content to appear under the system bars so that the
-                // content doesn't resize when the system bars hide and show.
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                // Hide the nav bar and status bar
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN);
-
-        hideAppBar();
-        hideAppNavigation();
-
-    }
-
-    public void showSystemUI(){
-
-        // Shows the system bars by removing all the flags
-        // except for the ones that make the content appear under the system bars.
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
-        showAppBar();
-        showAppNavigation();
-
-    }
-
-
-    public void hideAppNavigation(){
+    public void hideAppNavigation() {
         binding.bottomNavigationBar.setVisibility(View.GONE);
     }
 
-    public void showAppNavigation(){
+    public void showAppNavigation() {
         binding.bottomNavigationBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideAppBar(){
+    public void hideAppBar() {
         binding.appBarLayout.setVisibility(View.GONE);
     }
 
-    public void showAppBar(){
+    public void showAppBar() {
         binding.appBarLayout.setVisibility(View.VISIBLE);
     }
+
+
+    @Override
+    public void onSystemUiVisibilityChange(int visibility) {
+        Log.i(LOG_TAG, "systemUiVisChange");
+
+        if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) != 0) {
+            hideAppBar();
+            hideAppNavigation();
+        } else {
+            showAppBar();
+            showAppNavigation();
+        }
+    }
+
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (onWindowFocusChangedListener != null) {
+            onWindowFocusChangedListener.onWindowFocusChanged(hasFocus);
+        }
+
+        if (hasFocus) {
+
+        }
+        else {
+
+        }
+
+
+    }
+
 
 }

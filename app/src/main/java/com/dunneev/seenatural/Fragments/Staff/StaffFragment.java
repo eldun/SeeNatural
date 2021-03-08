@@ -247,7 +247,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
 
             PianoNote note = pianoNoteEvent.getContentIfNotHandled();
             if (note != null) {
-                Log.i(LOG_TAG, note.toString() + " released");
 
 
                 StaffPracticeItem item = viewModel.onKeyReleased(note);
@@ -261,7 +260,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Event<PianoNote>> correctKeyPressedObserver = pianoNoteEvent ->  {
             PianoNote note = pianoNoteEvent.getContentIfNotHandled();
             if (note != null) {
-                Log.i(LOG_TAG, "correct key pressed");
 
                 StaffPracticeItem item = viewModel.onCorrectNote(note);
                 binding.staffView.decoratePracticeItem(item);
@@ -272,7 +270,6 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         final Observer<Event<PianoNote>> incorrectKeyPressedObserver = pianoNoteEvent ->  {
             PianoNote note = pianoNoteEvent.getContentIfNotHandled();
             if (note != null) {
-                Log.i(LOG_TAG, "wrong key pressed");
 
                 StaffPracticeItem item = viewModel.onIncorrectNote(note);
                 binding.staffView.decoratePracticeItem(item);

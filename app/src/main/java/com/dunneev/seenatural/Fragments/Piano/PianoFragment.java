@@ -92,7 +92,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
 
 
         final Observer<Event<PianoNote>> correctKeyPressedObserver = pianoNoteEvent -> {
-            Log.i(LOG_TAG, "correct key pressed");
             if(pianoNoteEvent.peekContent() != null) {
 
                 binding.pianoView.setBlackKeyDownColor(viewModel.blackKeyDownCorrectColor);
@@ -101,7 +100,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
         };
 
         final Observer<Event<PianoNote>> incorrectKeyPressedObserver = pianoNoteEvent -> {
-            Log.i(LOG_TAG, "incorrect key pressed");
             if(pianoNoteEvent.peekContent() != null) {
 
                 binding.pianoView.setBlackKeyDownColor(viewModel.blackKeyDownIncorrectColor);
@@ -184,7 +182,6 @@ public class PianoFragment extends Fragment implements PianoKey.PianoKeyListener
     // Update UI in fragment, process data in the ViewModel
     @Override
     public void keyDown(PianoKey key) {
-        Log.i(LOG_TAG, "keyDown(" + key.toString() + ")");
         PianoNote note = key.getNote();
 
         viewModel.keyDown(note);

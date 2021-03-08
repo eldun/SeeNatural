@@ -50,7 +50,7 @@
             android:id="@+id/reading_fragment"
             android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
             android:label="fragment_reading"
-            tools:layout="@layout/fragment_reading" >
+            tools:layout="@layout/fragment_reading">
             <action
                 android:id="@+id/action_reading_fragment_to_readingCompleteFragment"
                 app:destination="@id/readingCompleteFragment" />

@@ -3,19 +3,17 @@ package com.dunneev.seenatural.Fragments.Reading;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.PreferenceManager;
 
@@ -27,11 +25,12 @@ import com.dunneev.seenatural.Fragments.Staff.StaffPracticeItem;
 import com.dunneev.seenatural.Fragments.Staff.StaffViewModel;
 import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.Event;
+import com.dunneev.seenatural.Utilities.ScreenManager;
 import com.dunneev.seenatural.databinding.FragmentReadingBinding;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ReadingFragment extends Fragment {
+public class ReadingFragment extends Fragment implements MainActivity.onWindowFocusChangedListener {
 
     private final String LOG_TAG = this.getClass().getSimpleName();
 
@@ -62,6 +61,9 @@ public class ReadingFragment extends Fragment {
 
 
         setUpObservers();
+
+
+        ((MainActivity) this.getActivity()).addOnWindowFocusChangedListener(this);
 
     }
 
@@ -118,7 +120,6 @@ public class ReadingFragment extends Fragment {
             PianoNote note = pianoNoteEvent.getContentIfNotHandled();
 
             if (note != null) {
-                Log.i(LOG_TAG, note.toString() + " pressed");
                 StaffPracticeItem item = staffViewModel.getCurrentPracticeItem();
 
                 if (item == null)
@@ -133,7 +134,6 @@ public class ReadingFragment extends Fragment {
         };
 
         final Observer<Event<PianoNote>> keyReleasedObserver = pianoNoteEvent -> {
-            Log.i(LOG_TAG, pianoNoteEvent.peekContent().toString() + " released");
 
         };
 
@@ -176,16 +176,36 @@ public class ReadingFragment extends Fragment {
 
         // This conditional is to prevent the staff from repopulating on rotation
         // todo: handle endless mode
-        if (staffViewModel.getPracticeItemsOnStaff().size()<1) {
+        if (staffViewModel.getPracticeItemsOnStaff().size() < 1) {
             viewModel.generatePracticableNoteList();
 
             staffViewModel.addItemToStaff(PianoNote.G4);
             staffViewModel.addItemToStaff(PianoNote.A4);
         }
 
-
-        super.onViewCreated(view, savedInstanceState);
-//        staffViewModel.addRandomNoteFromPracticableNotes();
+        ScreenManager.enterFullscreen((MainActivity) getActivity(), 600);
     }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ScreenManager.exitFullscreen((MainActivity) getActivity());
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+
+        if (hasFocus){
+           ScreenManager.enterFullscreen((MainActivity) this.getActivity(), 300);
+        }
+        else {
+            // Cancel pending fullscreen operations
+            ScreenManager.getHandler().removeCallbacksAndMessages(null);
+            ScreenManager.exitFullscreenTemporarily((MainActivity) this.getActivity(), 300);
+        }
+    }
+
 
 }

@@ -85,7 +85,6 @@ JNIEXPORT void JNICALL
 Java_com_dunneev_seenatural_Utilities_SoundPlayer_triggerDown(JNIEnv *env,
                                                                             jobject thiz,
                                                                             jint piano_key) {
-    __android_log_print(ANDROID_LOG_INFO, LOG_TAG, "%s", "triggerDown()");
     simpleMultiPlayer.triggerDown(piano_key);
 }
 

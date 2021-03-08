@@ -314,13 +314,18 @@ public class StaffPracticeItemTest {
     }
 
     @Test
-    public void getExactStaffNote() {
+    public void GetExactStaffNote() {
         populateNoteCollectionFromNotes(C1,D2,E3,F4,G5,A6,A_FLAT_1,B_FLAT_0,C_SHARP_4,D_FLAT_7,A0,C8);
 
         item = createChordItem(noteCollection);
 
         assertNull(item.getExactStaffNote(B0));
         assertNotNull(item.getExactStaffNote(C8));
+    }
+
+    @Test
+    public void StaffPracticeItem_PlayChordWithCorrectAndIncorrectNotes_DoesNotMarkItemCorrect() {
+        fail("not implemented");
     }
 
     private void populateNoteCollectionFromNotes(PianoNote... notes) {

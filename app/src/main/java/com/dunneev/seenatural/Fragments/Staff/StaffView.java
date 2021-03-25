@@ -398,8 +398,6 @@ public class StaffView extends ViewGroup {
         // Only white notes take up space
         int clippedHighStaffNoteCount= PianoNote.numberOfWhiteKeysInRangeExclusive(highestPracticeNote, PianoNote.HIGHEST_NOTE);
         float staffLineYCoordinate = -(clippedHighStaffNoteCount * staffLineSpacing) + (staffLineSpacing / 2.0f);
-        Log.i(LOG_TAG, "Starting staff line coord: " + staffLineYCoordinate);
-
 
         // I've decided to map every note instead of available practice notes.
         // It's more flexible - a clef can be drawn partially off the screen, for example.

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.dunneev.seenatural.R;
 import com.dunneev.seenatural.Utilities.Event;
 import com.dunneev.seenatural.databinding.FragmentStaffBinding;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +70,7 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
         boolean hideBassClefLines = sharedPreferences.getBoolean(getResources().getString(R.string.staff_hide_bass_clef_lines_key), false);
 
         PianoNote lowNote =  PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_low_note_key), getResources().getString(R.string.StaffLowNoteDefault)));
-        PianoNote highNote = PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_high_note_key), getResources().getString(R.string.PianoHighNoteDefault)));
+        PianoNote highNote = PianoNote.valueOfLabel(sharedPreferences.getString(getResources().getString(R.string.staff_high_note_key), getResources().getString(R.string.StaffHighNoteDefault)));
 
         viewModel.setKeySignature(keySignature);
         viewModel.setHideKeySignature(hideKeySignature);
@@ -83,9 +85,15 @@ public class StaffFragment extends Fragment /*implements StaffView.onStaffLaidOu
             viewModel.setLowStaffNote(lowNote);
             viewModel.setHighStaffNote(highNote);
         } catch (CustomException.InvalidNoteRangeException e) {
-            e.printStackTrace();
-        }
+            Toast.makeText(this.getContext(), e.getMessage(), Toast.LENGTH_LONG);
 
+            lowNote = PianoNote.valueOfLabel(getResources().getString(R.string.StaffLowNoteDefault));
+            highNote = PianoNote.valueOfLabel(getResources().getString(R.string.StaffHighNoteDefault));
+            sharedPreferences.edit().putString(getResources().getString(R.string.staff_low_note_key), String.valueOf(lowNote)).commit();
+            sharedPreferences.edit().putString(getResources().getString(R.string.staff_high_note_key), String.valueOf(highNote)).commit();
+
+            setViewModelFieldsFromPreferences();
+        }
     }
 
     // TODO: 12/8/2020 Make StaffViewModel itself observable and update the binding with viewmodel properties

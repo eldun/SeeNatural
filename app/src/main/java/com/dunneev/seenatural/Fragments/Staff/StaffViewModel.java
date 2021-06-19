@@ -96,13 +96,16 @@ public class StaffViewModel extends ViewModel {
             return;
         }
 
-        else if (lowStaffNote.isEquivalentTo(highStaffNote, false) ||
-                lowStaffNote.compareTo(highStaffNote) > 0) {
-            throw new CustomException.InvalidNoteRangeException("Staff low note " + lowStaffNote + " is higher than " + highStaffNote);
+        else if (lowStaffNote.compareTo(highStaffNote) > 0) {
+            throw new CustomException.InvalidNoteRangeException("Staff low note " + lowStaffNote + " is higher than staff high note " + highStaffNote);
         }
 
+        else if (lowStaffNote.isEquivalentTo(highStaffNote, false)) {
+            throw new CustomException.InvalidNoteRangeException("Staff low note " + lowStaffNote + " is the same as staff high note " + highStaffNote);
+        }
 
-        this.lowStaffNote = lowStaffNote;
+        else
+            this.lowStaffNote = lowStaffNote;
     }
 
 
@@ -115,12 +118,16 @@ public class StaffViewModel extends ViewModel {
             return;
         }
 
-        if (highStaffNote.compareTo(lowStaffNote) < 0) {
-            throw new CustomException.InvalidNoteRangeException("Staff high note " + highStaffNote + " is lower than " + lowStaffNote);
+        else if (lowStaffNote.compareTo(highStaffNote) > 0) {
+            throw new CustomException.InvalidNoteRangeException("Staff high note " + highStaffNote + " is lower than staff low note " + lowStaffNote);
         }
 
+        else if (lowStaffNote.isEquivalentTo(highStaffNote, false)) {
+            throw new CustomException.InvalidNoteRangeException("Staff high note " + highStaffNote + " is the same as staff low note " + lowStaffNote);
+        }
 
-        this.highStaffNote = highStaffNote;
+        else
+            this.highStaffNote = highStaffNote;
     }
 
     public MutableLiveData<List<StaffPracticeItem>> getMutableLiveDataPracticeItemsOnStaff() {

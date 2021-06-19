@@ -11,8 +11,8 @@
         android:name="com.dunneev.seenatural.Fragments.Reading.ReadingSettingsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/readingStartButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,13 +27,25 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/readingSettingsFragmentContainerView" />-->
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/readingFragmentContainerView"
+        android:name="com.dunneev.seenatural.Fragments.Reading.ReadingFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/readingStartButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/readingSettingsFragmentContainerView" />
+
     <Button
         android:id="@+id/readingStartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/button_start_margins"
+        android:layout_marginTop="1dp"
         android:text="START"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/readingFragmentContainerView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -48,6 +48,7 @@
 
     <string name="reading_settings_key">ReadingSettings</string>
     <string name="reading_single_octave_mode_key">SingleOctaveMode</string>
+    <string name="reading_endless_mode_key">EndlessMode</string>
     <string name="reading_key_signature_key">ReadingKeySignature</string>
     <string name="reading_generate_accidentals_key">GenerateAccidentals</string>
     <string name="reading_generate_flats_key">GenerateFlats</string>

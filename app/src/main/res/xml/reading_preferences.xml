@@ -10,7 +10,7 @@
     <SwitchPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_infinity_48px"
-        android:key="switch_preference_1"
+        android:key="@string/reading_endless_mode_key"
         android:title="Endless mode" />
     <com.dunneev.seenatural.Utilities.KeySignaturePreference
         android:id="@+id/readingKeySignaturePreference"

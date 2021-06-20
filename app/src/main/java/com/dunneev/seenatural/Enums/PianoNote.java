@@ -313,7 +313,7 @@ public enum PianoNote {
         if (result < 0){
             return 0;
         }
-        return 0;
+        return result;
     }
 
     public static boolean isAccidental(PianoNote note, KeySignature key) {
